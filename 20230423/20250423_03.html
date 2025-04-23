@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 輸入框 */
+        input {
+            /* 寬:200像素 */
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- action 去哪 -->
+    <form action="">
+        <!-- input:text -->
+        <!-- 1.方法 br 換行 -->
+        <input type="text" name="" id="">
+        <br><br>
+        <input type="text" name="" id="">
+        <hr>
+        <!-- 2.方法 p 段落 -->
+        <p>
+            <!-- for 門 id專屬鑰匙 -->
+            <label for="name">姓名:</label>
+            <!-- placeholder 框內文字虛影 -->
+            <input type="text" name="" id="name" placeholder="王xx">
+        </p>
+        <p>
+            <label for="mobile">電話:</label>
+            <input type="text" name="" id="mobile" placeholder="0983xxxxxx">
+        </p>
+    </form>
+    <br>
+    <br>
+    <br>
+    <hr>
+    <!-- table表格裡面包含form表單  -->
+    <table>
+        <form action="">
+            <tr>
+                <td>
+                    <label for="name">姓名:</label>
+                </td>
+                <td>
+                    <input type="text" name="" id="name">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="mobile">電話:</label>
+                </td>
+                <td>
+                    <input type="text" name="" id="mobile">
+                </td>
+            </tr>
+        </form>
+    </table>
+</body>
+
+</html>

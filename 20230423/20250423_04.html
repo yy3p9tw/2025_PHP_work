@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="">
+        <!-- input:text 文字方塊 -->
+        <p>
+            <!-- name 後端接收的column key 
+            vlaue 後端接收的column value -->
+            <!-- 未來 id name 資料庫(db)column 都可以取一樣 比較方便 -->
+            <label for="name">name:</label>
+            <input type="text" name="name" id="name">
+        </p>
+        <p>
+            <!-- radio 單選 -->
+            <input type="radio" name="002" id="cat">
+            <label for="cay">貓</label>
+            <input type="radio" name="002" id="dog">
+            <label for="dog">狗</label>
+            <input type="radio" name="002" id="bird">
+            <label for="bird">鳥</label>
+        </p>
+        <p>
+            <!-- chexkbox 多選 -->
+            <!-- name=xxx[] -->
+            <!-- [] array 陣列 -->
+            <input type="checkbox" name="003[]" id="cat1">
+            <label for="cay1">貓</label>
+            <input type="checkbox" name="003[]" id="dog1">
+            <label for="dog1">狗</label>
+            <input type="checkbox" name="003[]" id="bird2">
+            <label for="bird1">鳥</label>
+        </p>
+        <p>
+            <!-- date 年月日 -->
+            <label for="birthday">生日</label>
+            <input type="date" name="birthday" id="birthday">
+        </p>
+        <p>
+            <!-- select 下拉選單  先寫input text-->
+            <!-- car='audi' -->
+            <label for="car">車</label>
+            <input type="text" name="car" id="car" value="audi">
+            <!-- car='bmw,audi,toyota' -->
+            <select name="car" id="car">
+                <option value="bmw">bmw</option>
+                <option value="audi">audi</option>
+                <option value="toyota">toyota</option>
+            </select>
+        </p>
+        <p>
+            <!-- textarea 表單客訴內容 -->
+            <textarea name="msg" id="msg" cols="30" rows="10">
+            客訴內容
+           </textarea>
+
+        </p>
+        <p>
+            <!-- submit 送出按鈕 -->
+            <input type="submit" value="送出">
+        </p>
+        <p>
+            <!-- reset 重製按鈕 -->
+            <input type="reset" value="重製">
+        </p>
+        <p>
+            <input type="hidden" name="vip" id="vvvvip" value="hidden date">
+        </p>
+    </form>
+
+
+
+</body>
+
+</html>
