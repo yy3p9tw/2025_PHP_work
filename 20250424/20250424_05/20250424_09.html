@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>食光之旅 Tastes Through Time</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #0f0f0f, #1c1c2e, #2e2e2e);
+      color: #f1f1f1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .restaurant-info {
+      background: rgba(0, 0, 0, 0.75);
+      padding: 35px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1), 0 0 60px rgba(0, 255, 255, 0.1);
+      max-width: 600px;
+      width: 90%;
+      border: 1px solid #888;
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 30px;
+      color: #00FFFF;
+      text-align: center;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px #00FFFF;
+    }
+
+    p {
+      margin: 10px 0;
+      font-size: 15px;
+    }
+
+    h3 {
+      font-size: 20px;
+      color: #FFD700;
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 12px;
+      padding-left: 1.5em;
+      position: relative;
+    }
+
+    li::before {
+      content: "⏳";
+      position: absolute;
+      left: 0;
+      color: #00FFFF;
+    }
+
+    .desc {
+      display: block;
+      font-size: 0.9em;
+      color: #ccc;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="restaurant-info">
+    <h2>食光之旅 Tastes Through Time</h2>
+    <p>📍 地址：多時空匯聚站 T-12，時間迴廊，未來舊城交界</p>
+    <p>📞 電話：+888-CHRONO-BITE</p>
+    <h3>菜單精選：</h3>
+    <ul>
+      <li>
+        古羅馬烤羊
+        <span class="desc">以香料與蜂蜜酒醬炙烤而成，復刻帝王盛宴</span>
+      </li>
+      <li>
+        維多利亞奶油司康
+        <span class="desc">優雅下午茶點，搭配特製時間果醬，甜入心坎</span>
+      </li>
+      <li>
+        未來分子果球
+        <span class="desc">氮氣爆珠＋浮空水果，未來食感，穿越味蕾界線</span>
+      </li>
+      <li>
+        史前烤獸骨排
+        <span class="desc">濃厚原始烤炙香氣，重返洪荒時代的原野滋味</span>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

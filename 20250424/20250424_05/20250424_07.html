@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>銀河滋味 Galaxy Bites - 星際美食</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+TC:wght@300;400;700&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans TC', sans-serif;
+            background: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .restaurant-card {
+            background: linear-gradient(135deg, rgba(10, 25, 47, 0.9) 0%, rgba(32, 15, 60, 0.9) 100%);
+            width: 80%;
+            max-width: 800px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.5);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .restaurant-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .restaurant-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            margin: 0 0 10px 0;
+            color: #fff;
+            text-shadow: 0 0 10px #8a2be2, 0 0 20px #9370db;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        
+        .restaurant-slogan {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #b19cd9;
+            font-style: italic;
+        }
+        
+        .info-section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        
+        .info-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #9370db;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-title::before {
+            content: "✦";
+            margin-right: 10px;
+            color: #8a2be2;
+        }
+        
+        .info-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-left: 25px;
+        }
+        
+        .menu-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .menu-item {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: rgba(138, 43, 226, 0.1);
+            border-left: 3px solid #8a2be2;
+            border-radius: 0 5px 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            background: rgba(138, 43, 226, 0.3);
+            transform: translateX(5px);
+        }
+        
+        .menu-item-name {
+            font-weight: bold;
+            color: #e6e6fa;
+        }
+        
+        .menu-item-desc {
+            color: #b19cd9;
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+        
+        .contact-icon {
+            margin-right: 10px;
+            color: #9370db;
+        }
+        
+        .star-decoration {
+            position: absolute;
+            color: white;
+            opacity: 0.7;
+            animation: twinkle 2s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.9; }
+        }
+        
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .restaurant-card {
+                width: 90%;
+                padding: 25px;
+            }
+            
+            .restaurant-name {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="restaurant-card">
+        <!-- 星空裝飾元素 -->
+        <div class="star-decoration" style="top: 10%; left: 15%;">✦</div>
+        <div class="star-decoration" style="top: 80%; left: 85%; animation-delay: 0.5s;">✧</div>
+        <div class="star-decoration" style="top: 30%; left: 90%; animation-delay: 1s;">✦</div>
+        <div class="star-decoration" style="top: 70%; left: 10%; animation-delay: 1.5s;">✧</div>
+        
+        <h1 class="restaurant-name">銀河滋味 Galaxy Bites</h1>
+        <p class="restaurant-slogan">穿越星際的美食之旅 · 味覺的宇宙探險</p>
+        
+        <div class="info-section">
+            <h2 class="info-title">餐廳資訊</h2>
+            <div class="info-content">
+                <p><span class="contact-icon">📍</span> 地址：星際商貿站 Alpha-7 銀河系第二旋臂 銀光區32號</p>
+                <p><span class="contact-icon">📞</span> 訂位專線：+999-555-STELLAR (7835527)</p>
+                <p><span class="contact-icon">🕒</span> 營業時間：週一至週日 11:00 - 23:00 (星際標準時)</p>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h2 class="info-title">主廚推薦</h2>
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <div class="menu-item-name">火星岩漿鍋</div>
+                    <div class="menu-item-desc">麻辣牛肉湯底 + 火山豆腐 · 挑戰您的味蕾極限</div>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-item-name">金星花果鍋</div>
+                    <div class="menu-item-desc">甜香果香湯 + 鳳梨蝦球 · 來自金星的甜蜜誘惑</div>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-item-name">黑洞能量丸</div>
+                    <div class="menu-item-desc">深夜芝麻湯圓 + 能量晶球 · 補充您的星際能量</div>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-item-name">太空人奶酪</div>
+                    <div class="menu-item-desc">液態銀奶凍 + 星塵巧克力 · 失重狀態下的美味享受</div>
+                </li>
+                <li class="menu-item">
+                    <div class="menu-item-name">星雲特調</div>
+                    <div class="menu-item-desc">銀河系獨家配方 · 每週變換的神秘飲品</div>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="info-section">
+            <h2 class="info-title">星際特色</h2>
+            <div class="info-content">
+                <p>✨ 全息投影用餐環境 · 體驗不同星球的景觀</p>
+                <p>✨ 零重力用餐區 (需提前預約)</p>
+                <p>✨ 每週五「外星主題夜」特別活動</p>
+                <p>✨ 接受星際信用點支付</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

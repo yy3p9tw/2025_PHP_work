@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>龍宴山莊 Dracofeast Manor</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(ellipse at bottom, #1a1a1a 0%, #000000 100%);
+      color: #fdfdfd;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .restaurant-info {
+      background: linear-gradient(145deg, rgba(0,0,0,0.85), rgba(30,30,30,0.85));
+      border: 2px solid #8B0000;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(255, 69, 0, 0.3);
+      max-width: 600px;
+      width: 90%;
+      position: relative;
+    }
+
+    .dragon-icon {
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      font-size: 48px;
+      color: #FFD700;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #FFD700; }
+      to { text-shadow: 0 0 20px #FF4500; }
+    }
+
+    h2 {
+      font-family: 'IM Fell English SC', serif;
+      font-size: 36px;
+      margin: 0 0 15px;
+      color: #FFD700;
+      text-align: center;
+      text-shadow: 2px 2px 10px #8B0000;
+    }
+
+    p {
+      font-size: 16px;
+      margin: 8px 0;
+    }
+
+    h3 {
+      font-size: 22px;
+      color: #FFA500;
+      margin-top: 30px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 10px 0;
+      padding-left: 1.5em;
+      position: relative;
+    }
+
+    li::before {
+      content: "🐉";
+      position: absolute;
+      left: 0;
+      color: #FF4500;
+    }
+
+    .desc {
+      display: block;
+      font-size: 0.9rem;
+      color: #cccccc;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="restaurant-info">
+    <div class="dragon-icon">🐲</div>
+    <h2>龍宴山莊 Dracofeast Manor</h2>
+    <p>📍 地址：幽影山脈龍棲堡 龍魂谷23號 高塔樓</p>
+    <p>📞 電話：+666-DRAGON-FEAST</p>
+    <h3>菜單精選：</h3>
+    <ul>
+      <li>
+        赤焰龍翼
+        <span class="desc">炭烤香辣雞翅，附火焰辣醬 · 烈焰灼舌的快感</span>
+      </li>
+      <li>
+        冰霜龍尾
+        <span class="desc">涼拌藍芝士魚排 · 寒氣逼人，卻難以抗拒</span>
+      </li>
+      <li>
+        龍蛋爆漿布丁
+        <span class="desc">巧克力熔岩中心 · 一咬即爆，魔法甜點</span>
+      </li>
+      <li>
+        龍心湯
+        <span class="desc">蘑菇雞湯＋秘藥藥草 · 滋補強身，回神解咒</span>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>味覺奇航 - 奇幻美食之旅</title>
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --dark-color: #292f36;
+            --light-color: #f7fff7;
+            --overlay-color: rgba(41, 47, 54, 0.85);
+        }
+        
+        body {
+            background-image: url('./2025042408.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            margin: 0;
+            min-height: 100vh;
+            color: var(--light-color);
+            font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3.5rem;
+            margin: 2rem 0;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+            letter-spacing: 2px;
+            color: var(--light-color);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0 2rem;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        table {
+            width: 85%;
+            margin: 2rem auto;
+            border-collapse: collapse;
+            background-color: rgba(41, 47, 54, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        tr:last-child {
+            border-bottom: none;
+        }
+
+        td {
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            vertical-align: middle;
+        }
+
+        td:first-child {
+            width: 30%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.5s ease;
+        }
+
+        a:hover img {
+            transform: scale(1.03);
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        p {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--secondary-color);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        li {
+            margin: 0.8rem 0;
+            padding: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-left: 3px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        li:hover {
+            background-color: rgba(0, 0, 0, 0.4);
+            transform: translateX(5px);
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            table {
+                width: 95%;
+            }
+            
+            td {
+                display: block;
+                width: 100% !important;
+            }
+            
+            td:first-child {
+                height: 200px;
+            }
+            
+            img {
+                height: 180px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <h1>味覺奇航</h1>
+    <table>
+        <tr>
+            <td>
+                <a href="./20250424_07.html">
+                    <img src="./2025042401.jpg" alt="銀河滋味 Galaxy Bites">
+                </a>
+            </td>
+            <td>
+                <h2>銀河滋味 Galaxy Bites</h2>
+                <p>地址：星際商貿站 Alpha-7 銀河系第二旋臂 銀光區32號</p>
+                <p>電話：+999-555-STELLAR</p>
+                <h3>菜單精選：</h3>
+                <ul>
+                    <li>火星岩漿鍋（麻辣牛肉湯底＋火山豆腐）</li>
+                    <li>金星花果鍋（甜香果香湯＋鳳梨蝦球）</li>
+                    <li>黑洞能量丸（深夜芝麻湯圓＋能量晶球）</li>
+                    <li>太空人奶酪（液態銀奶凍＋星塵巧克力）</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="./20250424_08.html">
+                    <img src="./2025042404.jpg" alt="龍宴山莊 Dracofeast Manor">
+                </a>
+            </td>
+            <td>
+                <h2>龍宴山莊 Dracofeast Manor</h2>
+                <p>地址：幽影山脈龍棲堡 龍魂谷23號 高塔樓</p>
+                <p>電話：+666-DRAGON-FEAST</p>
+                <h3>菜單精選：</h3>
+                <ul>
+                    <li>赤焰龍翼（炭烤香辣雞翅，附火焰辣醬）</li>
+                    <li>冰霜龍尾（涼拌藍芝士魚排）</li>
+                    <li>龍蛋爆漿布丁（巧克力熔岩中心）</li>
+                    <li>龍心湯（蘑菇雞湯＋秘藥藥草）</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="./20250424_09.html">
+                    <img src="./2025042406.jpg" alt="食光之旅 Tastes Through Time">
+                </a>
+            </td>
+            <td>
+                <h2>食光之旅 Tastes Through Time</h2>
+                <p>地址：多時空匯聚站 T-12，時間迴廊，未來舊城交界</p>
+                <p>電話：+888-CHRONO-BITE</p>
+                <h3>菜單精選：</h3>
+                <ul>
+                    <li>古羅馬烤羊（配蜂蜜酒醬）</li>
+                    <li>維多利亞奶油司康（附時間果醬）</li>
+                    <li>未來分子果球（氮氣爆珠＋浮空水果）</li>
+                    <li>史前烤獸骨排（原始風味重現）</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
