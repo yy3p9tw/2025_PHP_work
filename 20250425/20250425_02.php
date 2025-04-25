@@ -7,6 +7,27 @@ $name="于崇銘";
 $ename="yy3ptwe";
 // 字串跟字串連接用.
 // echo 顯示 後面可以接變數跟常數 還是要用.做連接
-echo "我的年齡是:" . $age . "歲";
+echo "我的年齡是:{$age}歲";
+echo "<br>";
+echo "我的名字是:{$name}";
+echo "<hr>";
+$age=27;
+$name="王小明";
+echo "<br>";
+echo "我的名字是:" . $name ;
+echo "<br>";
 echo 看清楚了嗎;
-echo 看清楚了嗎.$age;
+echo "<br>";
+echo 看清楚了嗎;
+echo "<br>";
+echo $age;
+echo "<br>";
+// 結果=(x+xx)結果在前面 計算帶入在後面
+$a=10;
+$b=50;
+$c=30;
+$c=$a;
+$a=$b;
+$b=$c;
+$c=$a+$b;
+echo $a.$b.$c;
