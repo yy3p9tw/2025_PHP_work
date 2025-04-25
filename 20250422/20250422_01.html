@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 頁面背景顏色與字型設定 */
+        body {
+            background-color: lightgray;
+            /* 頁面背景顏色設為淺灰色 */
+            font-family: Arial, sans-serif;
+            /* 設定字型為 Arial，如果沒有這個字型則使用 sans-serif */
+            color: darkslategray;
+            /* 設定文字顏色為深灰色 */
+        }
+
+        /* 表單的外觀樣式 */
+        form {
+            /* 文字-居中:對齊 */
+            text-align: center;
+            background-color: white;
+            /* 設定表單背景顏色為白色 */
+            padding: 20px;
+            /* 內部間距設定為20px，讓表單內容不會貼邊 */
+            border-radius: 8px;
+            /* 圓角邊框，讓表單看起來更柔和 */
+            width: 300px;
+            /* 表單寬度設為300px */
+            margin: 50px auto;
+            /* 使表單在頁面上居中，並在上方留有50px間距 */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            /* 加入陰影效果，讓表單有立體感 */
+        }
+
+        /* 文字框（例如：姓名、密碼）樣式 */
+        input[type="text"],
+        input[type="password"] {
+            width: 90%;
+            /* 設定文字框寬度為90%*/
+            padding: 10px;
+            /* 文字框內部間距設為10px */
+            margin: 10px 0;
+            /* 上下間距為10px，讓框框間距適中 */
+            border: 1px solid #ccc;
+            /* 邊框顏色設為淺灰色 */
+            border-radius: 4px;
+            /* 設定圓角邊框，讓文字框看起來更柔和 */
+        }
+
+        /* 提交按鈕的樣式 */
+        input[type="submit"] {
+            background-color: #4CAF50;
+            /* 提交按鈕背景顏色設為綠色 */
+            color: white;
+            /* 按鈕文字顏色設為白色 */
+            padding: 10px 20px;
+            /* 按鈕內部上下間距10px，左右間距20px */
+            border: none;
+            /* 去掉按鈕邊框 */
+            border-radius: 4px;
+            /* 按鈕圓角邊框，讓它看起來更圓滑 */
+            cursor: pointer;
+            /* 改變鼠標樣式為指標，顯示該元素是可點擊的 */
+        }
+
+        /* 提交按鈕懸停效果 */
+        input[type="submit"]:hover {
+            background-color: #45a049;
+            /* 當滑鼠懸停在按鈕上時，背景顏色變為稍微深一點的綠色 */
+        }
+    </style>
+</head>
+
+
+<body>
+    <!-- 表單 目的地=# 送出=隱藏資料，較安全 -->
+    <form action="#" method="post">
+
+        <p>
+            <!-- 姓名欄位 -->
+            <label for="name">姓名：</label> <!-- label 讓使用者點擊文字即可選擇對應的輸入框 -->
+            <!-- 輸入欄位，文字型態，id= "name"，送出資料時會用 username 這個名稱 -->
+            <input type="text" id="name" name="username">
+        </p>
+
+        <p>
+            <!-- 密碼欄位 -->
+            <label for="pw">密碼：</label> <!-- 密碼欄位的標籤 -->
+            <input type="password" id="pw" name="password"> <!-- 密碼型態輸入框，輸入時文字會顯示為圓點 -->
+        </p>
+
+        <p>性別：</p>
+        <!-- 單選按鈕，選擇男 -->
+        <input type="radio" id="male" name="gender" value="male">
+        <label for="male">男</label> <!-- 標籤顯示“男”，點擊標籤選擇男 -->
+
+        <!-- 單選按鈕，選擇女 -->
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">女</label> <!-- 標籤顯示“女”，點擊標籤選擇女 -->
+
+        <p>興趣：</p>
+        <!-- 勾選框，選擇閱讀 -->
+        <input type="checkbox" id="read" name="hobby" value="read">
+        <label for="read">閱讀</label> <!-- 標籤顯示“閱讀”，點擊標籤勾選此選項 -->
+
+        <!-- 勾選框，選擇畫畫 -->
+        <input type="checkbox" id="draw" name="hobby" value="draw">
+        <label for="draw">畫畫</label> <!-- 標籤顯示“畫畫”，點擊標籤勾選此選項 -->
+
+        <p>
+            <!-- 送出表單按鈕 -->
+            <input type="submit" value="送出表單"> <!-- 送出表單的按鈕，點擊後表單資料會被送出 -->
+        </p>
+
+    </form>
+
+</body>
+
+</html>

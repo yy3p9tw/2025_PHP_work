@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            /* 文字-對齊:居中 */
+            text-align: center;
+            /* 外框距:居中 */
+            margin: auto;
+            /* 表格寬整體的80% */
+            width: 80%;
+        }
+
+        table,
+        tr,
+        th,
+        td {
+            /* 框框:1像素 實線 黑 */
+            border: 1px solid black
+        }
+
+        td {
+            height: 150px;
+            /* 字體調整:粗體字 */
+            font-weight: bold;
+        }
+
+        th {
+            /* 高:50像素 */
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <b>
+                <th>節數</th>
+                <th>一</th>
+                <th>二</th>
+                <th>三</th>
+                <th>四</th>
+                <th>五</th>
+            </b>
+        </tr>
+        <tr>
+            <td>早自習<br>0750~0830</td>
+            <td colspan="5"></td>
+            <!-- <td>1</td> -->
+            <!-- <td>1</td> -->
+            <!-- <td>1</td> -->
+            <!-- <td>1</td> -->
+
+        </tr>
+        <tr>
+            <b>
+                <td>第一節<br>0840~0920</td>
+                <td rowspan="2">1</td>
+                <td colspan="3">1</td>
+                <!-- <td>1</td> -->
+                <!-- <td>1</td> -->
+                <td>1</td>
+            </b>
+        </tr>
+        <tr>
+            <b>
+                <td>第二節<br>0930~1010</td>
+                <!-- <td>1</td> -->
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+            </b>
+        </tr>
+        <tr>
+            <b>
+                <td>第三節<br>01030~1110</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td rowspan="2">1</td>
+            </b>
+        </tr>
+        <tr>
+            <b>
+                <td>第四節<br>01030~1110</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <!-- <td>1</td> -->
+            </b>
+        </tr>
+        <tr>
+            <b>
+                <td>午休時間<br>01030~1110</td>
+                <td colspan="5">1</td>
+                <!-- <td>1</td> -->
+                <!-- <td>1</td> -->
+                <!-- <td>1</td> -->
+                <!-- <td>1</td> -->
+            </b>
+        </tr>
+        <tr>
+            <b>
+                <td>第五節<br>01030~1110</td>
+                <td>1</td>
+                <td rowspan="2">1</td>
+                <td rowspan="3">1</td>
+                <td rowspan="3">1</td>
+                <td>1</td>
+            </b>
+        </tr>
+        <tr>
+            <b>
+                <td>第六節<br>01030~1110</td>
+                <td>1</td>
+                <!-- <td>1</td> -->
+                <!-- <td>1</td> -->
+                <!-- <td>1</td> -->
+                <td>1</td>
+            </b>
+        </tr>
+        <tr>
+            <b>
+                <td>第七節<br>01030~1110</td>
+                <td colspan="2">1</td>
+                <!-- <td>1</td> -->
+                <!-- <td>1</td> -->
+                <!-- <td>1</td> -->
+                <td>1</td>
+            </b>
+        </tr>
+    </table>
+</body>
+
+</html>

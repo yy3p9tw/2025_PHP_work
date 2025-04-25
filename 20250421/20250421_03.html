@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>富蘭克林十三德行每日練習表</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 1000px; margin: auto; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f5f5f5; }
+    tr:nth-child(even) { background-color: #fafafa; }
+    textarea { width: 100%; padding: 8px; margin-top: 4px; margin-bottom: 20px; }
+    .virtue-label { font-weight: bold; font-size: 1.1em; margin-top: 20px; display: block; }
+    button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; margin-top: 20px; }
+    button:hover { background-color: #45a049; }
+  </style>
+</head>
+<body>
+  <h1>富蘭克林十三德行每日練習表</h1>
+  <table id="virtue-table">
+    <thead>
+      <tr>
+        <th>德行 / 星期</th>
+        <th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th><th>日</th>
+      </tr>
+    </thead>
+    <tbody id="virtue-body"></tbody>
+  </table>
+
+  <div id="notes-section"></div>
+
+  <button onclick="saveData()">💾 儲存記錄</button>
+  <button onclick="loadData()">📂 載入記錄</button>
+
+  <script>
+    const virtues = [
+      "節制", "緘默", "秩序", "決心", "節儉", "勤勞", "誠實",
+      "公正", "中庸", "清潔", "寡言", "安靜", "謙遜"
+    ];
+
+    const tableBody = document.getElementById("virtue-body");
+    const notesSection = document.getElementById("notes-section");
+
+    virtues.forEach((v, i) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${i + 1}. ${v}</td>`;
+      for (let j = 0; j < 7; j++) {
+        row.innerHTML += `<td><input type="checkbox" data-virtue="${i}" data-day="${j}"></td>`;
+      }
+      tableBody.appendChild(row);
+
+      const label = document.createElement("label");
+      label.className = "virtue-label";
+      label.textContent = `${i + 1}. ${v} 心得：`;
+      const textarea = document.createElement("textarea");
+      textarea.setAttribute("rows", "3");
+      textarea.setAttribute("placeholder", "寫下今天的反思、收穫或挑戰...");
+      textarea.setAttribute("data-note", i);
+      notesSection.appendChild(label);
+      notesSection.appendChild(textarea);
+    });
+
+    function saveData() {
+      const checks = document.querySelectorAll("input[type='checkbox']");
+      const notes = document.querySelectorAll("textarea");
+      const saveObj = {
+        checks: Array.from(checks).map(c => c.checked),
+        notes: Array.from(notes).map(n => n.value)
+      };
+      localStorage.setItem("virtueTrackerData", JSON.stringify(saveObj));
+      alert("✅ 資料已儲存！");
+    }
+
+    function loadData() {
+      const data = JSON.parse(localStorage.getItem("virtueTrackerData"));
+      if (!data) return alert("⚠️ 沒有可載入的資料");
+      const checks = document.querySelectorAll("input[type='checkbox']");
+      const notes = document.querySelectorAll("textarea");
+      data.checks.forEach((val, i) => { checks[i].checked = val });
+      data.notes.forEach((val, i) => { notes[i].value = val });
+      alert("📂 資料已載入！");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 讓表單居中 */
+        form {
+            /* 高:300像素 */
+            width: 300px;
+            /* 外框距:上下邊距0居中 */
+            margin: 0 auto;
+            /* 內框距:離內容文字20像素 */
+            padding: 30px;
+            /* 框框:1像素 實線 #ccc 顏色*/
+            border: 1px solid #ccc;
+            /* 框框-半徑圓:10像素 */
+            border-radius: 10px;
+        }
+
+        label {
+            /* 將元素設置為塊級元素，使其佔據整行寬度並換行 */
+            display: block;
+            /* 設置元素底部的外邊距為5像素，這樣可以讓元素之間保持間距 */
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* 讓性別選項橫向排列 */
+        #gender {
+            display: inline-flex;
+            /* 使用 flexbox 讓選項並排顯示 */
+            gap: 20px;
+            /* 選項之間添加間距 */
+            align-items: center;
+            /* 確保選項和文字在同一行 */
+        }
+
+        #電子報框 {
+            display: inline-flex;
+            /* 使用 flexbox 讓選項並排顯示 */
+            gap: 10px;
+            /* 選項之間添加間距 */
+            align-items: center;
+            /* 確保選項和文字在同一行 */
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div style="text-align: center;">
+        <form action="#" method="post">
+            <!-- 用戶名 -->
+            <label for="用戶名">用戶名:</label>
+            <input type="text" id="用戶名" name="用戶名">
+            <br>
+            <!-- 密碼 -->
+            <label for="密碼">密碼:</label>
+            <input type="password" id="密碼" name="密碼">
+            <br>
+            <!-- 性別 -->
+            <label for="性別">性別</label>
+            <div id="gender">
+                <input type="radio" id="男" name="性別" value="男">
+                <label for="男">男</label>
+                <input type="radio" id="女" name="性別" value="女">
+                <label for="女">女</label>
+            </div>
+            <br>
+            <!-- 電子報 -->
+            <div id="電子報框">
+                <input type="checkbox" id="電子報" name="電子報" value="yes">
+                <label for="電子報">訂閱電子報</label>
+            </div>
+            <br>
+            <!-- 車 -->
+            <label for="車">選擇一輛車：</label>
+            <select id="車" name="車">
+                <option value="寶馬">寶馬</option>
+                <option value="法拉利">法拉利</option>
+                <option value="賓利">賓利</option>
+                <option value="馬自達">馬自達</option>
+            </select><br><br>
+            <!-- 提交 -->
+            <input type="submit" value="提交">
+        </form>
+    </div>
+</body>
+
+</html>
