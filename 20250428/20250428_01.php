@@ -12,7 +12,7 @@
     <h1>判斷成績</h1>
     <P>給定一個成績數字,判斷是否及格(60)分</P>
     <?php
-    $score = 80;
+    $score = 60;
 
     if (!is_numeric($score) || $score > 100 || $score < 0) {
         echo "請輸入合法的成績數字";
@@ -41,7 +41,7 @@
         <li>90 ~ 100 => A</li>
     </ul>
     <?php
-    $level = '';
+
     if ($score >= 0 && $score <= 59) {
         $level = "E";
     } else if ($score >= 60 && $score <= 69) {
