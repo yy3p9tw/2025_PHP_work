@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>css 功課 - 圓形表格</title>
+    <!-- 引入 Google Fonts 的 Noto Sans TC 字體，專為中文設計 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700&display=swap" rel="stylesheet">
+    <style>
+
+        /* 設置頁面背景為漸變色，並將表格置中顯示 */
+        body {
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        /* 設置表格樣式為圓形 */
+        table {
+            width: 90%;
+            max-width: 600px; /* 縮小最大寬度以適配圓形 */
+            aspect-ratio: 1/1; /* 確保寬高相等，形成正圓 */
+            border-collapse: collapse;
+            text-align: center;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 50%; /* 圓形邊框 */
+            overflow: hidden;
+            table-layout: fixed;
+
+        }
+
+        /* 設置單元格樣式 */
+        td {
+            width: 50%;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+
+
+        /* 單元格懸停效果 */
+        td:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 單元格 #box01 的樣式 */
+        #box01 {
+            color: #e63946;
+            font-size: 3.5rem;
+        }
+
+        /* 單元格 #box02 的樣式 */
+        #box02 {
+            color: #1d4ed8;
+            font-size: 3.5rem;
+        }
+
+        /* 單元格 #box03 的樣式 */
+        #box03 {
+            color: #f59e0b;
+            font-size: 3.5rem;
+        }
+
+        /* 單元格 #box04 的樣式 */
+        #box04 {
+            color: #15803d;
+            font-size: 3.5rem;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <!-- 表格結構：2x2 网格，顯示四個中文字 -->
+    <table>
+        <tr>
+            <td>
+                <div id="box01">
+                    <p>優勢</p>
+                </div>
+            </td>
+            <td>
+                <div id="box02">
+                    <p>劣勢</p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="box03">
+                    <p>機會</p>
+                </div>
+            </td>
+            <td>
+                <div id="box04">
+                    <p>威脅</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
