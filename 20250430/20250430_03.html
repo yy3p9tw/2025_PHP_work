@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{text-align: center;
+        }
+        .a01 {
+            color: aquamarine;
+        }
+        .a01>div {
+            color: forestgreen;
+        }
+
+        /* 虛擬 滑鼠 變色 */
+        .a01:hover {
+            color: red;
+            font-size: 30px;
+        }
+
+        .a02:hover {
+            color: blue;
+        }
+
+        .a03:hover {
+            color: green;
+        }
+
+        .a04:hover {
+            color: yellow;
+        }
+        .a01::before{
+            content: "$";
+        }
+        .a01::after{
+            content: "元";
+        }
+    </style>
+</head>
+
+<body>
+    <div class="a01">獅院</div>
+    <div class="a02">獾院</div>
+    <div class="a03">鷹院</div>
+    <div class="a04">蛇院</div>
+</body>
+
+</html>
