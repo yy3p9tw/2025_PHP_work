@@ -1,88 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>css 功課 - 圓形表格</title>
-    <!-- 引入 Google Fonts 的 Noto Sans TC 字體，專為中文設計 -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700&display=swap" rel="stylesheet">
+    <title>SWOT 表格</title>
     <style>
-
-        /* 設置頁面背景為漸變色，並將表格置中顯示 */
         body {
-            background-color: black;
+            font-family: "Noto Sans TC", sans-serif;
+            background-color: #f5f5f0;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            font-family: 'Noto Sans TC', sans-serif;
-            display: flex;
+            height: 100vh;
+            margin: 0;
         }
 
-        /* 設置表格樣式為圓形 */
         table {
-            width: 90%;
-            max-width: 600px; /* 縮小最大寬度以適配圓形 */
-            aspect-ratio: 1/1; /* 確保寬高相等，形成正圓 */
-            border-collapse: collapse;
-            text-align: center;
-            background: white;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border-radius: 50%; /* 圓形邊框 */
-            overflow: hidden;
-            table-layout: fixed;
-
+            border-collapse: separate;
+            border-spacing: 15px;
         }
 
-        /* 設置單元格樣式 */
         td {
-            width: 50%;
-            padding: 20px;
-            border: 2px solid #e0e0e0;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
+            width: 200px;
+            height: 150px;
+            text-align: center;
+            vertical-align: middle;
         }
 
-
-
-        /* 單元格懸停效果 */
-        td:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #333;
+            background-color: #ddd;
         }
 
-        /* 單元格 #box01 的樣式 */
+        .header {
+            font-weight: bold;
+            font-size: 1.2em;
+            text-align: center;
+            padding: 10px;
+            background-color: #ddd;
+            border-radius: 10px;
+        }
+
+        div {
+            border-radius: 15px;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+            color: #fff;
+            text-align: center;
+            font-size: 1.2em;
+            padding: 40px 20px;
+            transition: font-size 0.3s ease;
+        }
+
         #box01 {
-            color: #e63946;
-            font-size: 3.5rem;
+            background-color: #2e7d32;
         }
 
-        /* 單元格 #box02 的樣式 */
         #box02 {
-            color: #1d4ed8;
-            font-size: 3.5rem;
+            background-color: #c62828;
         }
 
-        /* 單元格 #box03 的樣式 */
         #box03 {
-            color: #f59e0b;
-            font-size: 3.5rem;
+            background-color: #66bb6a;
         }
 
-        /* 單元格 #box04 的樣式 */
         #box04 {
-            color: #15803d;
-            font-size: 3.5rem;
+            background-color: #ff8f00;
         }
 
+        #box01:hover,
+        #box02:hover,
+        #box03:hover,
+        #box04:hover {
+            font-size: 2em;
+        }
 
-
+        p {
+            margin: 0;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
-    <!-- 表格結構：2x2 网格，顯示四個中文字 -->
     <table>
         <tr>
+            <td class="header" colspan="4">內部</td>
+        </tr>
+        <tr>
+            <td class="vertical-text" rowspan="2">外部因素</td>
             <td>
                 <div id="box01">
                     <p>優勢</p>
@@ -93,6 +102,7 @@
                     <p>劣勢</p>
                 </div>
             </td>
+            <td class="vertical-text" rowspan="2">內部因素</td>
         </tr>
         <tr>
             <td>
@@ -106,6 +116,10 @@
                 </div>
             </td>
         </tr>
+        <tr>
+            <td class="header" colspan="4">外部</td>
+        </tr>
     </table>
 </body>
+
 </html>
