@@ -145,25 +145,66 @@
         <?php
 
         ?>
-    </h2>
-    <h2>尋找字元</h2>
-    <?php
-    $string = 'this is a good day';
-    $target = 'o';
-    $is_find = false;
-    $counter = 0;
-    while ($is_find == false) {
-        if ($string[$counter] == $target) {
-            $is_find = true;
+        <h2>尋找字元</h2>
+        <?php
+        $string = 'this is a good day';
+        $target = 'o';
+        $is_find = false;
+        $counter = 0;
+        while ($is_find == false && $counter < strlen($string)) {
+            if ($string[$counter] == $target) {
+                $is_find = true;
+            }
+            $counter++;
         }
-        $counter++;
-    }
-    if ($is_find) {
-        echo '目標字元' . $target . '在字串的第' . $counter . '個位置';
-    } else {
-        echo '字串中沒有你要找的' . $target;
-    }
-    ?>
+        if ($is_find) {
+            echo '目標字元' . $target . '在字串的第' . $counter . '個位置';
+        } else {
+            echo '字串中沒有你要找的' . $target;
+        }
+        ?>
+
+        <h2>尋找字元-中文字</h2>
+        <?php
+        $string = '今天真是個出遊的好日子啊~';
+        $target = '個出';
+        $is_find = false;
+        $counter = 0;
+        while ($is_find == false && $counter <mb_strlen($string)) {
+            if (mb_substr($string,$counter,mb_strlen($target)) == $target) {
+                $is_find = true;
+            }
+            $counter++;
+        }
+        if ($is_find) {
+            echo '目標字元' . $target . '在字串的第' . $counter . '個位置';
+        } else {
+            echo '字串中沒有你要找的' . $target;
+        }
+        ?>
+        <h2>尋找字元-英文單詞</h2>
+        <?php
+        $string = 'this is a good day';
+        $target = 'good';
+        $is_find = false;
+        $counter = 0;
+        while ($is_find == false && $counter <mb_strlen($string)) {
+            if (mb_substr($string,$counter,mb_strlen($target)) == $target) {
+                $is_find = true;
+            }
+            $counter++;
+        }
+        if ($is_find) {
+            echo '目標字元' . $target . '在字串的第' . $counter . '個位置';
+        } else {
+            echo '字串中沒有你要找的' . $target;
+        }
+        ?>
+        <hr>
+        <?php
+        echo mb_strpos($string,$target);  
+        ?>
+
 </body>
 
 </html>
