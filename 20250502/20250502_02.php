@@ -146,6 +146,24 @@
 
         ?>
     </h2>
+    <h2>尋找字元</h2>
+    <?php
+    $string = 'this is a good day';
+    $target = 'o';
+    $is_find = false;
+    $counter = 0;
+    while ($is_find == false) {
+        if ($string[$counter] == $target) {
+            $is_find = true;
+        }
+        $counter++;
+    }
+    if ($is_find) {
+        echo '目標字元' . $target . '在字串的第' . $counter . '個位置';
+    } else {
+        echo '字串中沒有你要找的' . $target;
+    }
+    ?>
 </body>
 
 </html>
