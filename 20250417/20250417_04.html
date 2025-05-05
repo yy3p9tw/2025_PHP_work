@@ -3,114 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="./20250505_04_style.css">
   <title>粉紅課表</title>
-  <style>
-    body {
-      font-family: "Segoe UI", "Noto Sans TC", sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #fff0f5;
-      overflow: hidden;
-      position: relative;
-    }
-
-    /* 背景泡泡 */
-    .bubble {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255, 182, 193, 0.4);
-      animation: float 20s infinite ease-in-out;
-      z-index: 0;
-    }
-
-    .bubble:nth-child(1) {
-      width: 100px; height: 100px;
-      left: 10%;
-      bottom: -120px;
-      animation-duration: 25s;
-      animation-delay: 0s;
-    }
-
-    .bubble:nth-child(2) {
-      width: 80px; height: 80px;
-      left: 30%;
-      bottom: -100px;
-      animation-duration: 20s;
-      animation-delay: 5s;
-    }
-
-    .bubble:nth-child(3) {
-      width: 120px; height: 120px;
-      left: 70%;
-      bottom: -150px;
-      animation-duration: 30s;
-      animation-delay: 2s;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 0.3;
-      }
-      50% {
-        opacity: 0.6;
-      }
-      100% {
-        transform: translateY(-1200px) scale(1.2);
-        opacity: 0;
-      }
-    }
-
-    table {
-      width: 90%;
-      margin: auto;
-      border-collapse: collapse;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
-      background-color: white;
-      z-index: 1;
-      position: relative;
-    }
-
-    th, td {
-      border: 1px solid #ffc0cb;
-      padding: 16px;
-      text-align: center;
-      font-size: 16px;
-      transition: all 0.3s ease;
-    }
-
-    th {
-      background-color: #ffe4ec;
-      font-weight: bold;
-      color: #d63384;
-    }
-
-    td:first-child {
-      background-color: #ffe4ec;
-      font-weight: bold;
-      text-align: left;
-      color: #c2185b;
-    }
-
-    td {
-      background-color: #fff5f7;
-      color: #880e4f;
-    }
-
-    /* 💫 滑鼠懸停動畫 */
-    td:hover, th:hover {
-      background-color: #ffd6e6;
-      transform: scale(1.05);
-      box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3);
-      cursor: pointer;
-    }
-  </style>
 </head>
 <body>
 
-  <!-- 🌸 背景漂浮泡泡 -->
+  <!--  背景漂浮泡泡 -->
   <div class="bubble"></div>
   <div class="bubble"></div>
   <div class="bubble"></div>
