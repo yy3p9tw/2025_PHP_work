@@ -1,0 +1,132 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar {
+    width: 30%;
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.sidebar img {
+    width: 100%;
+    max-width: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.sidebar h1 {
+    font-size: 24px;
+    margin: 0;
+    color: #fff;
+}
+
+.sidebar h2 {
+    font-size: 18px;
+    margin: 5px 0;
+    color: #ccc;
+}
+
+.sidebar h3 {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #fff;
+}
+
+.sidebar p {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.sidebar .contact,
+.sidebar .education {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.sidebar .contact a {
+    color: #ccc;
+    text-decoration: none;
+}
+
+.sidebar .contact a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.sidebar .contact i {
+    margin-right: 5px;
+}
+
+.main-content {
+    width: 70%;
+    padding: 20px;
+}
+
+.main-content h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 5px;
+}
+
+.experience {
+    margin-bottom: 20px;
+}
+
+.experience h3 {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.experience p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.proficiencies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.proficiencies span {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.portfolio-section a {
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.portfolio-section a:hover {
+    text-decoration: underline;
+}
+
+.sidebar .contact img.social-logo {
+    width: 48px;
+    height: 48px;
+    vertical-align: middle;
+    margin-right: 8px;
+    transition: all 0.3s ease;
+    /* 平滑過渡效果 */
+}
