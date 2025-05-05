@@ -1,0 +1,48 @@
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+  }
+  .resume {
+    max-width: 800px;
+    background: #fff;
+    padding: 40px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  h1 {
+    font-size: 32px;
+    margin-bottom: 5px;
+    font-family: "Yuji Mai", serif;
+  }
+  .signature {
+    color: #666;
+    margin-bottom: 20px;
+    font-family: "Monsieur La Doulaise", cursive;
+  }
+  section {
+    margin-bottom: 30px;
+  }
+  h2 {
+    font-size: 20px;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+  }
+  p, li {
+    line-height: 1.6;
+    color: #333;
+    font-family: "Quintessential", serif;
+  }
+  ul {
+    padding-left: 20px;
+  }
+  .work {
+    font-weight: bold;
+  }
+  .link {
+    color: #007acc;
+    text-decoration: none;
+  }
