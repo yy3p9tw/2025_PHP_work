@@ -1,36 +1,34 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>黃老漢-徵兵</title>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: url('./2025042301.png') no-repeat center center fixed;
-      background-size: cover;
       background-size: 50%;
-      
+      overflow-x: hidden;
+      position: relative;
     }
-
-    .overlay {
+   /* ↓↓↓ 刪除黑霧遮罩 ↓↓↓ */
+    /* .overlay {
       background-color: rgba(0, 0, 0, 0.6);
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       z-index: -1;
-    }
+    } */
 
     h1 {
       text-align: center;
       color: gold;
-      font-size: 2em;
+      font-size: 2.2em;
       margin-top: 40px;
-      text-shadow: 0 0 15px #ffd700;
+      text-shadow: 0 0 15px #ffd700, 0 0 30px #ffcc00;
+      animation: fadeInDown 1s ease-out;
     }
 
     form {
@@ -39,9 +37,32 @@
       border-radius: 16px;
       width: 360px;
       margin: 200px auto 50px;
-      box-shadow: 0px 0px 20px rgba(255, 215, 0, 0.3);
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
       position: relative;
       z-index: 1;
+      animation: fadeUp 1.2s ease-out;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(60px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     p {
@@ -78,6 +99,19 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 14px;
+      transition: box-shadow 0.3s, border 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    select:focus {
+      outline: none;
+      box-shadow: 0 0 10px #ffd54f;
+      border-color: #f1c40f;
+    }
+
+    select option {
+      transition: all 0.2s ease;
     }
 
     input[type="submit"] {
@@ -90,15 +124,36 @@
       cursor: pointer;
       width: 100%;
       box-shadow: 0 0 10px gold;
-      transition: transform 0.2s, box-shadow 0.3s;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
     }
 
     input[type="submit"]:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px #fff176;
-      opacity: 0.9; 
+      transform: scale(1.08) rotate(-1deg);
+      box-shadow: 0 0 25px #fff176, 0 0 40px #fdd835;
+      opacity: 0.95;
     }
 
+    /* 👽 呼吸動畫效果（form 周圍） */
+    form::before {
+      content: '';
+      position: absolute;
+      top: -5px; left: -5px;
+      width: calc(100% + 10px);
+      height: calc(100% + 10px);
+      border-radius: 20px;
+      background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, transparent 80%);
+      z-index: -1;
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+      }
+    }
   </style>
 </head>
 
@@ -108,12 +163,12 @@
   <form action="">
     <p>
       <label for="name">👑 姓名</label>
-      <input type="text" name="name" id="name">
+      <input type="text" name="name" id="name" required>
     </p>
     <p>
       <label for="race">⚔️ 植物(工作時稱職務)</label>
-      <select name="race" id="race">
-        <option value=></option>
+      <select name="race" id="race" required>
+        <option value=""></option>
         <option value="罐頭">星際戰士(罐頭)</option>
         <option value="政委">政委</option>
         <option value="星語者">星語者</option>
@@ -122,12 +177,12 @@
     </p>
     <p>
       <label for="birthday">📅 出生年月日(黃老漢聖數13)</label>
-      <input type="date" name="birthday" id="birthday">
+      <input type="date" name="birthday" id="birthday" required>
     </p>
     <p>
       <label for="planet">🌍 世界</label>
-      <select name="planet" id="planet">
-        <option value=></option>
+      <select name="planet" id="planet" required>
+        <option value=""></option>
         <option value="Catachan">卡塔昌</option>
         <option value="Macragge">奧特拉馬</option>
         <option value="Holy Terra">神聖泰拉</option>
@@ -138,5 +193,4 @@
     </p>
   </form>
 </body>
-
 </html>
