@@ -146,8 +146,39 @@ for($j=0;$j<500;$j++){
 echo '<pre>';
 print_r($d);
 echo '</pre>';
-?>
 
+$d=[];
+for($j=0;$j<60;$j++){
+    $d[$j]=$e1[$j%10] . $e2[$j%12];
+}
+
+
+
+echo $d[($year-4)%60];
+
+?>
+<h2>請設計一支程式，在不產生新陣列的狀況下，將一個陣列的元素順序反轉(利用迴圈)</h2>\
+<ul>
+    <li>例：$a=[2,4,6,1,8] 反轉後 $a=[8,1,6,4,2]</li>
+</ul>
+<?php
+$a = [2, 4, 6, 1, 8, 3, 5, 7, 9, 0];
+$b=count($a);
+for($i=0;$i<floor($b/2);$i++){
+    $temp=$a[$i];
+    $c=count($a)-1-$i;
+    $a[$i]=$a[$c];
+    $a[$c]=$temp;
+}
+echo '<pre>';
+print_r($a);
+echo '</pre>';
+
+array_reverse($a);
+echo '<pre>';
+print_r($a);
+echo '</pre>';
+?>
 </body>
 
 </html>
