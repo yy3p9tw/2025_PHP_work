@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+        }
+
+        .nav {
+            width: 100%;
+            height: 10vh;
+            background-color: lightgray;
+            position: fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .active {
+            width: 140px;
+            height: 50%;
+            /* background-color: lightskyblue; */
+            text-decoration: none;
+            color: black;
+            text-align: center;
+            /* border-radius: 12px; */
+            background-image: url(./2025050807.gif);
+            background-size: 100px 100px;
+            /* background-position-x: -120px;
+            background-position-y: -130px;  */
+            background-repeat: no-repeat; 
+        }
+
+        .container {
+            width: 100%;
+            height: 80vh;
+        }
+
+        .container-1 {
+            background-color: lightblue;
+            background-image: url(./2025050806.gif);
+
+            background-position: center;
+            background-repeat: no-repeat;
+
+        }
+
+        .container-2 {
+            background-color: lightpink;
+            background-image: url(./2025050808.gif);
+
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .container-3 {
+            background-color: lightgreen;
+            background-image: url(./2025050805.jpg);
+
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .footer {
+            width: 100%;
+            height: 80vh;
+            background-color: lightyellow;
+            background-image: url(./20250508010.gif);
+
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav">
+        <a href="#container-2" class="active"></a>
+        <a href="#container-3" class="active"></a>
+        <a href="#footer" class="active"></a>
+    </div>
+
+    <div class="container container-1" id="container-1">
+
+    </div>
+
+    <div class="container container-2" id="container-2">
+
+    </div>
+
+    <div class="container container-3" id="container-3">
+
+    </div>
+
+    <div class="footer" id="footer">
+
+    </div>
+    
+</body>
+
+</html>
