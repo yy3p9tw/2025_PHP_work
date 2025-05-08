@@ -1,0 +1,36 @@
+* {
+    box-sizing: border-box;
+}
+
+.box {
+    width: 80%;
+    height: 80vh;
+    margin: auto;
+    background-color: lightpink;
+    padding: 100px;
+
+}
+
+.box1 {
+    width: 50%;
+    height: 30%;
+    margin: auto;
+    background-color: lightcoral;
+    margin-top: 10px;
+}
+
+.box2 {
+    width: 50%;
+    height: 30%;
+    margin: auto;
+    background-color: lightseagreen;
+    margin-top: 10px;
+}
+
+.box3 {
+    width: 50%;
+    height: 30%;
+    margin: auto;
+    background-color: lightblue;
+    margin-top: 10px;
+}
