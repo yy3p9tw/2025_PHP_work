@@ -120,17 +120,17 @@
     <!-- 添加標題 -->
     <h1>我的上課作業</h1>
     <ul>
-        <li><a href="../20250418/20250418_03.html">P5音樂</a></li>
-        <li><a href="../20250417/20250417_04.html">課表圖</a></li>
-        <li><a href="../20250423/20250423_05.html">表單訓練</a></li>
-        <li><a href="../20250424/20250424_05/20250424_06.html">超連結練習</a></li>
-        <li><a href="./20250425_02.php">變數</a></li>
-        <li><a href="../20250428/20250428_01.php">選擇結構</a></li>
-        <li><a href="../20250428/20250428_03.php">for 迴圈</a></li>
-        <li><a href="../20250428/20250428_04.php">九九乘法表</a></li>
-        <li><a href="../20250430/20250430_02.html">SWOT 表格</a></li>
-        <li><a href="../20250502/20250502_02.php">迴圈圖形</a></li>
-        <li><a href="../20250505/20250505_02.html">于崇銘 - 履歷</a></li>
+        <li><a href="../20250418/20250418_03.html" target="_blank">P5音樂</a></li>
+        <li><a href="../20250417/20250417_04.html" target="_blank">課表圖</a></li>
+        <li><a href="../20250423/20250423_05.html" target="_blank">表單訓練</a></li>
+        <li><a href="../20250424/20250424_05/20250424_06.html" target="_blank">超連結練習</a></li>
+        <li><a href="./20250425_02.php" target="_blank">變數</a></li>
+        <li><a href="../20250428/20250428_01.php" target="_blank">選擇結構</a></li>
+        <li><a href="../20250428/20250428_03.php" target="_blank">for 迴圈</a></li>
+        <li><a href="../20250428/20250428_04.php" target="_blank">九九乘法表</a></li>
+        <li><a href="../20250430/20250430_02.html" target="_blank">SWOT 表格</a></li>
+        <li><a href="../20250502/20250502_02.php" target="_blank">迴圈圖形</a></li>
+        <li><a href="../20250505/20250505_02.html" target="_blank">于崇銘 - 履歷</a></li>
     </ul>
 </body>
 
