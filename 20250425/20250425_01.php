@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>上課作業 - 作品集</title>
+    <title>上課作業  作品集</title>
     <style>
         /* 設置全局樣式 */
         body {
