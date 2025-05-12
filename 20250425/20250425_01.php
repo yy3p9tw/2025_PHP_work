@@ -130,7 +130,7 @@
         <li><a href="../20250428/20250428_04.php" target="_blank">九九乘法表</a></li>
         <li><a href="../20250430/20250430_02.html" target="_blank">SWOT 表格</a></li>
         <li><a href="../20250502/20250502_02.php" target="_blank">迴圈圖形</a></li>
-        <li><a href="../20250505/20250505_02.html" target="_blank">于崇銘 - 履歷</a></li>
+        <li><a href="../20250505/20250505_06.html" target="_blank">于崇銘 - 履歷</a></li>
     </ul>
 </body>
 
