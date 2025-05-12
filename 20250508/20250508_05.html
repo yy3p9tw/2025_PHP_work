@@ -6,76 +6,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        * {
-            margin: 0;
-        }
+        /* 重置所有元素的預設外邊距，確保樣式一致 */
+* {
+    margin: 0;
+}
 
-        .nav {
-            width: 100%;
-            height: 10vh;
-            background-color: lightgray;
-            position: fixed;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
+/* 導航欄的樣式 */
+.nav {
+    width: 100%; /* 設置為視窗的完整寬度 */
+    height: 10vh; /* 高度為視窗高度的10% */
+    background-color: lightgray; /* 淺灰色背景 */
+    position: fixed; /* 固定在頁面頂部 */
+    margin: 0; /* 無外邊距 */
+    padding: 0; /* 無內邊距 */
+    display: flex; /* 使用 flexbox 佈局 */
+    justify-content: space-around; /* 子元素間均分空間並四周留空 */
+    align-items: center; /* 子元素在垂直方向上居中對齊 */
+}
 
-        .active {
-            width: 140px;
-            height: 50%;
-            /* background-color: lightskyblue; */
-            text-decoration: none;
-            color: black;
-            text-align: center;
-            /* border-radius: 12px; */
-            background-image: url(./2025050807.gif);
-            background-size: 100px 100px;
-            /* background-position-x: -120px;
-            background-position-y: -130px;  */
-            background-repeat: no-repeat; 
-        }
+/* 當前活動導航項的樣式 */
+.active {
+    width: 140px; /* 固定寬度為140像素 */
+    height: 50%; /* 高度為父元素(.nav)的50% */
+    /* background-color: lightskyblue; */ /* 已註解：可選的背景顏色 */
+    text-decoration: none; /* 移除連結的下劃線 */
+    color: black; /* 文字顏色設為黑色 */
+    text-align: center; /* 文字水平居中 */
+    /* border-radius: 12px; */ /* 已註解：可選的圓角效果 */
+    background-image: url(./2025050807.gif); /* 設置背景圖片 */
+    background-size: 100px 100px; /* 背景圖片尺寸設為100x100像素 */
+    /* background-position-x: -120px; */ /* 已註解：水平位置調整 */
+    /* background-position-y: -130px; */ /* 已註解：垂直位置調整 */
+    background-repeat: no-repeat; /* 背景圖片不重複顯示 */
+}
 
-        .container {
-            width: 100%;
-            height: 80vh;
-        }
+/* 內容區容器的通用樣式 */
+.container {
+    width: 100%; /* 設置為視窗的完整寬度 */
+    height: 80vh; /* 高度為視窗高度的80% */
+}
 
-        .container-1 {
-            background-color: lightblue;
-            background-image: url(./2025050806.gif);
+/* 第一個內容區的樣式 */
+.container-1 {
+    background-color: lightblue; /* 淺藍色背景 */
+    background-image: url(./2025050806.gif); /* 設置背景圖片 */
+    background-position: center; /* 背景圖片居中顯示 */
+    background-repeat: no-repeat; /* 背景圖片不重複顯示 */
+}
 
-            background-position: center;
-            background-repeat: no-repeat;
+/* 第二個內容區的樣式 */
+.container-2 {
+    background-color: lightpink; /* 淺粉色背景 */
+    background-image: url(./2025050808.gif); /* 設置背景圖片 */
+    background-position: center; /* 背景圖片居中顯示 */
+    background-repeat: no-repeat; /* 背景圖片不重複顯示 */
+}
 
-        }
+/* 第三個內容區的樣式 */
+.container-3 {
+    background-color: lightgreen; /* 淺綠色背景 */
+    background-image: url(./2025050811.png); /* 設置背景圖片 */
+    background-position: center; /* 背景圖片居中顯示 */
+    background-repeat: no-repeat; /* 背景圖片不重複顯示 */
+}
 
-        .container-2 {
-            background-color: lightpink;
-            background-image: url(./2025050808.gif);
-
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .container-3 {
-            background-color: lightgreen;
-            background-image: url(./2025050811.png);
-
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .footer {
-            width: 100%;
-            height: 80vh;
-            background-color: lightyellow;
-            background-image: url(./20250508010.gif);
-
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+/* 頁腳的樣式 */
+.footer {
+    width: 100%; /* 設置為視窗的完整寬度 */
+    height: 80vh; /* 高度為視窗高度的80% */
+    background-color: lightyellow; /* 淺黃色背景 */
+    background-image: url(./20250508010.gif); /* 設置背景圖片 */
+    background-position: center; /* 背景圖片居中顯示 */
+    background-repeat: no-repeat; /* 背景圖片不重複顯示 */
+}
     </style>
 </head>
 
