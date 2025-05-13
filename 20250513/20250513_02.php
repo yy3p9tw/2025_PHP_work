@@ -12,100 +12,148 @@
 
 <body>
     <h1>日期/時間</h1>
-    <h2>基本函式使用</h2>
-    <?php
-
-    date_default_timezone_set("Asia/Taipei"); //設定時區(亞洲台北)
-    echo "台北:";
-    echo date("Y-m-d H:i:s"); //取得當前的日期和時間
+    <h2>基本函式使用</h2> 
+    <?php 
+    date_default_timezone_set("Asia/Taipei"); // 設定時區
+    echo "台北：";
+    echo date("Y-m-d H:i:s"); // 取得當前的日期和時間
     echo "<br>";
-    date_default_timezone_set("Asia/Tokyo");
-    echo "日本:";
-    echo date("Y-m-d H:i:s");
-    ?>
-    <h2>時間戳記</h2>
-    <?php
-    $timestamp = time(); //取得當前的時間戳記
-    echo "當前時間戳記: " . $timestamp . "<br>";
+    echo "東京：";
+    date_default_timezone_set("Asia/Tokyo"); // 設定時區
+    echo date("Y-m-d H:i:s"); // 將字串轉換為時間戳記
+    echo "<br>";
+    echo "曼谷：";
+    date_default_timezone_set("Asia/Bangkok"); // 設定時區
+    echo date("Y-m-d H:i:s"); // 將字串轉換為時間戳記
+    echo "<br>";
+    echo "紐約：";
+    date_default_timezone_set("America/New_York"); // 設定時區
+    echo date("Y-m-d H:i:s"); // 將字串轉換為時間戳記
 
-    //將字串轉換為時間戳記
-    $dateString = "2023-05-13 12:00:00";
-    $timestampFromString = strtotime($dateString); //將字串轉換為時間戳記
-    echo "字串轉換為時間戳記: " . $timestampFromString . "<br>";
 
-    //將時間戳記轉換為字串  
-    $timestampToString = date("Y-m-d H:i:s", $timestampFromString); //將時間戳記轉換為字串
-    echo "時間戳記轉換為字串: " . $timestampToString . "<br>";
+?>
+    <h2>時間戳記</h2> 
+    <?php 
+    // 取得當前的時間戳記
+    $timestamp = time(); // 取得當前的時間戳記
+    echo "當前的時間戳記：$timestamp<br>";
+    
+    // 將字串轉換為時間戳記
+    $dateString = "2023-10-01 12:00:00";
+    echo "日期字串：" . $dateString . "<br>";
+    $timestampFromString = strtotime($dateString); // 將字串轉換為時間戳記
+    echo "字串轉換為時間戳記：$timestampFromString<br>";
+    
+    // 將時間戳記轉換為日期字串
+    $dateFromTimestamp = date("Y-m-d H:i:s", $timestamp); // 將時間戳記轉換為日期字串
+    echo "時間戳記轉換為日期字串：$dateFromTimestamp<br>";
     ?>
-    <?php
-    $date1 = "2023-05-13";
-    $date2 = "2023-05-21";
-    $timestamp1 = strtotime($date1); //將字串轉換為時間戳記
-    $timestamp2 = strtotime($date2); //將字串轉換為時間戳記
-    $diff = $timestamp2 - $timestamp1; //計算時間差
-    // echo "時間差: " . $diff . "秒<br>";
-    $days = floor($diff / (60 * 60 * 24)); //計算天數
-    echo "天數: " . $days . "天<br>";
-    ?>
-    <h2>計算距離自己下一次生日還有幾天</h2>
-    <?php
-    $birthday = "2025-05-29"; //設定自己的生日
-    $birthday_array = explode("-", $birthday); //將字串轉換為陣列
-    $birthday_array[0] = date("Y"); //將陣列的第一個元素設為當前年份
-    $nextBirthday = join("-", $birthday_array); //將陣列轉換為字串
-    $today = strtotime(date("Y-m-d")); //取得當前的時間戳記
-    $birthdayTimestamp = strtotime($nextBirthday); //將字串轉換為時間戳記
+<h2>給定兩個日期，計算中間間隔天數</h2>
+<?php
+    $date1="2025-5-01"; // 設定第一個日期
+    $date2="2025-5-21"; // 設定第二個日期
+    echo "日期1：$date1<br>";
+    echo "日期2：$date2<br>";
 
-    if ($today > $birthdayTimestamp) {
-        // 如果今天已經過了生日，則計算明年的生日
-        $nextBirthday = strtotime("+1 year", $birthdayTimestamp);
-    } else {
-        // 否則，計算今年的生日
-        $nextBirthday = $birthdayTimestamp;
+    $date1_timestamp = strtotime($date1); // 將日期字串轉換為時間戳記
+    $date2_timestamp = strtotime($date2); // 將日期字串轉換為時間戳記
+    $diff=$date2_timestamp - $date1_timestamp; // 計算兩個時間戳記的差值
+    $days=($diff/(60*60*24)); // 將差值轉換為天數
+    echo "兩個日期相差 $days 天<br>"; // 輸出結果
+
+?>
+<h2>strtotime的用法</h2>
+<?php
+
+    // strtotime() 函式可以將日期字串轉換為時間戳記
+    $dateString1 = "2023-10-01 12:00:00"; // 設定日期字串
+    $timestamp1 = strtotime($dateString1); // 將字串轉換為時間戳記
+    echo "日期字串：$dateString1<br>";
+    echo "時間戳記：$timestamp1<br>";
+
+    // strtotime() 函式也可以處理相對時間
+    $relativeDateStrings = [
+        "+1 days",
+        "-1 days",
+        "+1 weeks",
+        "-1 weeks",
+        "+1 month",
+        "-1 month",
+        "+1 year",
+        "-1 year",
+        "next Monday",
+        "last Friday",
+        "first day of next month",
+        "last day of this month"
+    ];
+
+    foreach ($relativeDateStrings as $relativeDateString) {
+        //strtotime("+1 days",$timestamp); // 將相對時間字串轉換為時間戳記
+        $timestamp = strtotime($relativeDateString);
+        echo "相對時間字串：$relativeDateString<br>";
+        echo "相對時間的時間戳記：$timestamp<br>";
+        echo "相對時間的日期：".date("Y-m-d H:i:s", $timestamp)."<br><br>";
     }
-    echo "距離下次生日還有 " . floor(($nextBirthday - $today) / (60 * 60 * 24)) . " 天<br>";
-    ?>
-    <h2>利用date()函式的格式化參數，完成以下的日期格式呈現</h2>
-    <ul>
-        <li>2021/10/05</li>
-        <li>10月5日 Tuesday</li>
-        <li>2021-10-5 12:9:5</li>
-        <li>2021-10-5 12:09:05</li>
-        <li>今天是西元2021年10月5日 上班日(或假日)</li>
-    </ul>
-    <?php
-    $today = strtotime(date("Y-m-d")); //取得當前的時間戳記
-    $todayString = date("Y/m/d", $today); //將時間戳記轉換為字串
-    echo $todayString . "<br>";
-    $todayString = date("n月j日 l", $today); //將時間戳記轉換為字串
-    echo $todayString . "<br>";
-    $todayString = date("Y-n-j G:i:s", $today); //將時間戳記轉換為字串
-    echo $todayString . "<br>";
-    if (date("w", $today) == 0 || date("w", $today) == 6) {
-        //如果是星期六或星期日
-        $workday = "假日";
-    } else {
-        $workday = "上班日";
-    }
-    echo "今天是 " . $todayString . " " . $workday . "<br>";
-    ?>
-    <h2>利用迴圈來計算連續五個周一的日期</h2>
-    <?php
-    $monday = strtotime("next Monday", $today);
-    for ($i = 0; $i < 5; $i++) {
-        $temp = strtotime("+$i week", $monday);
-        echo date("Y-m-d", $temp) . "<br>";
-    }
-    ?>
-    <h2>線上月曆製作</h2>
-    <ul>
-        <li>以表格方式呈現整個月份的日期</li>
-        <li>可以在特殊日期中顯示資訊(假日或紀念日)</li>
-        <li>嘗試以block box或flex box的方式製作月曆</li>
-    </ul>
-    <?php
+    $relativeDateString = "+2 days"; // 設定相對時間字串
+    $timestamp2 = strtotime($relativeDateString); // 將相對時間字串轉換為時間戳記
+    echo "相對時間字串：$relativeDateString<br>";
+    echo "相對時間的時間戳記：$timestamp2<br>";
 
-   ?>
+    $date="2025-5-01"; // 設定日期字串
+    $timestamp3 = strtotime("+15 day",strtotime($date)); // 將日期字串轉換為時間戳記$date); // 將日期字串轉換為時間戳記
+    echo "日期字串：$date<br>";
+    echo "15天後的日期：".date("Y-m-d H:i:s", $timestamp3)."<br><br>";
+?>
+
+<h2>計算距離自己下一次生日還有幾天</h2>
+<?php
+$birthday = "1974-10-07"; // 設定自己的生日
+$birthday_array=explode("-",$birthday); // 將生日字串轉換為陣列
+$birthday_array[0]=date("Y"); // 將生日的年份改為當前年份
+
+$nextBirthday = join("-",$birthday_array); // 將陣列轉換為字串
+
+$today=strtotime(date("Y-m-d")); // 取得當前的時間戳記
+//echo "今天的時間戳記：$today<br>";
+$birthday_timestamp=strtotime($nextBirthday); // 將生日字串轉換為時間戳記
+//echo "生日的時間戳記：$birthday_timestamp<br>";
+
+if($today>$birthday_timestamp){
+    $birthday_timestamp=strtotime("+1 year",$birthday_timestamp); // 將生日字串轉換為時間戳記
+}
+
+$birthday_diff=$birthday_timestamp-$today; // 計算兩個時間戳記的差值
+$days=($birthday_diff/(60*60*24)); // 將差值轉換為天數
+
+echo "我的出生日是：$birthday<br>";
+echo "距離自己下一次生日還有 $days 天";
+
+
+
+?>
+<hr>
+<?php
+
+$mon="2025-05-12";
+for($i=0;$i<5;$i++){
+    $temp=strtotime("+$i week",strtotime($mon));
+    echo date("Y-m-d l",$temp)."<br>";
+}
+?>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+
 </body>
 
 </html>
