@@ -94,7 +94,7 @@
     <?php
     $today = date("Y-m-d");
     $firstDay = date("Y-m-01");
-    $firstDayWeek = date("w", strtotime($firstDay));
+    $firstDayWeek = (int)date("w", strtotime($firstDay));
     $theDaysOfMonth = date("t", strtotime($firstDay));
 
     ?>
