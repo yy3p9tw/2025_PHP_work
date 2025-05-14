@@ -49,14 +49,51 @@
             
             height:40px;
         }
+        .box,.th-box{
+            width:50px;
+            height:50px;
+            background-color:lightblue;
+            display:inline-block;
+            border:1px solid blue;
+            box-sizing:border-box;
+            margin-left:-1px;
+            margin-top:-1px;
+        }
+        .box-container{
+            width:350px;
+            margin:0 auto;
+            box-sizing:border-box;
+            padding-left:1px;    
+            padding-top:1px;    
+        }
+        .th-box{
+            height:25px;
+            text-align:center;
+        }
     </style>
 </head>
 <body>
+<!-- <div class="box-container">
+<?php
+
+/* for($i=0;$i<20;$i++){
+    echo "<div class='box'>";
+        echo $i;
+    echo "</div>";
+} */
+?>
+</div> -->
+
+
+
+
+
  <h1>線上日曆</h1>  
 
  <?php
-$today = date("Y-m-d");
-$firstDay = date("Y-m-01");
+$month=7;
+$today = date("Y-$month-d");
+$firstDay = date("Y-$month-01");
 $firstDayWeek = date("w", strtotime($firstDay));
 $theDaysOfMonth=date("t", strtotime($firstDay));
 
@@ -67,6 +104,41 @@ $spDate=[
     '2025-05-30'=>'端午節'
 ];
 
+$monthDays=[];
+
+//填入空白日期
+for($i=0;$i<$firstDayWeek;$i++){
+    $monthDays[]="&nbsp;";
+}
+
+//填入當日日期
+for($i=0;$i<$theDaysOfMonth;$i++){
+        $timestamp = strtotime(" $i days", strtotime($firstDay));
+        $date=date("d", $timestamp);
+        $monthDays[]=$date;
+}
+
+
+//建立外框及標題
+echo "<div class='box-container'>";
+     
+echo "<div class='th-box'>日</div>";
+echo "<div class='th-box'>一</div>";
+echo "<div class='th-box'>二</div>";
+echo "<div class='th-box'>三</div>";
+echo "<div class='th-box'>四</div>";
+echo "<div class='th-box'>五</div>";
+echo "<div class='th-box'>六</div>";
+     
+
+//使用foreach迴圈,印出日期
+foreach($monthDays as $day){
+ 
+    echo "<div class='box'>";
+    echo $day;
+    echo "</div>";
+}
+echo "</div>";
 ?>
 <h2 style='text-align:center;'><?=date("Y 年 m 月"); ?></h2>
  <table>
@@ -125,3 +197,4 @@ for($i=0;$i<6;$i++){
 </table>
 
 </body>
+</html>
