@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html, body {
+            margin: 0;
+            height: 300vh; /* 確保 body 填滿視窗高度 */
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* 外層 div 填滿 body */
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            flex: 1; /* 每個容器均分 wrapper 的高度 */
+            justify-content: space-around; /* 水平分散 */
+            align-items: center; /* 垂直置中 */
+        }
+
+        .box {
+            height: 100%; /* 填滿容器高度 */
+            background-color: lightblue;
+            border: 1px solid white;
+        }
+
+        .w-100 { width: 100%; }
+        .w-50 { width: 50%; }
+        .w-33 { width: 33.33%; }
+        .w-25 { width: 25%; }
+
+        .img1 {
+            background-image: url(https://iili.io/3gxbqKP.png);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .img2 {
+            background-image: url(https://iili.io/3gxb3oQ.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .img3 {
+            background-image: url(https://iili.io/3gxbuxR.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .img4 {
+            background-image: url(https://iili.io/3gxbCUF.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .img5 {
+            background-image: url(https://iili.io/3gxboHg.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .img6 {
+            background-image: url(https://iili.io/3gxbxRa.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .img7 {
+            background-image: url(https://iili.io/3gxbFVV.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .img8 {
+            background-image: url(https://iili.io/3gxbzOJ.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .img9 {
+            background-image: url(https://iili.io/3gxbdDx.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .img10 {
+            background-image: url(https://iili.io/3gzqsMF.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container container1">
+            <div class="box w-100 img1"></div>
+        </div>
+        <div class="container container2">
+            <div class="box w-50 img2"></div>
+            <div class="box w-50 img3"></div>
+        </div>
+        <div class="container container3">
+            <div class="box w-33 img4"></div>
+            <div class="box w-33 img5"></div>
+            <div class="box w-33 img6"></div>
+        </div>
+        <div class="container container4">
+            <div class="box w-25 img7"></div>
+            <div class="box w-25 img8"></div>
+            <div class="box w-25 img9"></div>
+            <div class="box w-25 img10"></div>
+        </div>
+    </div>
+</body>
+</html>
