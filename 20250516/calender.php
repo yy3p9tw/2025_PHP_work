@@ -109,32 +109,29 @@
 
  <?php
 if(isset($_GET['month'])){
-    $month=$_GET['month'];
-    
-   
+    $month=$_GET['month'];  
 }else{
     $month=date("m");
-    
+   
 }
 if(isset($_GET['year'])){
     $year=$_GET['year'];
 }else{
     $year=date("Y");
 }
-
 if($month-1>0){
     $prev=$month-1;  //上一個月
+    $prevyear=$year;
 }else{
     $prev=12;  //上一個月
-    $year=$year-1;
+    $prevyear=$year-1;
 }
-
-
 if($month+1>12){
     $next=1;  //下一個月
-    $year=$year+1;
+    $nextyear=$year+1;
 }else{
     $next=$month+1;  //下一個月
+    $nextyear=$year;
 }
     
 
@@ -197,8 +194,8 @@ echo "</pre>"; */
 
 <div style="display:flex;width:60%;margin:0 auto;justify-content:space-between;">
 
-    <a href="?year=<?=$year;?>&month=<?=$prev;?>">上一月</a>
-    <a href="?year=<?=$year;?>&month=<?=$next;?>">下一月</a>
+    <a href="?year=<?=$prevyear;?>&month=<?=$prev;?>">上一月</a>
+    <a href="?year=<?=$nextyear;?>&month=<?=$next;?>">下一月</a>
 </div>
 
 <h2><?=$year;?>年<?=$month;?>月</h2>
@@ -265,61 +262,6 @@ foreach($monthDays as $day){
 }
 echo "</div>";
 ?>
-<h2 style='text-align:center;'><?=date("Y 年 m 月"); ?></h2>
- <table>
-     <tr>
-         <td>日</td>
-         <td>一</td>
-         <td>二</td>
-         <td>三</td>
-         <td>四</td>
-         <td>五</td>
-         <td>六</td>
-     </tr>
-<?php
-for($i=0;$i<6;$i++){
-    echo "<tr>";
-    
-    for($j=0;$j<7;$j++){
-        $day=$j+($i*7)-$firstDayWeek;
-        $timestamp = strtotime(" $day days", strtotime($firstDay));
-        $date=date("Y-m-d", $timestamp);
-        $class="";
-
-        if(date("N",$timestamp)>5){
-            $class=$class . " holiday";
-        }
-
-        if($today==$date){
-            
-            $class=$class . " today";
-        }else if(date("m",$timestamp)!=date("m",strtotime($firstDay))){
-
-            $class=$class ." other-month";
-        }
-
-        if($timestamp<strtotime($today)){
-            $class=$class . " pass-date";
-        }
-        echo "<td class='$class' data-date='$date'>";
-            echo "<div class='date-num'>";
-                echo date("d",$timestamp);
-            echo "</div>";
-            echo "<div class='date-event'>";
-                if(isset($spDate[$date])){
-                    echo $spDate[$date];
-                }
-            echo "</div>";
-        echo "</td>";
-    }
-
-    echo "</tr>";
-
-}
-
-
-?>
-</table>
 
 </body>
 </html>
