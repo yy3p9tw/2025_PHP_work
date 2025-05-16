@@ -90,16 +90,10 @@
     </style>
 </head>
 <body>
-<!-- <div class="box-container">
+
 <?php
 
-/* for($i=0;$i<20;$i++){
-    echo "<div class='box'>";
-        echo $i;
-    echo "</div>";
-} */
 ?>
-</div> -->
 
 
 
