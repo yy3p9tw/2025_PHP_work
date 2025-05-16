@@ -8,6 +8,9 @@ $month = isset($_GET['month']) ? (int)$_GET['month'] : date('m');
 $view = isset($_GET['view']) ? $_GET['view'] : 'month';
 $weekStart = isset($_GET['weekStart']) ? $_GET['weekStart'] : date('Y-m-d', strtotime('monday this week'));
 
+// 確保月份在 1-12 之間
+$month = max(1, min(12, $month));
+
 // 處理事件創建
 $eventsFile = 'events.json';
 $events = file_exists($eventsFile) ? json_decode(file_get_contents($eventsFile), true) : [];
@@ -46,6 +49,27 @@ for ($i = 0; $i < 7; $i++) {
     $day = (clone $weekStartDate)->modify("+$i days");
     $weekDays[] = $day->format('Y-m-d');
 }
+
+// 定義台灣節日 (固定日期)
+$holidays = [
+    '01-01' => '元旦',
+    '02-28' => '和平紀念日',
+    '04-04' => '清明節',
+    '05-01' => '勞動節',
+    '10-10' => '國慶日'
+];
+
+// 動態計算農曆節日（簡化處理）
+function getLunarHolidays($year) {
+    // 簡化假設的農曆節日日期，實際需農曆轉換
+    $lunarHolidays = [
+        sprintf("%04d-02-01", $year) => '春節',
+        sprintf("%04d-05-05", $year) => '端午節',
+        sprintf("%04d-08-15", $year) => '中秋節'
+    ];
+    return $lunarHolidays;
+}
+$holidays = array_merge($holidays, getLunarHolidays($year));
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +77,7 @@ for ($i = 0; $i < 7; $i++) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google 日曆模板</title>
+    <title>台灣萬年曆</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
@@ -131,6 +155,9 @@ for ($i = 0; $i < 7; $i++) {
             padding: 8px 0;
             border-bottom: 1px solid #dadce0;
         }
+        .days .sunday {
+            color: red;
+        }
         .dates {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -151,8 +178,16 @@ for ($i = 0; $i < 7; $i++) {
             border-left: 3px solid #1a73e8;
             background: #e8f0fe;
         }
+        .date.sunday .day-number {
+            color: red;
+        }
         .empty {
             background: #f6f6f6;
+        }
+        .holiday {
+            color: red;
+            font-size: 12px;
+            margin-top: 2px;
         }
         .event {
             background: #e8f0fe;
@@ -191,7 +226,10 @@ for ($i = 0; $i < 7; $i++) {
             border-bottom: 1px solid #dadce0;
             font-size: 12px;
         }
-        .week-event {
+        .week-day-header.sunday {
+            color: red;
+        }
+        .week-event, .week-holiday {
             position: absolute;
             background: #e8f0fe;
             border-left: 4px solid #1a73e8;
@@ -199,6 +237,11 @@ for ($i = 0; $i < 7; $i++) {
             font-size: 12px;
             border-radius: 4px;
             cursor: pointer;
+        }
+        .week-holiday {
+            background: #ffe6e6;
+            border-left: 4px solid #d32f2f;
+            color: red;
         }
         /* 彈窗和表單 */
         .popup, .add-event-form {
@@ -267,7 +310,7 @@ for ($i = 0; $i < 7; $i++) {
                 font-size: 10px;
                 padding: 4px;
             }
-            .event, .week-event {
+            .event, .week-event, .holiday, .week-holiday {
                 font-size: 10px;
                 padding: 2px 4px;
             }
@@ -291,12 +334,11 @@ for ($i = 0; $i < 7; $i++) {
             <div class="view-selector">
                 <button class="view-btn <?php echo $view === 'month' ? 'active' : ''; ?>" data-view="month">月</button>
                 <button class="view-btn <?php echo $view === 'week' ? 'active' : ''; ?>" data-view="week">週</button>
-                <button class="view-btn" data-view="day">日</button>
             </div>
         </div>
         <div class="month-view <?php echo $view === 'month' ? 'active' : ''; ?>">
             <div class="days">
-                <div>日</div>
+                <div class="sunday">日</div>
                 <div>一</div>
                 <div>二</div>
                 <div>三</div>
@@ -313,9 +355,16 @@ for ($i = 0; $i < 7; $i++) {
                 // 月視圖：填充當月日期
                 for ($day = 1; $day <= $daysInMonth; $day++) {
                     $date = sprintf('%04d-%02d-%02d', $year, $month, $day);
-                    $isToday = $date === date('Y-m-d') ? ' today' : '';
-                    echo '<div class="date' . $isToday . '" data-date="' . $date . '">';
+                    $dateKey = sprintf("%02d-%02d", $month, $day);
+                    $holidayName = isset($holidays[$dateKey]) ? $holidays[$dateKey] : '';
+                    $isToday = $date === date('Y-m-d') ? 'today' : '';
+                    $isSunday = (new DateTime($date))->format('w') == 0 ? 'sunday' : '';
+                    $class = trim("$isToday $isSunday");
+                    echo '<div class="date ' . $class . '" data-date="' . $date . '">';
                     echo '<span class="day-number">' . $day . '</span>';
+                    if ($holidayName) {
+                        echo '<div class="holiday">' . $holidayName . '</div>';
+                    }
                     if (isset($events[$date])) {
                         foreach ($events[$date] as $event) {
                             echo '<div class="event" data-event-id="' . $event['id'] . '" data-title="' . htmlspecialchars($event['title']) . '" data-time="' . htmlspecialchars($event['time']) . '" data-desc="' . htmlspecialchars($event['desc']) . '">' . htmlspecialchars($event['time'] . ' ' . $event['title']) . '</div>';
@@ -329,8 +378,10 @@ for ($i = 0; $i < 7; $i++) {
         <div class="week-view <?php echo $view === 'week' ? 'active' : ''; ?>">
             <div class="week-container">
                 <div></div>
-                <?php foreach ($weekDays as $day): ?>
-                    <div class="week-day-header"><?php echo (new DateTime($day))->format('n/j (D)'); ?></div>
+                <?php foreach ($weekDays as $index => $day): ?>
+                    <div class="week-day-header <?php echo (new DateTime($day))->format('w') == 0 ? 'sunday' : ''; ?>">
+                        <?php echo (new DateTime($day))->format('n/j (D)'); ?>
+                    </div>
                 <?php endforeach; ?>
                 <?php for ($hour = 0; $hour < 24; $hour++): ?>
                     <div class="time-slot"><?php echo sprintf('%02d:00', $hour); ?></div>
@@ -352,6 +403,7 @@ for ($i = 0; $i < 7; $i++) {
         <h3>新增事件</h3>
         <form id="event-form">
             <input type="hidden" name="date" id="event-date">
+            <input type="hidden" name="action" value="add_event">
             <label>時間: <input type="time" name="time" required></label>
             <label>標題: <input type="text" name="title" required></label>
             <label>詳情: <textarea name="desc"></textarea></label>
@@ -373,6 +425,15 @@ for ($i = 0; $i < 7; $i++) {
                 $('.overlay, .popup').show();
             });
 
+            // 節日點擊
+            $(document).on('click', '.holiday, .week-holiday', function() {
+                const title = $(this).text();
+                $('#popup-title').text(title);
+                $('#popup-time').text('全天節日');
+                $('#popup-desc').text('台灣法定節日');
+                $('.overlay, .popup').show();
+            });
+
             // 關閉彈窗
             $('.close, .overlay').click(function() {
                 $('.overlay, .popup, .add-event-form').hide();
@@ -388,7 +449,7 @@ for ($i = 0; $i < 7; $i++) {
             // 提交事件
             $('#event-form').submit(function(e) {
                 e.preventDefault();
-                $.post('?action=add_event', $(this).serialize(), function() {
+                $.post('?year=<?php echo $year; ?>&month=<?php echo $month; ?>&view=<?php echo $view; ?>', $(this).serialize(), function() {
                     window.location.reload();
                 });
             });
@@ -404,11 +465,8 @@ for ($i = 0; $i < 7; $i++) {
                 const view = $(this).data('view');
                 $('.month-view, .week-view').removeClass('active');
                 $(`.${view}-view`).addClass('active');
-                if (view === 'day') {
-                    alert('日視圖功能待實現');
-                } else {
-                    updateTitle(view);
-                }
+                updateTitle(view);
+                window.location.href = `?year=<?php echo $year; ?>&month=<?php echo $month; ?>&view=${view}`;
             });
 
             // 導航
@@ -432,8 +490,19 @@ for ($i = 0; $i < 7; $i++) {
                 $('#calendar-title').text(title);
             }
 
-            // 週視圖事件渲染
+            // 週視圖事件和節日渲染
             <?php foreach ($weekDays as $day): ?>
+                <?php
+                $dateParts = explode('-', $day);
+                $monthKey = (int)$dateParts[1];
+                $dayKey = (int)$dateParts[2];
+                $dateKey = sprintf("%02d-%02d", $monthKey, $dayKey);
+                $holidayName = isset($holidays[$dateKey]) ? $holidays[$dateKey] : '';
+                ?>
+                <?php if ($holidayName): ?>
+                    const holidayCell = $(`.week-day[data-date="<?php echo $day; ?>"][data-hour="0"]`);
+                    holidayCell.append(`<div class="week-holiday" style="top: 0; height: 40px;"><?php echo $holidayName; ?></div>`);
+                <?php endif; ?>
                 <?php if (isset($events[$day])): ?>
                     <?php foreach ($events[$day] as $event): ?>
                         const time = '<?php echo $event['time']; ?>';
