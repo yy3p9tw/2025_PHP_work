@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="./include.css">
     <title>學生管理系統-關於
      <?php
-   
-    switch($page){
+     switch($page){
         case 'list':
             echo "學生列表";
             break;
