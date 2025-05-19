@@ -7,7 +7,7 @@
     <title>學生管理系統-關於</title>
 </head>
 <body>
-   <?php include "header.php"?>
+   <?php require "header.php"?>
     <main>
         <h2>歡迎來到學生管理系統</h2>
         <p>關於我們</p>
