@@ -3,10 +3,10 @@
     </header>
     <nav>
         <ul>
-            <li><a href="index.php">首頁</a></li>
-            <li><a href="index.php?page=list">學生列表</a></li>
-            <li><a href="index.php?page=new">新增學生</a></li>
-            <li><a href="index.php?page=query">查詢學生</a></li>
-            <li><a href="index.php?page=about">關於</a></li>
+            <li><a class="<?=($page=='main')?'active':'';?>" href="index.php">首頁</a></li>
+            <li><a class="<?=($page=='list')?'active':'';?>" href="index.php?page=list">學生列表</a></li>
+            <li><a class="<?=($page=='new')?'active':'';?>" href="index.php?page=new">新增學生</a></li>
+            <li><a class="<?=($page=='query')?'active':'';?>" href="index.php?page=query">查詢學生</a></li>
+            <li><a class="<?=($page=='about')?'active':'';?>" href="index.php?page=about">關於</a></li>
         </ul>
     </nav>

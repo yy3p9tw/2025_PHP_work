@@ -27,6 +27,7 @@ body {
         nav ul li a {
             color: #fff;
             text-decoration: none;
+            padding: 10px 20px;
         }
         main {
             padding: 20px;
@@ -39,4 +40,8 @@ body {
             position: fixed;
             width: 100%;
             bottom: 0;
+        }
+        .active{
+            background-color: #eee;
+            color: #333;
         }
