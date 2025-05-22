@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國立科技高中─校園社團介紹網</title>
+    <link rel="stylesheet" href="./css/style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        /* header */
+        .header {
+            width: 1024px;
+            height: 65px;
+            background-color: lightblue;
+            margin: auto;
+        }
+
+        /* container */
+        .container {
+            display: flex;
+            width: 1024px;
+            /* 768 - 65 - 20 */
+            /* - 65px  */
+            /* -65px */
+            height: calc(768px - 65px - 20px);
+            background-color: lightpink;
+            margin: auto;
+        }
+
+        /* container-left */
+        .container-left {
+            /* width: 40%; */
+            width: 215px;
+            height: 100%;
+            background-color: lightcoral;
+        }
+
+        .cl-top {
+            width: 100%;
+            height: calc(100% - 25px);
+            background-color: aquamarine;
+        }
+
+        .cl-bottom {
+            width: 100%;
+            height: 25px;
+            background-color: lightgrey;
+        }
+
+        /* container-right */
+        .container-right {
+            /* width: 40%; */
+            /* 1024 - 215 */
+            width: calc(1024px - 215px);
+            height: 100%;
+            background-color: lightyellow;
+        }
+
+        .cr-top {
+            width: 100%;
+            height: 29px;
+            background-color: lightpink;
+        }
+
+        .cr-bottom {
+            width: 100%;
+            height: calc(100% - 29px);
+            background-color: lightyellow;
+        }
+
+
+
+
+        /* footer */
+        .footer {
+            width: 1024px;
+            height: 20px;
+            background-color: lightgreen;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- header -->
+    <header class="header">
+        <div class="header-box">
+
+        </div>
+    </header>
+    <!-- container -->
+    <div class="container">
+        <!-- container-left -->
+        <div class="container-left">
+            <!-- cl-top -->
+            <div class="cl-top">
+                cl-top
+            </div>
+            <!-- cl-bottom -->
+            <div class="cl-bottom">
+                col-bottom
+            </div>
+
+        </div>
+        <!-- container-right -->
+        <div class="container-right">
+            <!-- cr-top -->
+            <div class="cr-top">
+                cr-top
+            </div>
+            <!-- cr-bottom -->
+            <div class="cr-bottom">
+                col-bottom
+            </div>
+
+        </div>
+    </div>
+    <!-- footer -->
+    <footer class="footer">
+        footer
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    background-image: url(../images/0101.jpg);
+}
+h1{
+text-align: center;
+font-size: 18px;
+color: #ff0000;
+}
+table{
+    width: 100%;
+    
+}
+td{
+text-align: center;
+}
+pre{
+    font-size: 18px;
+    color: #00ffff;
+    text-align: center;
+}
