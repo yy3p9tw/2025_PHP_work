@@ -121,7 +121,7 @@
     <h1>我的上課作業</h1>
     <ul>
         <li><a href="../20250418/20250418_03.html" target="_blank">P5音樂</a></li>
-        <li><a href="../20250417/20250417_04.html" target="_blank">課表圖</a></li>
+        <li><a href="../table課表製作練習和音樂練習/20250417_04.html" target="_blank">課表圖</a></li>
         <li><a href="../20250423/20250423_05.html" target="_blank">表單訓練</a></li>
         <li><a href="../20250424/20250424_05/20250424_06.html" target="_blank">超連結練習</a></li>
         <li><a href="./20250425_02.php" target="_blank">變數</a></li>
