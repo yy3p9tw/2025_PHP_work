@@ -1,46 +1,66 @@
-*{
+* {
     box-sizing: border-box;
 }
-body{
+
+body {
     background-image: url(../images/0101.jpg);
 }
-h1{
-text-align: center;
-font-size: 18px;
-color: #ff0000;
+
+h1 {
+    text-align: center;
+    font-size: 18px;
+    color: #ff0000;
+    font-family: "標楷體";
 }
-table{
+
+table {
     width: 100%;
-   
+
 }
-tr{
- display: flex;
+
+tr {
+    display: flex;
     align-items: center;
     justify-content: center;
     /* background-color: #800000; */
     height: 50px;
-    
+
 }
-td{
-text-align: center;
-width: 30%;
+
+td {
+    text-align: center;
+    width: 30%;
+    font-family: "標楷體";
 }
-pre{
+
+div,pre {
     font-size: 16px;
     color: #ff0000;
+    font-family: "標楷體";
 }
-.pre{
+
+.div {
     color: #800000;
 }
-.pre01{
+
+#div01 {
     color: #0000FF;
 }
-.pre02{
+
+#div02 {
     color: #FF0000;
 }
-.pre03{
+
+#div03 {
     color: #00FF00;
 }
-.pre04{
+
+#div04 {
     color: #000000;
+}
+
+.div_a {
+    /* width: 100%; */
+    /* background-color: #00FF00; */
+    text-align: right;
 }

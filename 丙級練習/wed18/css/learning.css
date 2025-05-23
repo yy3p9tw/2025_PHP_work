@@ -8,6 +8,7 @@ h1{
 text-align: center;
 font-size: 18px;
 color: #ff0000;
+font-family: "標楷體";
 }
 table{
     width: 100%;
@@ -15,9 +16,14 @@ table{
 }
 td{
 text-align: center;
+font-family: "標楷體";
 }
-pre{
+pre,p{
     font-size: 18px;
     color: #00ffff;
     text-align: center;
+    font-family: "標楷體";
+}
+.p:hover{color: lightcoral;
+
 }
