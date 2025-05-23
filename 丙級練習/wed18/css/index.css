@@ -1,84 +1,126 @@
-*{box-sizing: border-box;
-margin: 0;
-}
-.header{
+* {
+            box-sizing: border-box;
+            margin: 0;
+        }
 
-    width: 1024px;
-    height: 60px;
-    /* background-color:lemonchiffon; */
-    margin:  auto;
-}
+        /* header */
+        .header {
+            width: 1024px;
+            height: 65px;
+            /* background-color: lightblue; */
+            margin: auto;
+            border: 1px solid black;
+        }
 
-.container{
-    display: flex;
-    width: 1024px;
-    height: calc(768px - 65px - 20px);
-    /* background-color: lightpink; */
-    margin: auto;
+        /* container */
+        .container {
+            display: flex;
+            width: 1024px;
+            /* 768 - 65 - 20 */
+            /* - 65px  */
+            /* -65px */
+            height: calc(768px - 65px - 20px);
+            /* background-color: lightpink; */
+            margin: auto;
+            border: 1px solid black;
+            border-top: 0px;
+        }
 
-}
-.footer{
-    width: 1024px;
-    height: 20px;
-    /* background-color: lightblue; */
-    margin: auto;
-    text-align: center;
-    font-size: 16px;
-    color: #000;
-}
-.box2{
-    width: calc(100% - 215px);
+        /* container-left */
+        .container-left {
+            /* width: 40%; */
+            width: 215px;
             height: 100%;
-            /* background-color: rgb(250, 109, 130); */
-}
-.box2-top{
-    width: 100%;
-            height: 29px;
-    /* background-color: aqua; */
-    font-size: 24px;
-    color: #0000ff;
-}
-.box2-bottom{
-      width: 100%;
-            height: calc(100% - 29px);
-            /* background-color: lightseagreen; */
-}
-.box1{
-    
-    width: 215px;
-    height: 100%;
-    /* background-color: violet; */
-    margin: auto;
-}
-.box1-top{
-    width: 100%;
-    height: calc(100% - 25px);
-    margin: auto;
-    text-align: center;
-}
-h1{
-    font-size: 24px;
-    text-decoration: underline;
-    color: #ff00ff;
-}
-.box1-top-1{
-    font-size: 16px;
-    color: #000;
-    background-image: url(../images/menu1.png);
-    background-repeat: no-repeat;
-    background-size: auto;
-}
-.box1-top-1:hover{
-    background-image: url(../images/menu2.png);
-}
-.box1_1{
-    width: 100%;
+            /* background-color: lightcoral; */
+            border: 1px solid black;
+            border-top: 0px;
+            border-left: 0px;
+            border-right: 0px;
+            border-bottom: 0px;
+        }
+
+        .cl-top {
+            width: 100%;
+            height: calc(100% - 25px);
+            /* background-color: aquamarine; */
+            border: 1px solid black;
+            border-top: 0px;
+            border-left: 0px;
+            border-right: 0px;
+            border-bottom: 0px;
+
+        }
+
+        .cl-bottom {
+            width: 100%;
             height: 25px;
-    text-align: center;
-}
-iframe{
-    width: 100%;
-    height: 100%;
-    border: 1px solid white;
-    
-}
+            /* background-color: lightgrey; */
+            border: 1px solid black;
+            border-left: 0px;
+            border-right: 0px;
+            border-bottom: 0px;
+        }
+
+        /* container-right */
+        .container-right {
+            /* width: 40%; */
+            /* 1024 - 215 */
+            width: calc(1024px - 215px);
+            height: 100%;
+            /* background-color: lightyellow; */
+            border: 1px solid black;
+            border-top: 0px;
+            border-left: 0px;
+            border-right: 0px;
+            border-bottom: 0px;
+        }
+
+        .cr-top {
+            width: 100%;
+            height: 29px;
+            /* background-color: lightpink; */
+            border: 1px solid black;
+            border-top: 0px;
+            border-right: 0px;
+        }
+
+        .cr-bottom {
+            width: 100%;
+            height: calc(100% - 29px);
+            /* background-color: lightyellow; */
+            border: 1px solid black;
+            border-top: 0px;
+            border-right: 0px;
+            border-bottom: 0px;
+        }
+
+
+
+
+        /* footer */
+        .footer {
+            width: 1024px;
+            height: 20px;
+            /* background-color: lightgreen; */
+            margin: auto;
+            border: 1px solid black;
+            border-top: 0px;
+        }
+
+        .header-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* background-color: aqua; */
+            height: 100%;
+        }
+
+        img {
+            width: 996px;
+            height: 60px;
+        }
+        marquee{
+            font-family: "標楷體";
+            color: #0000ff; 
+            font-size: 24px;
+        }
