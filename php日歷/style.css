@@ -1,0 +1,84 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff0f5;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #d6336c;
+}
+
+.nav {
+    display: flex;
+    width: 60%;
+    margin: 20px auto;
+    justify-content: space-between;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #d6336c;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+form {
+    margin: 20px 0;
+}
+
+.box-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    width: 60%;
+    margin: 0 auto;
+    border: 1px solid #ffc0cb;
+    background-color: #ffe4ec;
+    box-shadow: 0 0 10px #f8bbd0;
+}
+
+.th-box, .box {
+    border: 1px solid #f8bbd0;
+    padding: 10px;
+    min-height: 80px;
+}
+
+.th-box {
+    background-color: #ffc0cb;
+    font-weight: bold;
+    color: #6f1d1b;
+}
+
+.box {
+    background-color: #fff0f5;
+}
+
+.day-num {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #6f1d1b;
+}
+
+.day-week {
+    color: #999;
+    font-size: 0.8em;
+}
+
+.holiday-info {
+    color: #ff5e78;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.todo-info {
+    color: #70c578;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.highlight {
+    background-color: #ffeef2 !important;
+    border: 2px solid #f06292;
+}
