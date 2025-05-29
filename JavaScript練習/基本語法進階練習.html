@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p><input type="number" id="number1"></p>
+    <p><input type="number" id="number2"></p>
+    <p><button type="button" id="mybtn">mybtn</button></p>
+    <hr>
+    <p id="resultp">
+        number1+number2=?
+    </p>
+    <script>
+        // 1.綁定
+        let number1=document.getElementById('number1');
+        let number2=document.getElementById('number2');
+        let mybtn=document.getElementById('mybtn');
+        let result=document.getElementById('result');
+        // 2.行動
+        mybtn.addEventListener("click",function(){
+            console.log('mybtn ok');
+            // 2-1.抓數字1的值
+            let number1Value =Number(number1.value);
+            console.log("number1Value",number1Value);
+            // 2-2.抓數字2的值
+            let number2Value =Number(number2.value);
+            console.log("number2Value",number2Value);
+            // 2-3.計算數字1+數字2的總合
+            let result =number1Value+number2Value;
+            console.log('result',result);
+            //2-4.result to resultp
+            resultp.innerText =`number1${number1Value}+number2${number2Value}=${result}`
+            
+
+        })
+    </script>
+</body>
+
+</html>

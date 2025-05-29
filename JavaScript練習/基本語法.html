@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 300px;
+            height: 300px;
+            background-color: lemonchiffon;
+        }
+
+        .box:hover {
+            background-color: lightblue;
+
+        }
+
+        .bg-pink {
+            background-color: lightpink;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box"></div>
+    <p>
+        <button type="button" id="mybtn">mybtn</button>
+    </p>
+    <!-- java va javascript 完全不一樣 牛肉跟牛蒡的差別 -->
+    <!-- script 呼叫javascript -->
+    <script>
+        //echo Hello
+        console.log('Hello');
+        //1.綁定
+        // id 方法
+        // let box = document.getElementById('box');
+        // class 方法
+        let box = document.querySelector('.box')
+        let mybtn = document.getElementById('mybtn');
+        console.log('box', box);
+        console.log('mybtn', mybtn);
+        // 2.行動
+        mybtn.addEventListener('click', function () {
+            console.log('mybtn ok');
+            // box.style.backgroundColor = "lightslategrey";
+            box.setAttribute('class', 'box bg-pink')
+        })
+
+    </script>
+</body>
+
+</html>
