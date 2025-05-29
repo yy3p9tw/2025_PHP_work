@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <input type="number" id="num1" value="">
+        <input type="text" id="opt">
+        <input type="number" id="num2">
+    </div>
+    <button type="button" id="myBtn">myBtn</button>
+    <hr>
+    <p id="resultP">
+        ?+?=?
+    </p>
+    <script>
+        // 1.綁定
+        let num1=document.getElementById('num1');
+        let opt=document.getElementById('opt');
+        let num2=document.getElementById('num2');
+        let myBtn=document.getElementById('myBtn');
+        let resultP=document.getElementById('resultP');
+        // 2.行動
+        myBtn=addEventListener('click',function(){
+          console.log('myBtn ok');
+                  // 2.1抓取num1數字值
+        let num1Value=Number(num1.value);
+        console.log('num1Value',num1.value);
+                          // 2.2抓取num1數字值
+        let num2Value=Number(num2.value);
+        console.log('num1Value',num2.value);
+        // 2.3抓取opt值
+        let optValue=opt.value;
+        console.log('optValue',opt.value);
+        let result=0;
+        switch (optValue) {
+            case '+':
+                result=num1Value+num2Value
+                break;
+                    case '-':
+                result=num1Value-num2Value
+                break;
+                            case '*':
+                result=num1Value*num2Value
+                break;
+                            case '/':
+                result=num1Value/num2Value
+                break;
+            default:
+                break;
+        }
+        resultP.innerText=`${num1Value}${optValue}${num2Value}=${result}`
+        });
+
+    </script>
+</body>
+</html>

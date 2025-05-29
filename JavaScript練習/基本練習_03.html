@@ -37,6 +37,7 @@
             // 2.3抓取opt值
             let optValue = opt.value;
             console.log('optValue', opt.value);
+            // 2.4設定判斷式
             let result=0
             switch (optValue) {
                 case "+":
@@ -59,6 +60,7 @@
                 default:
                     break;
             }
+            // 2.5顯示resultP內容
             resultP.innerText=`${num1Value} ${optValue} ${num2Value}=${result}`;
         
             });
