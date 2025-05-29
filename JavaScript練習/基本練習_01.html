@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ <style>
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .btnCt {
+            width: 50%;
+            /* background-color: lightblue; */
+            margin: auto;
+        }
+
+        button {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <p>
+            <input type="number" name="" id="num1" value="10">
+        </p>
+        <p>
+            <input type="text" name="" id="opt" value="+">
+        </p>
+
+        <p>
+            <input type="number" name="" id="num2" value="5">
+        </p>
+
+    </div>
+    <br>
+    <hr>
+    <div class="btnCt">
+        <button type="button" id="myBtn">myBtn</button>
+    </div>
+    <hr>
+    <br>
+    <p id="resultP">
+        num1 + num2 = ?
+    </p>
+
+    <script>
+        // 1.綁定
+        let num1 = document.getElementById('num1');
+        let num2 = document.getElementById('num2');
+        let opt = document.getElementById('opt');
+        let myBtn = document.getElementById('myBtn');
+        let resultP = document.getElementById('resultP');
+        // 2.行動
+         myBtn.addEventListener('click', function () {
+            console.log('myBtn ok');
+            // 2-1.抓num1 value
+            let num1Value = Number(num1.value);
+            console.log('num1Value', num1Value);
+            console.log('num1Value typeof', typeof (num1Value));
+
+            // 2-2.抓num2 value
+            let num2Value = Number(num2.value);
+            console.log('num2Value', num2Value);
+            console.log('num2Value typeof', typeof (num2Value));
+
+            // 2-3.抓opt value
+            let optValue = opt.value;
+            console.log('optValue', optValue);
+            console.log('optValue typeof', typeof (optValue));
+
+            let result = 0;
+            // 2-4 opt switch case
+            switch (optValue) {
+                case '+':
+                    result = num1Value + num2Value;
+                    console.log('result', result);
+                    break;
+                case '-':
+                    result = num1Value - num2Value;
+                    console.log('result', result);
+                    break;
+                case '*':
+                    result = num1Value * num2Value;
+                    console.log('result', result);
+                    break;
+                case '/':
+                    result = num1Value / num2Value;
+                    console.log('result', result);
+                    break;
+
+                default:
+                    break;
+            }
+
+
+
+            // 2-5 result to resultP
+            // resultP.innerText = 'num1 + num2 = result';
+
+            resultP.innerText = ` ${num1Value} ${optValue}  ${num2Value} = ${result}`;
+            });
+    </script>
+</body>
+
+</html>
