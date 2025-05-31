@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <input type="number" id="num1" value="">
+        <input type="text" id="at" value="">
+        <input type="number" id="num2" value="">
+    </div>
+    <button type="button" id="but">計算</button>
+    <br>
+    <p id="count_p">
+        ?+?=?
+    </p>
+    <script>
+        // 1.綁定
+        let num1=document.getElementById('num1');
+        let num2=document.getElementById('num2');
+        let at=document.getElementById('at');
+        let but=document.getElementById('but');
+        let count_p=document.getElementById('count_p');
+        // 2.行動
+        but=addEventListener('click',function () {
+            console.log("but ok");
+            let num1_value=Number(num1.value);
+            let num2_value=Number(num2.value);
+            let at_value=at.value;
+            let count=0;
+            switch (at_value) {
+                case '+':count=num1_value+num2_value
+                    
+                    break;
+            
+                default:
+                    break;
+            }
+            count_p.innerText=`${num1_value}${at_value}${num2_value}=${count}`;
+            
+        })
+    </script>
+</body>
+</html>
