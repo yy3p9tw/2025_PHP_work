@@ -14,8 +14,8 @@
     <div class="login-container">
         <div class="login-title">會員登入</div>
         <!-- 顯示登入錯誤或提示訊息 -->
-        <?php if(isset($_GET['msg'])): ?>
-            <div class="msg"><?=htmlspecialchars($_GET['msg'])?></div>
+        <?php if(isset($_GET['err'])): ?>
+            <div class="msg"><?=htmlspecialchars($_GET['err'])?></div>
         <?php endif; ?>
         <!-- 登入表單 -->
         <form class="login-form" action="login_check.php" method="post" autocomplete="off">
