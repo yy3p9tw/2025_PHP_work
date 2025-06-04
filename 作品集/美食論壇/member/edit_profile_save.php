@@ -7,11 +7,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // 連接資料庫
-$dsn = "mysql:host=localhost;dbname=forum;charset=utf8";
-$pdo = new PDO($dsn, 'root', '', [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-]);
+require_once '../includes/db.php'; // 路徑依實際位置調整
+$pdo = getPDO();
 
 // 取得表單資料
 $email = trim($_POST['email'] ?? '');

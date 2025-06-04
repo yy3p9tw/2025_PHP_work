@@ -3,11 +3,8 @@ session_start(); // 啟動 session，準備儲存登入狀態
 
 try {
     // 連接資料庫
-    $dsn = "mysql:host=localhost;dbname=forum;charset=utf8";
-    $pdo = new PDO($dsn, 'root', '', [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
+require_once '../includes/db.php'; // 路徑依實際位置調整
+$pdo = getPDO();
 
     // 取得帳號與密碼
     $username = $_POST['username'] ?? '';

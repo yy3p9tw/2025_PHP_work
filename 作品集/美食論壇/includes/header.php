@@ -4,11 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 // 連接資料庫
-$dsn = "mysql:host=localhost;dbname=forum;charset=utf8";
-$pdo = new PDO($dsn, 'root', '', [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-]);
+require_once __DIR__ . '/db.php';
+$pdo = getPDO();
 ?>
 <div id='header'>
     <div class='logo'>

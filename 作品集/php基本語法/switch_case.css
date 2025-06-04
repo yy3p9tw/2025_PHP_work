@@ -1,0 +1,152 @@
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+    font-family: 'Segoe UI', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 600px;
+    margin: 2.5rem auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px #60a5fa33;
+    padding: 2rem 1.5rem 3rem 1.5rem;
+}
+
+h1 {
+    text-align: center;
+    color: #3b82f6;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+}
+
+.section {
+    margin-bottom: 2.2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.desc {
+    color: #64748b;
+    margin-bottom: 0.7rem;
+    font-size: 1.05em;
+}
+
+.score {
+    font-size: 1.1em;
+    margin-bottom: 0.5em;
+}
+.score-num {
+    color: #2563eb;
+    font-weight: bold;
+}
+
+.result {
+    display: inline-block;
+    padding: 0.2em 1.2em;
+    border-radius: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 0.5em;
+}
+.pass {
+    background: #bbf7d0;
+    color: #059669;
+}
+.fail {
+    background: #fee2e2;
+    color: #dc2626;
+}
+.error {
+    color: #fff;
+    background: #ef4444;
+    padding: 0.5em 1em;
+    border-radius: 8px;
+    margin-bottom: 1em;
+    font-weight: bold;
+}
+
+.grade-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+    margin-bottom: 1em;
+}
+.grade-item {
+    font-size: 1.08em;
+    color: #334155;
+}
+.arrow {
+    color: #3b82f6;
+    font-weight: bold;
+    margin: 0 0.3em;
+}
+
+.level {
+    font-size: 1.15em;
+    margin-bottom: 0.5em;
+}
+.level-badge {
+    display: inline-block;
+    background: #3b82f6;
+    color: #fff;
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    line-height: 2em;
+    font-weight: bold;
+    margin-left: 0.5em;
+    font-size: 1.1em;
+    box-shadow: 0 2px 8px #60a5fa55;
+}
+
+.comment {
+    font-size: 1.2em;
+    color: #f59e42;
+    font-weight: bold;
+    padding: 0.7em 0;
+    letter-spacing: 2px;
+}
+
+.leap-info {
+    color: #64748b;
+    font-size: 0.98em;
+    margin-bottom: 0.7em;
+}
+.leap-result {
+    font-size: 1.08em;
+    color: #2563eb;
+    margin-bottom: 0.3em;
+    font-weight: bold;
+}
+
+.back-btn {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    background: linear-gradient(120deg, #2563eb 60%, #60a5fa 100%);
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-size: 1.08em;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 4px 16px #2563eb55;
+    border: 2px solid #60a5fa;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    z-index: 999;
+    letter-spacing: 1px;
+}
+.back-btn:hover {
+    background: linear-gradient(120deg, #60a5fa 60%, #2563eb 100%);
+    color: #fff;
+    box-shadow: 0 8px 24px #2563eb;
+}
+
+@media (max-width: 600px) {
+    .container { padding: 1rem 0.2rem 2rem 0.2rem; }
+    h1 { font-size: 1.3rem; }
+}
