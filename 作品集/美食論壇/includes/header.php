@@ -11,21 +11,21 @@ $pdo = new PDO($dsn, 'root', '', [
 <div id='header'>
     <div class='logo'>
         <!-- 可放LOGO圖示 -->
-        <a href="index.php" style="display:inline-block;text-decoration:none;">
+        <a href="/作品集/美食論壇/index.php" style="display:inline-block;text-decoration:none;">
             <span style="font-size:2em;color:#ff9800;font-weight:bold;">🍜</span>
         </a>
     </div>
     <div class="nav">
-        <a href="index.php">首頁</a>
-        <a href="member_center.php">會員中心</a>
+        <a href="/作品集/美食論壇/index.php">首頁</a>
+        <a href="/作品集/美食論壇/member/member_center.php">會員中心</a>
         <?php if(isset($_SESSION['user_id'])): ?>
             <span style="color:#ff9800;font-weight:bold; margin-left:10px;">
                 <?=htmlspecialchars($_SESSION['username'])?>，歡迎您！
             </span>
-            <a href="logout.php" style="margin-left:10px;">登出</a>
+            <a href="/作品集/美食論壇/auth/logout.php" style="margin-left:10px;">登出</a>
         <?php else: ?>
-            <a href="reg.php">註冊</a>
-            <a href="login.php">登入</a>
+            <a href="/作品集/美食論壇/auth/reg.php">註冊</a>
+            <a href="/作品集/美食論壇/auth/login.php">登入</a>
         <?php endif; ?>
     </div>
 </div>

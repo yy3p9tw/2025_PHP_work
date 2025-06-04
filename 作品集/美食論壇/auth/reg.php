@@ -1,15 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>會員註冊</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="reg.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/reg.css">
 </head>
 <body>
-<?php include 'header.php'; ?>
+<?php include '../includes/header.php'; ?>
 <main>
     <div class="reg-container">
         <div class="reg-title">會員註冊</div>
@@ -30,6 +29,6 @@
         </form>
     </div>
 </main>
-<?php include 'footer.php'; ?>    
+<?php include '../includes/footer.php'; ?>    
 </body>
 </html>

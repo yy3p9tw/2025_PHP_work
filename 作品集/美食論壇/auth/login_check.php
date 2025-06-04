@@ -19,7 +19,7 @@ if ($user && password_verify($password, $user['password'])) {
     $_SESSION['username'] = $user['username'];
     // 更新最後登入時間
     $pdo->prepare("UPDATE members SET last_login=NOW() WHERE id=?")->execute([$user['id']]);
-    header("Location: member_center.php");
+    header("Location: ../member/member_center.php");
     exit;
 } else {
     header("Location: login.php?msg=帳號或密碼錯誤");

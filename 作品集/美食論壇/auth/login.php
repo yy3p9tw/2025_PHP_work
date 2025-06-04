@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>會員登入</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/login.css">
 </head>
 <body>
-<?php include 'header.php'; ?>
+<?php include '../includes/header.php'; ?>
 <main>
     <div class="login-container">
         <div class="login-title">會員登入</div>
@@ -29,6 +29,6 @@
         </form>
     </div>
 </main>
-<?php include 'footer.php'; ?>    
+<?php include '../includes/footer.php'; ?>    
 </body>
 </html>
