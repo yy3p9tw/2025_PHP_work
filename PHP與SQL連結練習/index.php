@@ -33,8 +33,7 @@
         <tr>
             <td>品項</td>
             <td>價格</td>
-            <td>編輯</td>
-            <td>刪除</td>
+            <td>操作</td>
         </tr>
         <?php
         foreach($items as $item):
@@ -42,8 +41,8 @@
         <tr>
             <td><?=$item['name'];?></td>
             <td><?=$item['price'];?></td>
-            <td><a href='edit_item.php?id=<?=$item['id'];?>'>編輯</a></td>
-            <td><a href='delete_item.php?id=<?=$item['id'];?>'>刪除</a></td>
+            <td><a href='edit_item.php?id=<?=$item['id'];?>'>編輯</a>
+            <a href='./api/delete_item.php?id=<?=$item['id'];?>'>刪除</a></td>
         </tr>
         <?php
         endforeach;

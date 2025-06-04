@@ -6,7 +6,7 @@ echo "</pre>";
 
 $dsn="mysql:host=localhost;dbname=store;charset=utf8";
 $pdo=new PDO($dsn, 'root', '');
-$sql="DELETE FROM `items` WHERE `id`='{$_POST['id']}'";
+$sql="DELETE FROM `items` WHERE `id`='{$_GET['id']}'";
 $pdo->exec($sql);
 
 
