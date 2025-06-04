@@ -3,8 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="./20250417_04_style.css">
+  <link rel="stylesheet" href="./timetable.css">
   <title>粉紅課表</title>
+  <style>
+    .back-btn {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      background: linear-gradient(120deg, #ffb6c1 60%, #ffd6e0 100%);
+      color: #ad1457;
+      padding: 14px 26px;
+      border-radius: 30px;
+      font-size: 17px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 4px 16px #f8bbd0;
+      border: 2px solid #ff8fab;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      z-index: 999;
+      letter-spacing: 1px;
+    }
+    .back-btn:hover {
+      background: linear-gradient(120deg, #ff8fab 60%, #ffd6e0 100%);
+      color: #fff;
+      box-shadow: 0 8px 24px #f06292;
+    }
+  </style>
 </head>
 <body>
 
@@ -78,5 +102,6 @@
     </tr>
   </table>
 
+  <a href="../index.html" class="back-btn">回作品集</a>
 </body>
 </html>

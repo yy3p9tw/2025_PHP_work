@@ -1,3 +1,4 @@
+/* 網站整體背景與字型設定 */
 body {
     margin: 0;
     padding: 0;
@@ -7,6 +8,7 @@ body {
     flex-direction: column;
     background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 100%);
 }
+/* 頁首區塊樣式 */
 #header {
     background: linear-gradient(90deg, #ffb347 60%, #ffcc80 100%);
     color: #fff;
@@ -21,6 +23,7 @@ body {
     border-bottom-left-radius: 18px;
     border-bottom-right-radius: 18px;
 }
+/* 主要內容區塊樣式 */
 main {
     flex: 1;
     padding: 40px 20px;
@@ -31,6 +34,13 @@ main {
     max-width: 1100px;
     box-shadow: 0 2px 16px #ffe08255;
 }
+/* 全域重設，消除預設間距與設定 box-sizing */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* 頁尾樣式 */
 footer {
     background: #333;
     color: #fff;
@@ -42,7 +52,7 @@ footer {
     border-top-right-radius: 18px;
     box-shadow: 0 -2px 12px #ffd58055;
 }
-
+/* LOGO 圓形背景與置中 */
 .logo {
     width: 44px;
     height: 44px;
@@ -54,11 +64,13 @@ footer {
     box-shadow: 0 2px 8px #ffe08255;
     margin-right: 12px;
 }
+/* LOGO 圖示大小 */
 .logo svg {
     width: 32px;
     height: 32px;
     display: block;
 }
+/* 導覽列連結樣式 */
 .nav a {
     text-decoration: none;
     color: #fff;
@@ -69,12 +81,14 @@ footer {
     text-shadow: 0 2px 8px #ffecb3;
     letter-spacing: 1px;
 }
+/* 導覽列連結滑鼠懸停效果 */
 .nav a:hover {
     color: #ff7043;
     text-decoration: underline;
     text-shadow: 0 2px 12px #fff3e0;
 }
 
+/* 響應式設計：手機與平板適用 */
 @media (max-width: 768px) {
     #header {
         flex-direction: column;

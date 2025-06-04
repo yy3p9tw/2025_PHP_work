@@ -1,6 +1,7 @@
 <?php
-session_start();
+session_start(); // 啟動 session，確認會員身份
 if (!isset($_SESSION['user_id'])) {
+    // 未登入則導回登入頁
     header("Location: ../auth/login.php?msg=請先登入會員");
     exit;
 }
@@ -20,11 +21,12 @@ $user = $stmt->fetch();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>會員中心</title>
+    <!-- 載入主要樣式與會員中心專屬樣式 -->
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/member_center.css">
 </head>
 <body>
-<?php include '../includes/header.php'; ?>
+<?php include '../includes/header.php'; // 載入網站上方導覽 ?>
 <main>
     <div class="center-container">
         <div class="center-title">會員中心</div>
@@ -68,6 +70,6 @@ $user = $stmt->fetch();
         </div>
     </div>
 </main>
-<?php include '../includes/footer.php'; ?>    
+<?php include '../includes/footer.php'; // 載入網站下方頁腳 ?>    
 </body>
 </html>

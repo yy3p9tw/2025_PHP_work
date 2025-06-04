@@ -1,6 +1,7 @@
 <?php
-session_start();
+session_start(); // 啟動 session，確認會員身份
 if (!isset($_SESSION['user_id'])) {
+    // 未登入則導回登入頁
     header("Location: ../auth/login.php?msg=請先登入會員");
     exit;
 }
@@ -20,18 +21,21 @@ $user = $stmt->fetch();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>編輯個人資料</title>
+    <!-- 載入主要樣式與會員中心、編輯頁專屬樣式 -->
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/member_center.css">
     <link rel="stylesheet" href="../assets/css/edit_profile.css">
 </head>
 <body>
-<?php include '../includes/header.php'; ?>
+<?php include '../includes/header.php'; // 載入網站上方導覽 ?>
 <main>
     <div class="edit-profile-container">
         <div class="edit-title">編輯個人資料</div>
+        <!-- 顯示提示訊息 -->
         <?php if(isset($_GET['msg'])): ?>
             <div class="msg"><?=htmlspecialchars($_GET['msg'])?></div>
         <?php endif; ?>
+        <!-- 編輯個人資料表單 -->
         <form class="edit-form" action="edit_profile_save.php" method="post" autocomplete="off">
             <label for="username">帳號（不可修改）</label>
             <input type="text" id="username" name="username" value="<?=htmlspecialchars($user['username'])?>" readonly>
@@ -49,6 +53,6 @@ $user = $stmt->fetch();
         </form>
     </div>
 </main>
-<?php include '../includes/footer.php'; ?>    
+<?php include '../includes/footer.php'; // 載入網站下方頁腳 ?>    
 </body>
 </html>

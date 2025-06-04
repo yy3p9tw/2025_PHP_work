@@ -1,3 +1,4 @@
+/* 會員中心外層容器樣式 */
 .center-container {
     max-width: 600px;
     margin: 48px auto;
@@ -7,6 +8,7 @@
     padding: 36px 32px 28px 32px;
     text-align: center;
 }
+/* 標題樣式 */
 .center-title {
     font-size: 2em;
     color: #ff9800;
@@ -14,11 +16,13 @@
     letter-spacing: 2px;
     font-weight: bold;
 }
+/* 會員資訊文字樣式 */
 .center-info {
     font-size: 1.2em;
     color: #ad6800;
     margin-bottom: 24px;
 }
+/* 主要按鈕樣式 */
 .center-btn {
     display: inline-block;
     margin: 12px 8px 0 8px;
@@ -33,10 +37,18 @@
     border: none;
     transition: background 0.2s;
 }
+/* 主要按鈕滑鼠懸停效果 */
 .center-btn:hover {
     background: linear-gradient(90deg, #ff9800 60%, #ffb347 100%);
     color: #fff;
 }
+/* 全域重設 */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* 會員大頭貼圓形樣式 */
 .profile-avatar {
     width: 100px;
     height: 100px;
@@ -50,6 +62,7 @@
     margin: 0 auto 18px auto;
     box-shadow: 0 2px 12px #ffd58077;
 }
+/* 會員資料表格樣式 */
 .profile-info-table {
     margin: 0 auto 24px auto;
     font-size: 1.1em;
@@ -59,12 +72,14 @@
 .profile-info-table td {
     padding: 8px 18px 8px 0;
 }
+/* 會員中心下方按鈕區塊 */
 .profile-actions {
     margin-top: 18px;
 }
 .profile-actions .center-btn {
     margin: 0 8px 8px 8px;
 }
+/* 編輯個人資料連結樣式 */
 .profile-edit-link {
     color: #ff9800;
     text-decoration: underline;
@@ -74,6 +89,7 @@
 .profile-edit-link:hover {
     color: #ff7043;
 }
+/* 分隔線樣式 */
 .profile-divider {
     border-top: 1px solid #ffe0b2;
     margin: 24px 0;

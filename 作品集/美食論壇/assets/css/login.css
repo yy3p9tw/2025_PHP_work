@@ -1,3 +1,9 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* 登入頁面外層容器樣式 */
 .login-container {
     max-width: 400px;
     margin: 48px auto;
@@ -6,6 +12,7 @@
     box-shadow: 0 4px 24px #ffd58077;
     padding: 36px 32px 28px 32px;
 }
+/* 標題樣式 */
 .login-title {
     font-size: 2em;
     color: #ff9800;
@@ -14,12 +21,14 @@
     letter-spacing: 2px;
     font-weight: bold;
 }
+/* 表單標籤樣式 */
 .login-form label {
     display: block;
     margin-bottom: 8px;
     color: #ff9800;
     font-weight: bold;
 }
+/* 帳號與密碼輸入欄位樣式 */
 .login-form input[type="text"],
 .login-form input[type="password"] {
     width: 100%;
@@ -31,10 +40,12 @@
     background: #fff8e1;
     transition: border 0.2s;
 }
+/* 輸入欄位聚焦效果 */
 .login-form input:focus {
     border: 1.5px solid #ffb347;
     outline: none;
 }
+/* 登入按鈕樣式 */
 .login-form button {
     width: 100%;
     padding: 12px 0;
@@ -48,22 +59,27 @@
     box-shadow: 0 2px 8px #ffd58055;
     transition: background 0.2s;
 }
+/* 登入按鈕滑鼠懸停效果 */
 .login-form button:hover {
     background: linear-gradient(90deg, #ff9800 60%, #ffb347 100%);
 }
+/* 註冊連結區塊樣式 */
 .login-form .reg-link {
     display: block;
     text-align: right;
     margin-top: 10px;
     font-size: 0.98em;
 }
+/* 註冊連結樣式 */
 .login-form .reg-link a {
     color: #ff9800;
     text-decoration: underline;
 }
+/* 註冊連結滑鼠懸停效果 */
 .login-form .reg-link a:hover {
     color: #ff7043;
 }
+/* 訊息提示樣式 */
 .msg {
     color: #d32f2f;
     text-align: center;
