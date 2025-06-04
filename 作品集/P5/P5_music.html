@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P5音樂</title>
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+        }
+
+        .main-container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 32px 8px;
+        }
+
+        .p5-title {
+            color: #ff0040;
+            font-size: 70px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .p5-subtitle {
+            color: #ff0800;
+            font-size: 40px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .main-img {
+            width: 100%;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px #ffb6c1;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 48px;
+            gap: 24px;
+        }
+
+        .flex-img {
+            flex: 1 1 320px;
+            min-width: 260px;
+        }
+
+        .flex-img img {
+            width: 100%;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px #f8bbd0;
+        }
+
+        .flex-text {
+            flex: 2 1 320px;
+            min-width: 260px;
+            color: brown;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .flex-text-inner {
+            padding: 12px 8px;
+        }
+
+        .video-container {
+            margin: 64px 0 0 0;
+        }
+
+        .video-frame {
+            width: 100%;
+            height: 500px;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px #ffb6c1;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .p5-title {
+                font-size: 2em;
+            }
+
+            .p5-subtitle {
+                font-size: 1.2em;
+            }
+
+            .main-container {
+                padding: 8px 2px;
+            }
+
+            .flex-row {
+                gap: 8px;
+            }
+
+            .video-frame {
+                height: 240px;
+            }
+        }
+
+        .back-btn {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            background: linear-gradient(120deg, #ffb6c1 60%, #ffd6e0 100%);
+            color: #ad1457;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 16px #f8bbd0;
+            border: 2px solid #ff8fab;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            z-index: 999;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(120deg, #ff8fab 60%, #ffd6e0 100%);
+            color: #fff;
+            box-shadow: 0 8px 24px #f06292;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="p5-title">Life Will Change</div>
+        <div class="p5-subtitle">String Player Gamer, Little Miss SPG</div>
+        <div>
+            <img src="./2025041702.png" alt="2020041702" class="main-img">
+        </div>
+
+        <div class="flex-row">
+            <div class="flex-img">
+                <img src="./2025041703.png" alt="2025041701">
+            </div>
+            <div class="flex-text">
+                <div class="flex-text-inner">
+                    <b>
+                        It's not a game<br>
+                        I'm not a robot<br>
+                        A.I. challenging you<br>
+                        I'm not a phantom<br>
+                        I'm in your face and<br>
+                        I'm here to see it through<br>
+                        Right before your eyes<br>
+                        Watch us multiply<br>
+                        Come to claim our rights<br>
+                        It's time<br>
+                        As our power grows<br>
+                        Tryin' to stop us shows<br>
+                        Might as well go try'n<br>
+                        Stop time<br>
+                        So you know that we're out there<br>
+                        Swatting lies in the making<br>
+                        Can't move fast without breaking<br>
+                        Can't hold on or life won't change<br>
+                        And our voices ring out, <br>yeah<br>
+                        Took the mask off to feel free<br>
+                        Fought it out in the debris<br>
+                        Now we know that life will change<br>
+                        Ain't it a shame<br>
+                        I'm not a figment<br>
+                        Of your ailing old mind<br>
+                        I'm just as real as<br>
+                        I'm just as dangerous<br>
+                        As you will soon find<br>
+                        A taste of your own meds<br>
+                        Fire in every breath<br>
+                        Fire inside your head<br>
+                        Your heart<br>
+                        And as your crippled brain<br>
+                        Tries to fight in vain<br>
+                        Your empire will fall apart<br>
+                        And you'll know that we're out there<br>
+                        Swatting lies in the making<br>
+                        Your empire for the taking<br>
+                        Can't hold on or life won't change<br>
+                        And our voices ring out, yeah<br>
+                        Took the mask off to feel free<br>
+                        Fought it out in the debris<br>
+                        Now we know that life will change<br>
+                    </b>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div class="flex-img">
+                <img src="./2025071704.jpg" alt="2025071704">
+            </div>
+            <div class="flex-text">
+                <div class="flex-text-inner">
+                    <b>
+                        這不是一場遊戲<br>
+                        我不是挑戰你的機器人<br>
+                        我真實存在<br>
+                        離你近在咫尺<br>
+                        已經對你了若指掌<br>
+                        就在你的眼前<br>
+                        我們的隊伍逐漸壯大<br>
+                        來取回我們的權利 是時候了！<br>
+                        我們的力量漸漸增強<br>
+                        若試圖停止我們的表演<br>
+                        不如試著去停止時間<br>
+                        你知道我們就在那裡<br>
+                        扼殺你捏造的謊言<br>
+                        沒有突破 就不能飛快前進<br>
+                        不能停步 否則生活將會一成不變<br>
+                        我們發出勝利的呼喊<br>
+                        卸下假面 感受自由<br>
+                        消失在你化為塵土的宮殿裡<br>
+                        現在我們知道 生活將會改變！<br>
+                        真是可惜<br>
+                        我不是你病態陳舊想法的造物<br>
+                        我就像你一樣真實<br>
+                        我如同你一樣危險<br>
+                        你馬上就會<br>
+                        嚐到自己的苦果<br>
+                        每一口氣都如同被燒灼<br>
+                        業火將燒灼你的頭腦與心<br>
+                        當你傷痕累累的頭腦<br>
+                        試著做無謂掙扎之時<br>
+                        你的帝國將隨之崩解 瓦解<br>
+                        你知道我們曾經在那裡<br>
+                        扼殺你捏造的謊言<br>
+                        你的帝國已是搖搖欲墜<br>
+                        不能停步 否則生活將會一成不變<br>
+                        我們發出勝利的呼喊<br>
+                        卸下假面 感受自由<br>
+                        消失在你化為塵土的宮殿裡<br>
+                        現在我們知道 生活將會改變！
+                    </b>
+                </div>
+            </div>
+        </div>
+
+        <div class="video-container">
+            <iframe class="video-frame" src="https://www.youtube.com/embed/dsuJZx24V_A?si=GyGOs6rsjERQdMMz"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+    <a href="../作品集.html" class="back-btn">回作品集</a>
+</body>
+<footer style="background: #1a1a1a; color: #ffb6c1; text-align: center; padding: 24px 0; margin-top: 48px; font-size: 18px; letter-spacing: 1px;">
+    © 2024 Persona 5 音樂頁面 | 由 YU 製作
+</footer>
+
+</html>

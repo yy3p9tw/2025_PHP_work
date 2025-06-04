@@ -1,0 +1,37 @@
+<?php
+// 連接資料庫
+$dsn = "mysql:host=localhost;dbname=forum;charset=utf8";
+$pdo = new PDO($dsn, 'root', '', [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+]);
+
+// 取得表單資料
+$username = trim($_POST['username'] ?? '');
+$password = $_POST['password'] ?? '';
+$email = trim($_POST['email'] ?? '');
+
+// 基本驗證
+if ($username === '' || $password === '' || $email === '') {
+    header("Location: reg.php?msg=請填寫完整資料");
+    exit;
+}
+
+// 檢查帳號或信箱是否已存在
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM members WHERE username=? OR email=?");
+$stmt->execute([$username, $email]);
+if ($stmt->fetchColumn() > 0) {
+    header("Location: reg.php?msg=帳號或信箱已被註冊");
+    exit;
+}
+
+// 密碼加密
+$hash = password_hash($password, PASSWORD_DEFAULT);
+
+// 寫入資料庫
+$stmt = $pdo->prepare("INSERT INTO members (username, password, email) VALUES (?, ?, ?)");
+$stmt->execute([$username, $hash, $email]);
+
+header("Location: login.php?msg=註冊成功，請登入");
+exit;
+?>
