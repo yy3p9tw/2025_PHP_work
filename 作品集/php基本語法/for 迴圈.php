@@ -1,57 +1,75 @@
+<!-- filepath: d:\YU\作品集\php基本語法\for 迴圈.php -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>for 迴圈</title>
+    <link rel="stylesheet" href="for_loop_demo.css">
 </head>
 
 <body>
-    <h2>使用迴圈來產生以下的數列</h2>
-    <ul>
-        <li>1,3,5,7,9....n</li>
-        <li>10,20,30,40,50,60....n</li>
-        <li>3,5,7,11,13,17....97</li>
-    </ul>
-    <?php
-    for ($i = 1; $i < 30; $i = $i + 2) {
-        echo $i . ",";
-    }
-    echo "<br>";
-    for ($i = 1; $i < 10; $i = $i + 1) {
-        echo $i * 10 . ",";
-    }
-    echo "<br>";
-    for ($i = 10; $i < 100; $i = $i + 10) {
-        echo $i . ",";
-    }
-    echo "<br>";
-
-    // 外層迴圈：從 3 開始檢查奇數直到 100，步進 2（跳過偶數）
-    for ($j = 3; $j <= 100; $j = $j + 2) {
-        // 初始化質數標誌為 true，假設 $j 是質數
-        $test = true;
-        // 內層迴圈：檢查 $j 是否能被 2 到 $j-1 的數整除
-        for ($i = 2; $i < $j; $i = $i + 1) {
-            // 如果 $j 能被 $i 整除，則 $j 不是質數
-            if ($j % $i == 0) {
-                // 將質數標誌設為 false
-                $test = false;
-                // 找到除數後立即退出內層迴圈
-                break;
-            }
-        }
-        // 如果 $test 仍為 true，則 $j 是質數
-        if ($test) {
-            // 輸出質數 $j，並在後面加上逗號
-            echo $j . ",";
-        }
-    }
-
-
-
-    ?>
+    <div class="container">
+        <h2>使用 for 迴圈產生數列</h2>
+        <div class="section">
+            <div class="section-title">1, 3, 5, 7, 9 ... n</div>
+            <div class="output">
+                <?php
+                for ($i = 1; $i < 30; $i = $i + 2) {
+                    echo "<span class='num'>{$i}</span>";
+                    if ($i + 2 < 30) echo "<span class='comma'>,</span>";
+                }
+                ?>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">10, 20, 30, 40, 50, 60 ... n</div>
+            <div class="output">
+                <?php
+                for ($i = 1; $i < 10; $i = $i + 1) {
+                    echo "<span class='num'>" . ($i * 10) . "</span>";
+                    if ($i < 9) echo "<span class='comma'>,</span>";
+                }
+                ?>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">10, 20, 30, ... 90</div>
+            <div class="output">
+                <?php
+                for ($i = 10; $i < 100; $i = $i + 10) {
+                    echo "<span class='num'>{$i}</span>";
+                    if ($i < 90) echo "<span class='comma'>,</span>";
+                }
+                ?>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">3, 5, 7, 11, 13, 17 ... 97（質數）</div>
+            <div class="output">
+                <?php
+                $first = true;
+                for ($j = 3; $j <= 100; $j += 2) {
+                    $test = true;
+                    for ($i = 2; $i < $j; $i++) {
+                        if ($j % $i == 0) {
+                            $test = false;
+                            break;
+                        }
+                    }
+                    if ($test) {
+                        if (!$first) echo "<span class='comma'>,</span>";
+                        echo "<span class='num'>{$j}</span>";
+                        $first = false;
+                    }
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+    <!-- 固定右下的回作品集按鈕 -->
+    <a href="../作品集.html" class="back-btn">回作品集</a>
 </body>
 
 </html>

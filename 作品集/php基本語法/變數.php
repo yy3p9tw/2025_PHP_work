@@ -1,40 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>變數</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>變數練習</title>
+    <link rel="stylesheet" href="variable_demo.css">
 </head>
 <body>
-<?php
-
-define("看清楚了嗎",2077);
-// $宣告變數 後面不要直接打數字=除了數字外都要"xxx" 結尾要+;
-$age=32;
-$name="于崇銘";
-$ename="yy3ptwe";
-// 字串跟字串連接用.
-// echo 顯示 後面可以接變數跟常數 還是要用.做連接
-echo "我的年齡是:{$age}歲";
-echo "<br>";
-echo "我的名字是:{$name}";
-echo "<hr>";
-$age=27;
-$name="王小明";
-echo "<br>";
-echo "我的名字是:" . $name ;
-echo "<br>";
-echo 看清楚了嗎;
-echo "<br>";
-echo 看清楚了嗎;
-echo "<br>";
-echo $age;
-echo "<br>";
-// 結果=(x+xx)結果在前面 計算帶入在後面
-// 3=9-6 (反過來計算)
-$a=10;
-$b=50;
-$c=$a-$b;
-echo $c; ?>
+    <div class="container">
+        <h1>PHP 變數與常數練習</h1>
+        <div class="section">
+            <div class="section-title">常數與變數宣告</div>
+            <div class="code-block">
+                <code>
+                    define("看清楚了嗎",2077);<br>
+                    $age=32;<br>
+                    $name="于崇銘";<br>
+                    $ename="yy3ptwe";
+                </code>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">輸出結果</div>
+            <div class="output">
+                <?php
+                define("看清楚了嗎",2077);
+                $age=32;
+                $name="于崇銘";
+                $ename="yy3ptwe";
+                echo "<div>我的年齡是：<span class='value'>{$age}歲</span></div>";
+                echo "<div>我的名字是：<span class='value'>{$name}</span></div>";
+                echo "<hr>";
+                $age=27;
+                $name="王小明";
+                echo "<div>我的名字是：<span class='value'>" . $name . "</span></div>";
+                echo "<div>常數：<span class='value'>" . 看清楚了嗎 . "</span></div>";
+                echo "<div>常數：<span class='value'>" . 看清楚了嗎 . "</span></div>";
+                echo "<div>年齡：<span class='value'>" . $age . "</span></div>";
+                $a=10;
+                $b=50;
+                $c=$a-$b;
+                echo "<div>10 - 50 = <span class='value'>{$c}</span></div>";
+                ?>
+            </div>
+        </div>
+    </div>
+    <!-- 固定右下的回作品集按鈕 -->
+    <a href="../作品集.html" class="back-btn">回作品集</a>
 </body>
 </html>

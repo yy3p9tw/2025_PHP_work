@@ -1,0 +1,199 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+    background: linear-gradient(135deg, #ffe0f0 0%, #f8fafc 100%);
+    color: #880e4f;
+    min-height: 100vh;
+}
+
+.nav {
+    width: 100%;
+    height: 10vh;
+    background-color: #FF69B4;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 12px #ffb6c1aa;
+    gap: 2.5vw;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60%;
+    border-radius: 12px;
+    background: #FFB6C1;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.12);
+    border: 2px solid #800080;
+    transition: background 0.3s, transform 0.2s;
+    min-width: 110px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+.nav-link a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    padding: 0.7em 0;
+    letter-spacing: 2px;
+}
+.nav-link:hover, .nav-link:focus-within {
+    background: #1E90FF;
+    transform: scale(1.07);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.18);
+}
+.nav-link a:hover {
+    color: #ffe0f0;
+}
+
+.container {
+    width: 100%;
+    padding-top: 12vh;
+    text-align: center;
+    background-color: #FFB6C1;
+    padding-bottom: 5vh;
+    clear: both;
+    min-height: 60vh;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.box {
+    background-color: #FF69B4;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    transition: all 0.3s;
+    border: 2px solid #800080;
+    margin-bottom: 1.5em;
+}
+
+.box:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(30,144,255,0.18);
+    background-color: #1E90FF;
+}
+
+.box1 {
+    width: 90%;
+    height: 60vh;
+    background-image: url(https://iili.io/38q3Des.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.box2 {
+    width: 45%;
+    height: 60vh;
+    background-image: url(https://iili.io/38qfjs4.png);
+    background-size: cover;
+    background-position: center;
+}
+.box2_1 {
+    width: 45%;
+    height: 60vh;
+    background-image: url(https://iili.io/38qfhXf.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.box3 {
+    width: 30%;
+    height: 60vh;
+    background-image: url(https://iili.io/38qfXzG.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.box3_1 {
+    width: 30%;
+    height: 60vh;
+    background-image: url(https://iili.io/38qfVbs.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.box3_2 {
+    width: 30%;
+    height: 60vh;
+    background-image: url(https://iili.io/38qfegS.gif);
+    background-size: cover;
+    background-position: center;
+}
+
+.box4 {
+    width: 22.5%;
+    height: 60vh;
+    background-image: url(https://iili.io/38qfvd7.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+@media (max-width: 1200px) {
+    .box2, .box2_1, .box3, .box3_1, .box3_2, .box4 { width: 90%; }
+    .row { gap: 10px; }
+}
+@media (max-width: 900px) {
+    .container { padding-top: 13vh; }
+    .box1, .box2, .box2_1, .box3, .box3_1, .box3_2, .box4 { height: 40vh; }
+}
+@media (max-width: 600px) {
+    .container { padding-top: 15vh; }
+    .box1, .box2, .box2_1, .box3, .box3_1, .box3_2, .box4 { height: 28vh; }
+    .nav-link { min-width: 80px; font-size: 0.95em; }
+}
+
+#footer {
+    background-color: #FF69B4;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.95em;
+    width: 100%;
+    border-top: 2px solid #800080;
+    margin-top: 0;
+    letter-spacing: 1px;
+    box-shadow: 0 -2px 12px #ffb6c1aa;
+    position: relative;
+    z-index: 2;
+}
+#footer:hover {
+    background-color: #1E90FF;
+    color: #ffe0f0;
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.18);
+}
+
+.back-btn {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    background: linear-gradient(120deg, #d72660 60%, #f8bbd0 100%);
+    color: #fff;
+    padding: 13px 26px;
+    border-radius: 30px;
+    font-size: 1.08em;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 4px 16px #d7266055;
+    border: 2px solid #f8bbd0;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    z-index: 999;
+    letter-spacing: 1px;
+}
+.back-btn:hover {
+    background: linear-gradient(120deg, #f8bbd0 60%, #d72660 100%);
+    color: #fff;
+    box-shadow: 0 8px 24px #d72660;
+}
