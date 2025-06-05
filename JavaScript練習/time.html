@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+
+        .box {
+            width: 1000px;
+            height: 1000px;
+            background-color: lightpink;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+    <button id="myBtn" type="button">Click Me</button>
+    </div>
+    <div class="container">
+        <div class="box" id="myBox"></div>
+    </div>
+    <script>
+        console.log('window', window);
+        console.log('window typeof', typeof (window));
+        console.log('document', window.document);
+        console.log('document typeof', typeof (document));
+        console.log('window.console', window.console);
+        //   1.綁定
+        let myBtn = document.getElementById('myBtn');
+        let myBox = document.getElementById('myBox');
+        // 2.行動
+        myBtn.addEventListener('click', function () {
+            console.log('myBtn', myBtn);
+            // alert('myBtn clicked!');
+            // window.alert('myBtn clicked!');
+            myBox.setAttribute('style', 'background-color: lemonchiffon;');
+            // myBox.style.backgroundColor = 'green';
+            // 過3秒後恢復原狀
+            setTimeout(() => {
+                myBox.setAttribute('style', 'background-color:lightcoral;');
+                // myBox.style.backgroundColor = 'red';
+            }, 1000);
+        });
+        // 循環變換顏色
+        setInterval(() => {
+            myBox.setAttribute('style', 'background-color: lemonchiffon;');
+            setTimeout(() => {
+                myBox.setAttribute('style', 'background-color: lightcoral;');
+            }, 1000);
+        }, 2000);
+    </script>
+</body>
+
+</html>

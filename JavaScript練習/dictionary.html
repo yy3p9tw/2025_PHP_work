@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>
+        <input type="text" id="myInput" >
+    </p>
+    <button id="myBtn" type="button">Click Me</button>
+    <script>
+        // 1.綁定
+        let myBtn = document.getElementById('myBtn');
+        let myInput = document.getElementById('myInput');
+        // 2.行動
+        myBtn.addEventListener('click', function () {
+            console.log('myBtn ok');
+            let inputValue = myInput.value;
+            console.log('inputValue', inputValue);
+            let url = `https://www.merriam-webster.com/dictionary/${inputValue}`;
+            console.log('url', url);
+            window.open(url);
+            // 可回到上一頁
+            // window.location.assign(url);
+            // 直接跳轉
+            // window.location.href = url;
+            // 不可回到上一頁
+            // window.location.replace(url);
+            // 直接關閉視窗
+            // window.close();
+        });
+    </script>
+</body>
+</html>

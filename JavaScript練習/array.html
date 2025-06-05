@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        // obj 
+        // isArray 純陣列
+        // array method 只能用在array上面
+
+        let myArr = [1, 2, 3];
+        console.log('myArr', myArr);
+        console.log('myArr typeof', typeof (myArr));
+        let result = Array.isArray(myArr);
+        console.log('result', result);
+
+
+
+        let myObj = {
+            's1': 'amy',
+            's2': 'bob',
+            's3': 'cat'
+        }
+        console.log('myObj', myObj);
+        console.log('myObj typeof', typeof (myObj));
+        let resultObj = Array.isArray(myObj);
+        console.log('resultObj', resultObj);
+
+
+    </script>
+</body>
+</html>
