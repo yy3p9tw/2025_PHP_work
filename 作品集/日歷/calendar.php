@@ -1,4 +1,3 @@
-
 <?php
 $month = $_GET['month'] ?? date("m");
 $year = $_GET['year'] ?? date("Y");
@@ -8,8 +7,8 @@ $prevyear = ($month - 1 > 0) ? $year : $year - 1;
 $next = ($month + 1 > 12) ? 1 : $month + 1;
 $nextyear = ($month + 1 > 12) ? $year + 1 : $year;
 
-$today = date("Y-$month-d");
-$firstDay = date("Y-$month-01");
+$today = date("Y-m-d");
+$firstDay = date("$year-$month-01");
 $firstDayWeek = date("w", strtotime($firstDay));
 $theDaysOfMonth = date("t", strtotime($firstDay));
 
