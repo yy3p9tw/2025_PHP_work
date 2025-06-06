@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            width: 100%;
+        }
+
+        table,
+        tr,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <h3>shop</h3>
+        <table>
+            <tr>
+                <td width="5%">id</td>
+                <td width="5%">name</td>
+                <td width="15%">pic</td>
+                <td width="5%">price</td>
+                <td width="20%">count</td>
+                <td>total</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>咖啡</td>
+                <td>
+                    <img src="https://picsum.photos/id/21/100/100" alt="">
+                </td>
+                <td>
+                    <span>
+                        100
+                    </span>
+                </td>
+                <td>
+                    <input data-price="100" id="myCount" type="number" name="" id="" value="1">
+                </td>
+                <td>
+                    <span id="myTotal">
+                        100
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 載入jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        const myCountJs = document.getElementById('myCount');
+        const myTotalJs = document.getElementById('myTotal');
+
+        // 原生js input value value / span text innerText
+        // jq input value val() / span text text()
+        // let getValue = myCountJs.value;
+        // console.log('myCountJs', myCountJs);
+        // console.log('getValue', getValue);
+        // myTotalJs.innerText = 'Hello';
+
+
+        $(document).ready(function () {
+            // 1.bind
+            const myCount = $('#myCount');
+            const myTotal = $('#myTotal');
+
+            // 2.action
+
+            myCount.change(function () {
+                console.log('myCount ok');
+                let tmpCount = Number(myCount.val());
+                let tmpPrice = Number(myCount.attr('data-price'));
+                console.log('tmpCount', tmpCount);
+                console.log('tmpPrice', tmpPrice);
+
+                let result = tmpCount * tmpPrice;
+                console.log('result', result);
+                myTotal.text(result);
+
+            });
+
+        });
+    </script>
+</body>
+
+</html>

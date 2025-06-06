@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="18.css">
+</head>
+
+<body>
+    <div class="container">
+        <h3>銀行兌換所</h3>
+        <table>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>pic</th>
+                <th>price</th>
+                <th>count</th>
+                <th>total</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>面額100</td>
+                <td><img src="./100.jpg" alt="商品A"></td>
+                <td><span class="price">100</span></td>
+                <td><input data-price="100" type="number" class="quantity" value="1"></td>
+                <td><span class="total">100</span></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>面額200</td>
+                <td><img src="./200.jpg" alt="商品B"></td>
+                <td><span class="price">200</span></td>
+                <td><input data-price="200" type="number" class="quantity" value="1"></td>
+                <td><span class="total">200</span></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>面額500</td>
+                <td><img src="./500.jpg" alt="商品C"></td>
+                <td><span class="price">500</span></td>
+                <td><input data-price="500" type="number" class="quantity" value="1"></td>
+                <td><span class="total">500</span></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>面額1000</td>
+                <td><img src="./1000.jpg" alt="商品D"></td>
+                <td><span class="price">1000</span></td>
+                <td><input data-price="1000" type="number" class="quantity" value="1"></td>
+                <td><span class="total">1000</span></td>
+            </tr>
+            <tr class="footer-row">
+                <td colspan="5">總計</td>
+                <td><span id="grandTotal">1900</span></td>
+            </tr>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        function calcTotal() {
+            let sum = 0;
+            $('tr').each(function () {
+                let $qty = $(this).find('.quantity');
+                let $price = $(this).find('.price');
+                let $total = $(this).find('.total');
+                if ($qty.length && $price.length && $total.length) {
+                    let qty = Number($qty.val());
+                    if (qty < 0 || isNaN(qty)) qty = 0;
+                    $qty.val(qty);
+                    let price = Number($price.text());
+                    let subtotal = qty * price;
+                    $total.text(subtotal);
+                    sum += subtotal;
+                }
+            });
+            if (sum > 500) sum = Math.round(sum * 0.6);
+            $('#grandTotal').text(sum);
+        }
+        $('.quantity').on('input', calcTotal);
+        calcTotal();
+    </script>
+</body>
+
+</html>
