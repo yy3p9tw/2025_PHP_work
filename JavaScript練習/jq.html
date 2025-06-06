@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 300px;
+            height: 300px;
+            background-color: lightblue;
+        }
+    </style>
+</head>
+<body>
+    <button type="button" id="myButton">bg-pink</button>
+    <button type="button" id="myButton2">bg-blue</button>
+    <button type="button" id="myButton3">bg-green</button>
+    <div class="box"></div>
+    <script>
+        // 1.載入jQuery
+        const script = document.createElement('script');
+        script.src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js";
+        document.head.appendChild(script);
+        // 2.等待jQuery載入完成
+        script.onload = function() {
+            // 3.綁定元素
+            const box = $('.box');
+            const myButton = $('#myButton');
+            const myButton2 = $('#myButton2');
+            const myButton3 = $('#myButton3');
+
+            // 4.事件處理
+            // 4.1 點擊bg-pink box
+            myButton.click(function() {
+                box.css('background-color', 'pink');
+            });
+
+            myButton2.click(function() {
+                box.css('background-color', 'blue');
+            });
+
+            myButton3.click(function() {
+                box.css('background-color', 'green');
+            });
+        };
+    </script>
+</body>
+</html>
