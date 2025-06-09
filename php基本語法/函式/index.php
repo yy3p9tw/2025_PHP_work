@@ -1,23 +1,51 @@
-
-<!-- <?php include 'db.php'; ?> // 引入 db.php，載入資料庫連線與常用函式 -->
+<?php // include 'library.php'; ?>
+<?php include 'db.php'; ?>
+<h2>正三角形</h2>
 <style>
     *{
-        font-family:'Courier New', Courier, monospace; /* 設定全站字型為等寬字型 */
+        font-family:'Courier New', Courier, monospace;
     }
 </style>
 <?php
 
-$all = all('sales'); // 查詢 sales 資料表的所有資料
-dd($all); // 美化輸出 $all 陣列內容
+ //$rows= all('sales');
+ //dd($rows);
+ //$rows= all('sales'," where quantity >=2");
+ //dd($rows);
+ //$rows= all('sales',['quantity'=>2]);
+ //dd($rows);
+/*  $rows= all('sales',['quantity'=>2],' Order by id desc');
+ dd($rows); */
+/*
+$sales=all('sales'," where quantity >=2");
+dd($sales);
 
-$all_2 = all('sales', " where quantity >=2"); // 查詢 sales 資料表中數量大於等於2的資料
-dd($all_2); // 美化輸出 $all_2 陣列內容
+$all=q("select name ,price from items order by price");
+dd($all); */
 
-$q = q("select name from items order by price"); // 執行 SQL 查詢，取得 items 資料表依價格排序的 name 欄位
-dd($q); // 美化輸出 $q 陣列內容
+//dd(find('items',3));
+//dd(find('items',['name'=>'蛋餅','stock'=>50]));
 
-$find = find('items', 8); // 查詢 items 資料表中 id=8 的那一筆資料
-dd($find); // 美化輸出 $find 陣列內容
+/* stars('正三角形', 15);
+stars('菱形', 15);
+stars('矩形', 15);
+stars('倒三角形', 15); */
 
-$update = update('items', ['name' => '仰望星空派', 'price' => 80], "WHERE id = 10");
-dd($update); // 更新 items 資料表中 id=10 的那一筆資料
+/* $row=find('items',5);
+dd($row);
+
+$row['cost']=15;
+$row['price']=45;
+
+dd($row);
+
+update("items", $row); */
+
+/* $data=['id'=>14,
+        'name'=>'豬排鐵板麵加蛋',
+       'cost'=>75,
+       'stock'=>30,
+       'price'=>105];
+save('items',$data); */
+
+del('items', ['cost'=>40]);
