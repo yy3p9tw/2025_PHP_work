@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教會簡介</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #f7f7f7;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding-top: 15vh;
+        }
+
+        .nav {
+            background: #fff;
+            color: #333;
+            padding: 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 15vh;
+            min-height: 60px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            z-index: 100;
+        }
+
+        .nav>div,
+        .nav>.dropdown {
+            position: relative;
+            padding: 0 24px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background 0.2s;
+            background: transparent;
+            color: #333;
+        }
+
+        .nav>div:hover,
+        .nav>.dropdown:hover {
+            background: #f2f2f2;
+            color: #222;
+        }
+
+        .nav .dropdown {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #fafafa;
+            color: #333;
+            min-width: 140px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            z-index: 10;
+            flex-direction: column;
+        }
+
+        .nav .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            transition: background 0.2s;
+            background: transparent;
+        }
+
+        .nav .dropdown-content a:hover {
+            background: #f2f2f2;
+            color: #111;
+        }
+
+        .nav .dropdown:hover .dropdown-content {
+            display: flex;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            flex: none;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .footer {
+            background: #f2f2f2;
+            color: #888;
+            padding: 32px 20px 10px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            border-top: 1.5px solid #e0e0e0;
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .footer-main {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 24px;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto 8px auto;
+        }
+
+        .footer-col {
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 180px;
+        }
+
+        .footer-col.left,
+        .footer-col.right {
+            justify-content: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-col.left {
+            align-items: flex-start;
+        }
+
+        .footer-col.center {
+            align-items: center;
+        }
+
+        .footer-col.right {
+            align-items: flex-end;
+        }
+
+        .footer .logo img {
+            height: 48px;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08));
+        }
+
+        .footer .social {
+            margin: 10px 0 0 0;
+        }
+
+        .footer .social img {
+            height: 24px;
+            margin: 0 4px;
+            vertical-align: middle;
+            filter: grayscale(0.2) brightness(0.95);
+            transition: filter 0.2s;
+        }
+
+        .footer .social img:hover {
+            filter: none;
+        }
+
+        .footer .map {
+            margin: 0;
+        }
+
+        .footer .map iframe {
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .footer .info {
+            text-align: right;
+            font-size: 1em;
+            line-height: 1.7;
+        }
+
+        .footer .info a {
+            color: #ff9800;
+            text-decoration: none;
+            margin: 0 2px;
+            transition: color 0.2s;
+        }
+
+        .footer .info a:hover {
+            color: #e65100;
+            text-decoration: underline;
+        }
+
+        .footer-copyright {
+            text-align: center;
+            font-size: 0.95em;
+            color: #bbb;
+            margin-top: 16px;
+        }
+
+        /* 新增區塊樣式 */
+        .team-section,
+        .vision-section {
+            width: 100vw;
+            max-width: 100vw;
+            margin: 0;
+            padding: 48px 0 32px 0;
+            background: #fff;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            aspect-ratio: 16/9;
+            min-height: unset;
+            height: auto;
+            justify-content: center;
+        }
+
+        .team-section {
+            border-bottom: 2px solid #f2f2f2;
+            height: 100%;
+        }
+
+        .vision-section {
+            background: #f7f7f7;
+            border-top: 2px solid #f2f2f2;
+            text-align: center;
+        }
+
+        .team-list {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: stretch;
+            gap: 24px;
+            margin-top: 16px;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: auto;
+            padding: 0 16px 16px 16px;
+            box-sizing: border-box;
+            scrollbar-width: none;
+        }
+
+        .team-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .team-member {
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            width: 23vw;
+            min-width: 220px;
+            max-width: 260px;
+            flex: 0 0 23vw;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s;
+            min-height: 680px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 1200px) {
+            .team-member {
+                width: 40vw;
+                min-width: 180px;
+                max-width: 80vw;
+                flex: 0 0 40vw;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .team-member {
+                width: 80vw;
+                min-width: 160px;
+                max-width: 95vw;
+                flex: 0 0 80vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .team-member {
+                width: 90vw;
+                min-width: 160px;
+                max-width: 95vw;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="nav">
+            <div class="dropdown">關於我們
+                <div class="dropdown-content">
+                    <a href="./about.html">教會簡介</a>
+                    <a href="./faith.html">信仰宣言</a>
+                </div>
+            </div>
+            <div class="dropdown">聚會時間
+                <div class="dropdown-content">
+                    <a href="./sunday.html">主日崇拜</a>
+                    <a href="./cell.html">小組聚會</a>
+                </div>
+            </div>
+            <div class="logo">
+                <a href="./index.html"><img src="logo.png" alt="教會logo"></a>
+            </div>
+            <div class="dropdown">公告
+                <div class="dropdown-content">
+                    <a href="./index.html#notice">公告</a>
+                </div>
+            </div>
+            <div class="dropdown">聯絡我們
+                <div class="dropdown-content">
+                    <a href="./event.html">聯絡表單</a>
+                    <a href="#contact2">交通資訊</a>
+                </div>
+            </div>
+        </div>
+        <div class="content-area">
+            <section class="team-section">
+                <h2>團隊介紹</h2>
+                <div class="team-list">
+                    <div class="team-member">
+                        <img src="memberA.jpg" alt="團隊成員A" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <p><strong>王大明</strong></p>
+                        <p>主任牧師，熱愛關懷與教導，帶領教會邁向異象。</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="memberB.jpg" alt="團隊成員B" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <p><strong>李小美</strong></p>
+                        <p>副牧師，專注青少年事工，擅長音樂與輔導。</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="memberC.jpg" alt="團隊成員C" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <p><strong>陳志強</strong></p>
+                        <p>行政同工，負責教會行政與活動協調。</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="memberD.jpg" alt="團隊成員D" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <p><strong>林怡君</strong></p>
+                        <p>主日學老師，熱心兒童教育與信仰栽培。</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="memberE.jpg" alt="團隊成員E" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <p><strong>張偉倫</strong></p>
+                        <p>敬拜主領，負責音樂事奉與團隊訓練。</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="memberF.jpg" alt="團隊成員F" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <p><strong>周佩珊</strong></p>
+                        <p>關懷同工，專注社區服務與探訪。</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="memberG.jpg" alt="團隊成員G" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <p><strong>許文彬</strong></p>
+                        <p>財務同工，負責教會財務與資源管理。</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="memberH.jpg" alt="團隊成員H" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <p><strong>黃淑芬</strong></p>
+                        <p>婦女事工，推動婦女成長與關懷。</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="memberI.jpg" alt="團隊成員I" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <p><strong>蔡明哲</strong></p>
+                        <p>青年事工，帶領青年團契與活動。</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="memberJ.jpg" alt="團隊成員J" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <p><strong>林美華</strong></p>
+                        <p>詩班指揮，負責詩班訓練與音樂事奉。</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="memberK.jpg" alt="團隊成員K" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <p><strong>吳俊賢</strong></p>
+                        <p>影音同工，負責現場影音與技術支援。</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="memberL.jpg" alt="團隊成員L" style="width:120px;height:120px;border-radius:50%;object-fit:cover;">
+                        <p><strong>曾雅婷</strong></p>
+                        <p>行政助理，協助教會日常行政與接待。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="vision-section">
+                <h2>教會異像</h2>
+                <p>這裡是教會異像的介紹內容，請根據實際情況補充內容。</p>
+            </section>
+        </div>
+        <div class="footer">
+            <div class="footer-main">
+                <div class="footer-col left">
+                    <div class="logo">
+                        <img src="logo.png" alt="教會logo">
+                    </div>
+                    <div class="social">
+                        <a href="https://www.youtube.com/" target="_blank">
+                            <img src="yt_icon.png" alt="YouTube">
+                        </a>
+                        <a href="https://www.facebook.com/" target="_blank">
+                            <img src="fb_icon.png" alt="Facebook">
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col center">
+                    <div class="map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.902954624478!2d121.56541731536346!3d25.03396498397225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abbf8e8e8e8f%3A0x8e8e8e8e8e8e8e8e!2z5Y-w5YyX5biC!5e0!3m2!1szh-TW!2stw!4v1680000000000!5m2!1szh-TW!2stw"
+                            width="300" height="150" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+                <div class="footer-col right">
+                    <div class="info">
+                        聯絡信箱: <a href="mailto:contact@church.com">contact@church.com</a><br>
+                        聯絡電話: <a href="tel:+123456789">+123 456 789</a><br>
+                        地址: 台北市信義區信義路5段100號<br>
+                        開放時間: 每週一至週五 9:00 - 17:00
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                版權所有 &copy; 2025 YU 蘆洲大喜樂基督教會
+            </div>
+        </div>
+    </div>
+    <script>
+        // 滑鼠拖曳橫向滾動
+        const teamList = document.querySelector('.team-list');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        teamList.addEventListener('mousedown', (e) => {
+            isDown = true;
+            teamList.classList.add('active');
+            startX = e.pageX - teamList.offsetLeft;
+            scrollLeft = teamList.scrollLeft;
+        });
+        teamList.addEventListener('mouseleave', () => {
+            isDown = false;
+            teamList.classList.remove('active');
+        });
+        teamList.addEventListener('mouseup', () => {
+            isDown = false;
+            teamList.classList.remove('active');
+        });
+        teamList.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - teamList.offsetLeft;
+            const walk = (x - startX) * 1.2; // 滾動速度
+            teamList.scrollLeft = scrollLeft - walk;
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>複利計算器</title>
+    <style>
+        body {
+            background: #181c20;
+            color: #fff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 32px;
+            letter-spacing: 2px;
+        }
+        form {
+            background: #23272b;
+            max-width: 400px;
+            margin: 32px auto 16px auto;
+            padding: 32px 24px 24px 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        label {
+            margin-bottom: 4px;
+            color: #ff9800;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            background: #2c3136;
+            color: #fff;
+            font-size: 1em;
+        }
+        button {
+            background: #ff9800;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 0;
+            font-size: 1.1em;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #ffa733;
+        }
+        h2 {
+            text-align: center;
+            color: #ff9800;
+            margin-top: 24px;
+        }
+        #result {
+            max-width: 420px;
+            margin: 0 auto;
+            background: #23272b;
+            border-radius: 12px;
+            padding: 24px 18px;
+            font-size: 1.1em;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            min-height: 40px;
+        }
+        .interest {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        .amount {
+            color: #ff9800;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>複利計算器</h1>
+    <form id="compoundForm">
+        <label for="principal">本金 (P):</label>
+        <input type="number" id="principal" name="principal" required>
+
+        <label for="rate">年利率 (r):</label>
+        <input type="number" id="rate" name="rate" step="0.01" required>
+
+        <label for="time">時間 (t, 年):</label>
+        <input type="number" id="time" name="time" required>
+
+        <button type="submit">計算</button>
+    </form>
+    <h2>計算結果</h2>
+    <!-- 每一年利息多少 金額多少 -->
+    <p id="result"></p>
+    <script>
+        // 當表單提交時，阻止默認行為並計算複利
+        document.getElementById('compoundForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // 取得輸入的本金、年利率和時間
+            // parseFloat 解析浮點數
+            const principal = parseFloat(document.getElementById('principal').value);
+            const rate = parseFloat(document.getElementById('rate').value) / 100;
+            const time = parseFloat(document.getElementById('time').value);
+            // 檢查輸入是否有效
+            if (isNaN(principal) || isNaN(rate) || isNaN(time) || principal <= 0 || rate < 0 || time <= 0) {
+                document.getElementById('result').innerHTML = '請輸入有效的數值。';
+                return;
+            }
+            // 計算每年的利息和總金額
+            // Math.pow(base, exponent) 計算 base 的 exponent 次方
+            let resultText = '';
+            for (let year = 1; year <= time; year++) {
+                const amount = principal * Math.pow((1 + rate), year);
+                const interest = amount - principal;
+                resultText += `第 ${year} 年: 利息 = <span class="interest">+${interest.toFixed(2)}</span>, 總金額 = <span class="amount">${amount.toFixed(2)}</span><br>`;
+            }
+            // 顯示結果
+            // toFixed(2) 保留兩位小數
+            document.getElementById('result').innerHTML = resultText;
+        });
+    </script>
+</body>
+</html>
