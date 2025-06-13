@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="./form.css">
+  <title>黃老漢-徵兵</title>
+</head>
+
+<body>
+  <div class="overlay"></div>
+  <h1>黃老漢-徵兵</h1>
+  <form action="">
+    <div class="form-group">
+      <label for="name">👑 姓名</label>
+      <input type="text" name="name" id="name" required>
+    </div>
+    <div class="form-group">
+      <label for="race">⚔️ 植物(工作時稱職務)</label>
+      <select name="race" id="race" required>
+        <option value=""></option>
+        <option value="罐頭">星際戰士(罐頭)</option>
+        <option value="政委">政委</option>
+        <option value="星語者">星語者</option>
+        <option value="導航者">導航者(三眼仔)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="birthday">📅 出生年月日(黃老漢聖數13)</label>
+      <input type="date" name="birthday" id="birthday" required>
+    </div>
+    <div class="form-group">
+      <label for="planet">🌍 世界</label>
+      <select name="planet" id="planet" required>
+        <option value=""></option>
+        <option value="Catachan">卡塔昌</option>
+        <option value="Macragge">奧特拉馬</option>
+        <option value="Holy Terra">神聖泰拉</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <input type="submit" value="⚡ 開始征程">
+    </div>
+  </form>
+  <!-- 固定右下的回作品集按鈕 -->
+  <a href="../index.html" class="back-btn">回作品集</a>
+</body>
+</html>
