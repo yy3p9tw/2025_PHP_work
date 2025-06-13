@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+
+            box-sizing: border-box;
+        }
+
+        .header{
+            width: 1024px;
+            height: 65px;
+            /* background-color: red; */
+            margin: auto;
+            /* border: 1px solid black; */
+        }
+        .container{
+            display: flex;
+            width: 1024px;
+            height: calc(768px - 65px - 20px);
+            margin: auto;
+            /* border: 1px solid black; */
+        }
+        .left{
+            width: 215px;
+            height: 100%;
+            /* border: 1px solid black; */
+            /* display: flex; */
+            /* margin:  auto; */
+
+        }
+        .right{
+            width: calc(100% - 215px);
+            height: 100%;
+            /* border: 1px solid black; */
+        } 
+        .left-top{
+            width: 100%;
+            height: calc(100% - 25px);
+            /* background-color: green; */
+            /* border-bottom: 1px solid black; */
+            /* background-color: aqua; */
+            /* display: flex; */
+
+        }
+        .left-bottom{
+            width: 100%;
+            height: 25px;
+            /* background-color: blue; */
+            /* border-top: 1px solid black; */
+            /* display: flex; */
+        }
+        .right-top{
+            width: 100%;
+            height: 29px;
+            /* background-color: yellow; */
+            /* border-bottom: 1px solid black; */
+            /* display: flex; */
+        }
+        .right-bottom{
+            width: 100%;
+            height: calc(100% - 29px);
+            /* background-color: purple; */
+            /* border-top: 1px solid black; */
+            /* display: flex; */
+        }
+        .footer{
+            width: 1024px;
+            height: 20px;
+            /* background-color: orange; */
+            margin: auto;
+            /* border: 1px solid black; */
+        }
+        .title{
+            /* width: 100%; */
+            /* height: 25px; */
+            line-height: 25px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #FF00FF;
+            /* background-color: #000; */
+        }
+        .content> div{
+            width: 93%;
+            /* height: 36px; */
+            margin-top: 35px;
+            text-align: center;
+            font-size: 16px;
+            color: #000;
+            background-image: url(../wed18/images/menu1.png);
+            padding: 6px;
+
+            /* background-color: #FFF; */
+            
+        }
+        .content> div:hover{
+            background-image: url(../wed18/images/menu2.png);
+            cursor: pointer;
+        }
+        .left-bottom{
+            /* width: 100%;
+            height: 100%; */
+            line-height: 25px;
+            text-align: center;
+            font-size: 16px;
+            color: #000;
+            background-color: #FFF;
+
+        }
+        .right-top{
+            /* width: 100%;
+            height: 100%; */
+            line-height: 29px;
+            text-align: center;
+            font-size: 24px;
+            color: #0000FF;
+            /* background-color: #FFF; */
+        }
+        .footer{
+            /* width: 100%;
+            height: 100%; */
+            line-height: 20px;
+            text-align: center;
+            font-size: 16px;
+            color: #000;
+            background-color: #FFF;
+        }
+    </style>
+</head>
+<body>
+        <div class="header">
+            <a href="./index.html"><img src="../wed18/images/logo.png" alt="國立科技高中校園社團介紹網站" width="994px" height="60px" style="display: block; margin: auto;"></a>
+        </div>
+        <div class="container">
+        <div class="left">
+            <div class="left-top"> 
+                <div class="title">社團介紹</div>
+                <div class="content">
+                    <div><a href="./guitar_history.html" target="mainFrame">吉他社</a></div>
+                    <div>吉他社</div>
+                    <div>吉他社</div>
+                    <div>吉他社</div>
+                    <div>吉他社</div>
+                    <div>吉他社</div>
+                </div>
+            </div>
+            <div class="left-bottom">yyyy/mm/dd</div>
+        </div>
+        <div class="right">
+            <div class="right-top"> <marquee>歡迎光臨校園社團介紹網，參觀後請支持社團活動並熱烈參與</marquee></div>
+            <div class="right-bottom"> <iframe src="./main.html" frameborder="0" width="100%" height="100%" name="mainFrame" ></iframe></div>
+        </div>
+        </div>
+        <div class="footer">網頁設計及維護：XX○○○</div>
+
+</body>
+</html>
