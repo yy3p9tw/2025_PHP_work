@@ -1,0 +1,77 @@
+/* 全局樣式 */
+body {
+  font-family: 'Noto Sans TC', Arial, sans-serif;
+  background: #f7f8fa;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px #bfa04633;
+  padding: 32px 24px 24px 24px;
+  text-align: center;
+}
+h1 {
+  color: #3b82f6;
+  text-align: center;
+  margin-bottom: 32px;
+  letter-spacing: 2px;
+  font-size: 2.2em;
+  font-weight: bold;
+  text-shadow: 0 2px 8px #e0e7ff;
+}
+
+/* 美術作品集專用樣式 */
+.art-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: center;
+}
+.art-item {
+  background: #f0fdfa;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px #bfa04633;
+  padding: 18px 18px 12px 18px;
+  width: 220px;
+  text-align: center;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.art-item:hover {
+  box-shadow: 0 8px 32px #3b82f655;
+  transform: translateY(-6px) scale(1.04);
+}
+.art-item img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px #bfa04622;
+}
+.art-title {
+  font-weight: bold;
+  color: #3b82f6;
+  margin-bottom: 4px;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+}
+.back-btn {
+  display: block;
+  margin: 32px auto 0 auto;
+  background: linear-gradient(90deg, #3b82f6 60%, #60a5fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 32px;
+  font-weight: bold;
+  font-size: 1.08em;
+  text-decoration: none;
+  box-shadow: 0 4px 16px #bfa04655;
+  transition: background 0.2s;
+  text-align: center;
+}
+.back-btn:hover {
+  background: linear-gradient(90deg, #60a5fa 60%, #3b82f6 100%);
+}
