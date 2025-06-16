@@ -69,19 +69,65 @@
         .btn:hover {
             background: linear-gradient(90deg, #60a5fa 60%, #3b82f6 100%);
         }
+        .pagination-btn {
+            text-decoration: none !important;
+            background: none !important;
+            color: #1a237e !important;
+            border: none;
+            font-weight: bold;
+            padding: 6px 12px;
+            margin: 0 2px;
+        }
+        .pagination-btn.active {
+            color: #ef4444 !important;
+            text-decoration: none !important;
+        }
     </style>
 </head>
 <body>
 <h1 class="header">檔案管理練習</h1>
+<div style="text-align:center; margin: 24px 0;">
+  <a href="upload.php" class="btn" style="background:linear-gradient(90deg,#3b82f6 60%,#60a5fa 100%);color:#fff;">回上傳表單</a>
+</div>
 <?php
 // 連接 MySQL 資料庫，設定資料來源名稱（DSN）、帳號、密碼
 $dns = "mysql:host=localhost;dbname=filen;charset=utf8";
 $pdo = new PDO($dns, "root", ""); // 建立 PDO 連線物件
-// 從 uploads 資料表撈出所有檔案資料，回傳為關聯式陣列
-$rows = $pdo->query("SELECT * FROM uploads")->fetchAll(PDO::FETCH_ASSOC);
+
+// 取得目前頁數與每頁顯示數量
+$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$pageSize = 10;
+$offset = ($page - 1) * $pageSize;
+
+// 搜尋條件
+$q = isset($_GET['q']) ? trim($_GET['q']) : '';
+$where = '';
+$params = [];
+if ($q !== '') {
+  $where = 'WHERE name LIKE ? OR description LIKE ?';
+  $params = ['%'.$q.'%', '%'.$q.'%'];
+}
+// 取得總筆數
+$countSql = "SELECT COUNT(*) FROM uploads $where";
+$stmt = $pdo->prepare($countSql);
+$stmt->execute($params);
+$totalRows = $stmt->fetchColumn();
+$totalPages = ceil($totalRows / $pageSize);
+// 取得分頁資料
+$sql = "SELECT * FROM uploads $where ORDER BY id DESC LIMIT $pageSize OFFSET $offset";
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+<!-- 搜尋表單 -->
+<form method="get" style="text-align:center; margin-bottom:18px;">
+  <input type="text" name="q" placeholder="輸入檔名或描述關鍵字" value="<?= isset($_GET['q']) ? htmlspecialchars($_GET['q']) : '' ?>" style="padding:8px 12px; border-radius:8px; border:1px solid #b6c7e6; width:220px;">
+  <button type="submit" class="btn" style="padding:8px 22px;">搜尋</button>
+</form>
+<form method="post" action="batch_action.php">
 <table class="table">
     <tr>
+        <th><input type="checkbox" id="checkAll" onclick="toggleAll(this)"></th>
         <th>ID</th> <!-- 資料表主鍵 -->
         <th>檔案預覽</th> <!-- 根據副檔名顯示圖片、影片、音樂、文件或 icon -->
         <th>檔名</th> <!-- 上傳時的原始檔名 -->
@@ -91,6 +137,7 @@ $rows = $pdo->query("SELECT * FROM uploads")->fetchAll(PDO::FETCH_ASSOC);
     </tr>
     <?php foreach ($rows as $row): ?>
         <tr>
+            <td><input type="checkbox" name="ids[]" value="<?= $row['id'] ?>"></td>
             <td><?= $row['id'] ?></td>
             <td>
                 <?php
@@ -132,5 +179,43 @@ $rows = $pdo->query("SELECT * FROM uploads")->fetchAll(PDO::FETCH_ASSOC);
         </tr>
     <?php endforeach; ?>
 </table>
+<div style="text-align:center; margin:18px 0;">
+  <button type="submit" name="download" class="btn" style="background:linear-gradient(90deg,#4caf50 60%,#a5d6a7 100%);color:#fff;">批次下載</button>
+  <button type="submit" name="delete" class="btn" style="background:linear-gradient(90deg,#ef4444 60%,#fca5a5 100%);color:#fff;" onclick="return confirm('確定要批次刪除選取檔案嗎？');">批次刪除</button>
+</div>
+</form>
+<!-- 分頁導覽 -->
+<div style="display:flex;justify-content:center;align-items:center;margin:24px 0;position:relative;">
+  <?php if ($totalPages > 1): ?>
+    <div style="margin:0 auto;display:flex;align-items:center;gap:2px;">
+    <?php
+    $adjacents = 2; // 目前頁碼左右各顯示幾頁
+    $showPages = [];
+    $showPages[] = 1;
+    if ($page - $adjacents > 2) $showPages[] = '...';
+    for ($i = max(2, $page - $adjacents); $i <= min($totalPages - 1, $page + $adjacents); $i++) {
+      $showPages[] = $i;
+    }
+    if ($page + $adjacents < $totalPages - 1) $showPages[] = '...';
+    if ($totalPages > 1) $showPages[] = $totalPages;
+    ?>
+    <?php foreach ($showPages as $p): ?>
+      <?php if ($p === '...'): ?>
+        <span class="pagination-btn" style="pointer-events:none;color:#bbb;">...</span>
+      <?php elseif ($p == $page): ?>
+        <a href="?q=<?= urlencode($q) ?>&page=<?= $p ?>" class="pagination-btn active"> <?= $p ?> </a>
+      <?php else: ?>
+        <a href="?q=<?= urlencode($q) ?>&page=<?= $p ?>" class="pagination-btn"> <?= $p ?> </a>
+      <?php endif; ?>
+    <?php endforeach; ?>
+    </div>
+  <?php endif; ?>
+</div>
+<script>
+function toggleAll(box) {
+  const cbs = document.querySelectorAll('input[name="ids[]"]');
+  cbs.forEach(cb => cb.checked = box.checked);
+}
+</script>
 </body>
 </html>
