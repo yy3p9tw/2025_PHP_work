@@ -30,8 +30,8 @@ body {
     z-index: 1;
 }
 .swot-cell.top-left { background: #f7e9e1; }
-.swot-cell.top-right { background: #fbe6e2; }
-.swot-cell.bottom-left { background: #f3d8c7; }
+.swot-cell.top-right { background: #f9cfc7; }
+.swot-cell.bottom-left { background: #e7c3b7; }
 .swot-cell.bottom-right { background: #e9b7a7; }
 .swot-cell:hover {
     transform: scale(1.13);
@@ -60,7 +60,7 @@ body {
     position: absolute;
     bottom: 18px;
     font-size: 5em;
-    color: #c97a4b;
+    color: #e2bfae;
     font-weight: bold;
     opacity: 0.45;
     pointer-events: none;
@@ -79,6 +79,7 @@ body {
     right: 28px;
     left: auto;
     text-align: right;
+    color: #e9a89a;
 }
 .swot-center {
     position: absolute;
