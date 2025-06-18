@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>股價數據展示</title>
+    <style>
+        body {
+            font-family: Arial, '微軟正黑體', sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        table {
+            width: 100%;
+            text-align: center;
+            margin: auto;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: #f8f9fa;
+            color: #333;
+            font-weight: bold;
+            padding: 12px 8px;
+        }
+        
+        td {
+            padding: 10px 8px;
+        }
+
+        table,
+        th,
+        tr,
+        td {
+            border: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        tr:hover {
+            background: #e3f2fd;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>📈 股價數據展示</h1>
+        <button type="button" id="myBtn">🔄 重新載入數據</button>
+        
+        <table id="myTable">
+            <tr>
+                <th>📅 日期</th>
+                <th>🔓 開盤價</th>
+                <th>📈 最高價</th>
+                <th>📉 最低價</th>
+                <th>🔒 收盤價</th>
+                <th>📊 成交量</th>
+            </tr>
+            <!-- 數據將通過Ajax動態載入 -->
+        </table>
+    </div>
+
+
+    <!-- 載入jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <img src="./data/data.json" alt="" srcset="">
+    <script>
+        $(document).ready(function () {
+
+            // 1.bind
+            let myTable = $('#myTable');
+            let myBtn = $('#myBtn');            // 2.action
+            myBtn.click(function (e) {
+                // 清空表格內容(保留標題行)
+                myTable.find('tr:not(:first)').remove();
+                
+                // 重新載入數據
+                loadStockData();
+            });
+
+            // 載入股價數據的函數
+            function loadStockData() {
+                let url = "./data/data.json";
+                $.ajax({  
+                    type: "get",
+                    url: url,
+                    dataType: "json",
+                    success: function (response) {
+                        console.log('載入的股價數據:', response);
+                           
+                        // 清空現有數據行
+                        myTable.find('tr:not(:first)').remove();
+                        
+                        // 遍歷數據並生成表格行
+                        $.each(response, function(index, stock) {
+                            let rowHtml = `
+                                <tr>
+                                    <td>${stock.Date}</td>
+                                    <td>$${stock.Open}</td>
+                                    <td>$${stock.High}</td>
+                                    <td>$${stock.Low}</td>
+                                    <td>$${stock.Close}</td>
+                                    <td>${stock.Volume}</td>
+                                </tr>
+                            `;
+                            myTable.append(rowHtml);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('載入數據時發生錯誤:', error);
+                        alert('無法載入股價數據，請檢查檔案路徑');
+                    }
+                });
+            }
+
+            // 頁面載入時自動載入數據
+            loadStockData();
+        });
+    </script>
+</body>
+
+</html>

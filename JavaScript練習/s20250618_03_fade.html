@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 300px;
+            height: 300px;
+            background-color: lightblue;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="box" id="myBox">
+
+    </div>
+
+    <br>
+    <button type="button" id="fadeInBtn">fadeInBtn</button>
+    <button type="button" id="fadeOutBtn">fadeOutBtn</button>
+    <button type="button" id="toggleBtn">toggleBtn</button>
+
+    <!-- 載入jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(document).ready(function () {
+            // 1.bind
+            const myBox = $('#myBox');
+            const fadeInBtn = $('#fadeInBtn');
+            const fadeOutBtn = $('#fadeOutBtn');
+            const toggleBtn = $('#toggleBtn');
+
+            // 2.action
+            fadeInBtn.click(function (e) {
+                myBox.fadeIn(1000);
+                console.log('e', e);
+
+            });
+
+            fadeOutBtn.click(function (e) {
+                myBox.fadeOut(1000);
+                // // form 不要submit不要submit
+                // e.preventDefault();
+            });
+
+            toggleBtn.click(function (e) {
+                myBox.fadeToggle(300);
+
+            });
+
+        });
+    </script>
+</body>
+
+</html>
