@@ -48,9 +48,7 @@ h1 {
   box-shadow: 0 16px 48px #3b82f655, 0 4px 16px #fff8;
   transform: translateY(-10px) scale(1.05);
 }
-.art-item.active3d {
-  /* 滑鼠移動時會動態加上這個class，JS控制transform */
-}
+
 .art-item img {
   width: 100%;
   border-radius: 10px;
