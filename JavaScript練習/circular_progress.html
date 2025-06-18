@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>圓形進度條展示</title>
+  <style>
+    body {
+      background: #333;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .progress-container {
+      display: flex;
+      gap: 48px;
+    }
+    .circular {
+      width: 160px;
+      height: 160px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .circular svg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    .circular .bg {
+      stroke: #222;
+      stroke-width: 16;
+    }
+    .circular .progress {
+      stroke-width: 16;
+      fill: none;
+      stroke-linecap: round;
+      filter: drop-shadow(0 2px 8px #0008);
+    }
+    .circular .content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .circular .percent {
+      font-size: 2.4em;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+    .circular .label {
+      font-size: 1.1em;
+      letter-spacing: 1px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-container">
+    <div class="circular" data-pct="57" data-color="#ff2a68">
+      <svg>
+        <circle class="bg" cx="80" cy="80" r="64" fill="none"/>
+        <circle class="progress" cx="80" cy="80" r="64" fill="none"/>
+      </svg>
+      <div class="content">
+        <span class="percent">57%</span>
+        <span class="label">HTML</span>
+      </div>
+    </div>
+    <div class="circular" data-pct="57" data-color="#ffe600">
+      <svg>
+        <circle class="bg" cx="80" cy="80" r="64" fill="none"/>
+        <circle class="progress" cx="80" cy="80" r="64" fill="none"/>
+      </svg>
+      <div class="content">
+        <span class="percent">57%</span>
+        <span class="label">HTML</span>
+      </div>
+    </div>
+    <div class="circular" data-pct="53" data-color="#00e676">
+      <svg>
+        <circle class="bg" cx="80" cy="80" r="64" fill="none"/>
+        <circle class="progress" cx="80" cy="80" r="64" fill="none"/>
+      </svg>
+      <div class="content">
+        <span class="percent">53%</span>
+        <span class="label">HTML</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    // 動態設定圓形進度條
+    function setCircularProgress(el, pct) {
+      const circle = el.querySelector('.progress');
+      const r = 64;
+      const c = 2 * Math.PI * r;
+      circle.setAttribute('stroke-dasharray', c);
+      circle.setAttribute('stroke-dashoffset', c * (1 - pct / 100));
+      el.querySelector('.percent').textContent = pct + '%';
+      el.dataset.pct = pct;
+    }
+    document.querySelectorAll('.circular').forEach(el => {
+      const color = el.dataset.color;
+      const circle = el.querySelector('.progress');
+      circle.setAttribute('stroke', color);
+      // 初始化
+      const pct = Number(el.dataset.pct);
+      setCircularProgress(el, pct);
+      // 滑鼠互動調整進度
+      let dragging = false;
+      el.addEventListener('mousedown', function(e) {
+        dragging = true;
+        updateByMouse(e, el);
+      });
+      window.addEventListener('mousemove', function(e) {
+        if (dragging) updateByMouse(e, el);
+      });
+      window.addEventListener('mouseup', function() {
+        dragging = false;
+      });
+      // 手機觸控支援
+      el.addEventListener('touchstart', function(e) {
+        dragging = true;
+        updateByMouse(e.touches[0], el);
+      });
+      window.addEventListener('touchmove', function(e) {
+        if (dragging) updateByMouse(e.touches[0], el);
+      });
+      window.addEventListener('touchend', function() {
+        dragging = false;
+      });
+    });
+    function updateByMouse(e, el) {
+      const rect = el.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      let angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+      if (angle < 0) angle += 360;
+      let pct = Math.round(angle / 360 * 100);
+      if (pct < 0) pct = 0;
+      if (pct > 100) pct = 100;
+      setCircularProgress(el, pct);
+    }
+  </script>
+</body>
+</html>

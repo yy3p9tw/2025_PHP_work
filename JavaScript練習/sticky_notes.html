@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>便利貼 Sticky Notes</title>
+  <style>
+    body {
+      background: #232933;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Arial, '微軟正黑體', sans-serif;
+    }
+    .notes-board {
+      display: grid;
+      grid-template-columns: repeat(2, 220px);
+      grid-template-rows: repeat(2, 220px);
+      gap: 32px;
+    }
+    .note {
+      width: 220px;
+      height: 220px;
+      border-radius: 10px;
+      box-shadow: 0 4px 24px #0004;
+      padding: 16px 14px 14px 16px;
+      font-size: 1.1em;
+      outline: none;
+      resize: none;
+      border: none;
+      font-family: inherit;
+      transition: box-shadow 0.2s, transform 0.2s;
+      box-sizing: border-box;
+      overflow: auto;
+    }
+    .note:focus {
+      box-shadow: 0 8px 32px #0006;
+      transform: scale(1.03);
+    }
+    .note.yellow { background: #ffee90; color: #222; }
+    .note.pink { background: #ffb3e6; color: #222; }
+    .note.lime { background: #d4ff4a; color: #222; }
+    .note.blue { background: #b3e6ff; color: #222; }
+    .note.white { background: #fff; color: #222; }
+    .note.add-note {
+      background: #484b50;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5em;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .note.add-note:focus, .note.add-note:hover {
+      box-shadow: 0 8px 32px #0006;
+      transform: scale(1.03);
+    }
+    .note.add-note .plus {
+      pointer-events: none;
+      user-select: none;
+    }
+    .trash-bin {
+      position: fixed;
+      right: 32px;
+      bottom: 32px;
+      width: 112px; /* 2倍原本的56px */
+      height: 112px;
+      background: rgba(40,40,40,0.92);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px #0007;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .trash-bin.dragover {
+      background: #e74c3c;
+      box-shadow: 0 16px 64px #e74c3c99;
+    }
+    .trash-bin svg {
+      width: 96px;
+      height: 96px;
+      pointer-events: none;
+    }
+    .note.yellow {
+      background: #ffee90;
+      color: #222;
+    }
+    .note[draggable="true"] {
+      opacity: 0.7;
+      border: 2px dashed #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="notes-board">
+    <div class="note add-note" tabindex="0" aria-label="新增便利貼">
+      <span class="plus">+</span>
+    </div>
+    <textarea class="note yellow" placeholder=""></textarea>
+  </div>
+  <div class="trash-bin" id="trashBin" title="拖曳便利貼到這裡刪除">
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+      <rect x="16" y="24" width="32" height="28" rx="6" fill="#444" stroke="#888" stroke-width="2"/>
+      <rect x="24" y="12" width="16" height="12" rx="4" fill="#888" stroke="#bbb" stroke-width="2"/>
+      <rect x="20" y="32" width="4" height="16" rx="2" fill="#bbb"/>
+      <rect x="30" y="32" width="4" height="16" rx="2" fill="#bbb"/>
+      <rect x="40" y="32" width="4" height="16" rx="2" fill="#bbb"/>
+      <rect x="18" y="20" width="28" height="6" rx="3" fill="#e74c3c" stroke="#fff" stroke-width="1.5"/>
+      <rect x="28" y="8" width="8" height="6" rx="2" fill="#bbb"/>
+    </svg>
+  </div>
+  <script>
+    // 新增便利貼功能
+    document.querySelector('.add-note').addEventListener('click', function() {
+      const board = document.querySelector('.notes-board');
+      const colors = ['yellow', 'pink', 'lime', 'blue', 'white'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const note = document.createElement('textarea');
+      note.className = 'note ' + color;
+      note.placeholder = '';
+      board.appendChild(note);
+      note.focus();
+      enableDrag(note);
+    });
+    // 讓現有便利貼可拖曳
+    document.querySelectorAll('.note.yellow').forEach(enableDrag);
+    function enableDrag(note) {
+      note.setAttribute('draggable', 'true');
+      note.addEventListener('dragstart', function(e) {
+        e.dataTransfer.setData('text/plain', '');
+        setTimeout(() => note.style.display = 'none', 0);
+        note.classList.add('dragging');
+      });
+      note.addEventListener('dragend', function() {
+        note.style.display = '';
+        note.classList.remove('dragging');
+      });
+    }
+    // 垃圾桶拖曳事件
+    const trash = document.getElementById('trashBin');
+    trash.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      trash.classList.add('dragover');
+    });
+    trash.addEventListener('dragleave', function() {
+      trash.classList.remove('dragover');
+    });
+    trash.addEventListener('drop', function(e) {
+      trash.classList.remove('dragover');
+      const dragging = document.querySelector('.note.yellow.dragging');
+      if (dragging) {
+        dragging.remove();
+      }
+    });
+  </script>
+</body>
+</html>

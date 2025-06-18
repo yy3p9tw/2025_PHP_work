@@ -177,6 +177,8 @@
                 padding: 8px 4px;        /* 減少儲存格內距 */
             }
         }
+
+
     </style>
 
 </head>
@@ -188,7 +190,7 @@
     <!-- 主要輸入區域容器，使用者在這裡輸入計算參數 -->
     <div class="container">
         <!-- 頁面主標題 -->
-        <h3>💰 複利計算器</h3>
+        <h3>複利計算器</h3>
         <!-- 分隔線，用於視覺上區分不同區域 -->
         <hr>
         
@@ -200,30 +202,30 @@
         <!-- 投入金額輸入欄位 -->
         <p>
             <!-- 使用&nbsp;來建立空格，保持對齊 -->
-            <label for="money">💵 投入金額(萬元)：</label>
+            <label for="money">投入金額(萬元)：</label>
             <input type="text" name="money" id="money" value="100" placeholder="請輸入金額">
         </p>
         
         <!-- 投資報酬率輸入欄位 -->
         <p>
-            <label for="rate">📈 年報酬率(%)：</label>
+            <label for="rate">年報酬率(%)：</label>
             <input type="text" name="rate" id="rate" value="8" placeholder="請輸入報酬率">
         </p>
         
         <!-- 投資年限輸入欄位 -->
         <p>
-            <label for="year">📅 投資年限(年)：</label>
+            <label for="year">投資年限(年)：</label>
             <input type="text" name="year" id="year" value="10" placeholder="請輸入年限">
         </p>
         
         <!-- 計算按鈕，點擊後執行複利計算 -->
         <p>
-            <button type="button" id="myBtn">🧮 開始計算</button>
+            <button type="button" id="myBtn">開始計算</button>
         </p>
         
         <!-- 功能說明 -->
         <p style="color: #888; font-size: 0.8em; margin-top: 20px;">
-            ℹ️ 提示：複利計算公式為 本金 × (1 + 年利率)^年數
+             提示：複利計算公式為 本金 × (1 + 年利率)^年數
         </p>
     </div>
 
@@ -231,7 +233,7 @@
     <!-- 結果顯示區域容器，使用粉紅色背景以區別輸入區域 -->
     <div class="container bg-pink">
         <!-- 結果區域標題 -->
-        <h3>📊 計算結果</h3>
+        <h3> 計算結果</h3>
         <!-- 分隔線 -->
         <hr>
         
@@ -245,8 +247,8 @@
             <!-- 表格標題行 -->
             <thead>
                 <tr>
-                    <th>📅 年份</th>     <!-- 年份欄位標題 -->
-                    <th>💰 累積金額(萬元)</th>   <!-- 金額欄位標題 -->
+                    <th>年份</th>     <!-- 年份欄位標題 -->
+                    <th> 累積金額(萬元)</th>   <!-- 金額欄位標題 -->
                 </tr>
             </thead>
             <tbody>
@@ -302,7 +304,7 @@
                 let data = []; // 建立空陣列，用於存儲每年的計算結果
                 
                 // 使用for迴圈計算每年的複利金額
-                // 複利公式：本金 × (1 + 利率)^年數
+                // 複利公式：本金 × (1 + 利率)^年數....
                 for (let i = 1; i <= yearValue; i++) {
                     // 計算第i年的金額，使用Math.pow計算次方
                     let tmpMoney = moneyValue * Math.pow((1 + rateValue / 100), i);
