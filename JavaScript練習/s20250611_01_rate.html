@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- 設定網頁字符編碼為UTF-8 -->
+    <meta charset="UTF-8">
+    <!-- 設定響應式設計的視窗大小 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 網頁標題 -->
+    <title>Document</title>
+    <style>
+        /* 主容器樣式 */
+        .container {
+            width: 80%;
+            height: 90vh;
+            background-color: lightblue;
+            margin: auto;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* 粉紅色背景樣式 */
+        .bg-pink {
+            background-color: lightpink;
+        }
+
+        /* 按鈕樣式 */
+        button {
+            width: 120px;
+        }
+
+        /* 表格樣式 */
+        table {
+            margin: auto;
+            margin-top: 10px;
+            width: 80%;
+            background-color: lightgray;
+            border-collapse: collapse;
+        }
+
+        /* 表格邊框設定 */
+        table,
+        tr,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        /* 表格欄位寬度 */
+        th,
+        td {
+            width: 50%;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- 主要輸入區域容器 -->
+    <div class="container">
+        <!-- 標題 -->
+        <h3>複利計算</h3>
+        <!-- 分隔線 -->
+        <hr>
+        <!-- 投入金額輸入框 -->
+        <p>
+            投入(萬) &nbsp;&nbsp;&nbsp;<input type="text" name="" id="money" value="100">
+        </p>
+        <!-- 投資報酬率輸入框 -->
+        <p>
+            投報(%) &nbsp;&nbsp;&nbsp;<input type="text" name="" id="rate" value="8">
+        </p>
+        <!-- 投資年限輸入框 -->
+        <p>
+            年限(年) &nbsp;&nbsp;&nbsp;<input type="text" name="" id="year" value="10">
+        </p>
+        <!-- 送出按鈕 -->
+        <p>
+            <button type="button" id="myBtn">送出</button>
+        </p>
+
+    </div>
+
+    <!-- 結果顯示區域容器 -->
+    <div class="container bg-pink">
+        <!-- 結果標題 -->
+        <h3>試算結果</h3>
+        <!-- 分隔線 -->
+        <hr>
+        <!-- 結果顯示表格 -->
+        <table id="myTable">
+            <tr>
+                <th>年</th>
+                <th>金額</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>20</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 空白表單元素 -->
+    <form action="" method="get"></form>
+
+    <!-- 載入jQuery函式庫 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        // 等待DOM載入完成後執行
+        $(document).ready(function () {
+            // 1.綁定DOM元素
+            const money = $('#money');    // 投入金額輸入框
+            const rate = $('#rate');      // 投資報酬率輸入框
+            const year = $('#year');      // 投資年限輸入框
+            const myBtn = $('#myBtn');    // 送出按鈕
+            const myTable = $('#myTable'); // 結果顯示表格
+            
+            // 預設測試資料陣列
+            let data = [
+                {
+                    'id': 1,
+                    'year': 1,
+                    'money': '100.00'
+                },
+                {
+                    'id': 2,
+                    'year': 2,
+                    'money': '108.00'
+                },
+                {
+                    'id': 3,
+                    'year': 3,
+                    'money': '116.64'
+                },
+            ];
+
+
+            // 2.事件處理
+
+            // 按鈕點擊事件處理
+            myBtn.click(function () {
+                console.log('myBtn', myBtn);
+                // 取得用戶輸入的數值
+                let moneyValue = Number(money.val());
+                let rateValue = Number(rate.val());
+                let yearValue = Number(year.val());
+                console.log('moneyValue', moneyValue);
+                console.log('rateValue', rateValue);
+                console.log('yearValue', yearValue);
+
+
+                // 1.取得資料                
+                // 2.將資料轉換為HTML表格
+
+                // 1.取得資料                
+                console.log('data', data);
+
+                // 2.將資料轉換為HTML表格
+
+                // 暫時的HTML模板字串（未使用）
+                let tmpText = `
+                 <tr>
+                     <td>1</td>
+                     <td>10</td>
+                 </tr>
+                 <tr>
+                     <td>2</td>
+                     <td>10</td>
+                 </tr>
+                 <tr>
+                     <td>3</td>
+                     <td>10</td>
+                 </tr>
+                `;
+
+                // 使用迴圈處理資料
+
+                let sum = 0;              // 累計金額變數
+                let tmpResult = ``;       // 暫存結果HTML字串
+
+                // 使用jQuery的each方法遍歷資料陣列
+                $.each(data, function (key, value) {
+                    console.log('key', key);      // 陣列索引
+                    console.log('value', value);  // 陣列元素值
+                    // 組合HTML表格行
+                    tmpResult += `
+                        <tr>
+                            <td>${value.year}</td>
+                            <td>${value.money}</td>
+                        </tr>
+                    `;
+                });
+
+                console.log('tmpResult', tmpResult);
+
+                // 將組合好的HTML添加到表格中
+                myTable.append(tmpResult);
+            });
+
+        });
+    </script>
+</body>
+
+</html>

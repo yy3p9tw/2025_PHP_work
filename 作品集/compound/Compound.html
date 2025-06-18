@@ -1,130 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>複利計算器</title>
+    <title>複利計算機</title>
+    <meta name="description" content="複利計算機，支援定期定額、年化報酬率、收益率、理財、投資、ETF、儲蓄、退休、被動收入、股票、基金、財經工具等關鍵字搜尋，幫助你輕鬆規劃財務目標。">
+    <meta name="keywords"
+        content="複利, 複利計算機, 定期定額, 年化報酬率, 收益率, 理財, 投資, ETF, 儲蓄, 退休, 被動收入, 股票, 基金, 財經工具, 金融, 利率, 計算, 財務規劃">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background: #181c20;
-            color: #fff;
             font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background: linear-gradient(135deg, #ffeef0, #ffd7d9);
+            color: #5d3a3a;
         }
-        h1 {
-            text-align: center;
-            margin-top: 32px;
-            letter-spacing: 2px;
-        }
-        form {
-            background: #23272b;
-            max-width: 400px;
-            margin: 32px auto 16px auto;
-            padding: 32px 24px 24px 24px;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.25);
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-        label {
-            margin-bottom: 4px;
-            color: #ff9800;
-            font-weight: bold;
-        }
-        input[type="number"] {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 6px;
-            background: #2c3136;
-            color: #fff;
-            font-size: 1em;
-        }
-        button {
-            background: #ff9800;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 0;
-            font-size: 1.1em;
-            font-weight: bold;
-            letter-spacing: 1px;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: background 0.2s;
-        }
-        button:hover {
-            background: #ffa733;
-        }
-        h2 {
-            text-align: center;
-            color: #ff9800;
-            margin-top: 24px;
-        }
-        #result {
-            max-width: 420px;
+
+        .container {
+            max-width: 800px;
             margin: 0 auto;
-            background: #23272b;
-            border-radius: 12px;
-            padding: 24px 18px;
-            font-size: 1.1em;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-            min-height: 40px;
+            padding: 20px;
         }
-        .interest {
-            color: #4caf50;
-            font-weight: bold;
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #f2c2c2;
+            margin-bottom: 20px;
         }
-        .amount {
-            color: #ff9800;
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
             font-weight: bold;
+            color: #8a5a5a;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid #e06b6b;
+            color: #e06b6b;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #8a5a5a;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #f2c2c2;
+            border-radius: 5px;
+            background: #fff5f5;
+            color: #5d3a3a;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #e06b6b;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #d45454;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #f2c2c2;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #ffeef0;
+            color: #e06b6b;
+        }
+
+        /* 結果顯示區塊 */
+        .result-summary {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 200px;
+        }
+
+        .result-item {
+            text-align: center;
+        }
+
+        .result-value {
+            font-size: 1.5em;
+            display: none;
+        }
+
+        .result-value.green {
+            color: #ff6b9d;
+        }
+
+        .result-value.orange {
+            color: #ff8fa3;
+        }
+
+        /* 表單元素 */
+        .form-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-radio-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .full-width {
+            width: 100%;
         }
     </style>
 </head>
+
 <body>
-    <h1>複利計算器</h1>
-    <form id="compoundForm">
-        <label for="principal">本金 (P):</label>
-        <input type="number" id="principal" name="principal" required>
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" data-tab="basic">基本</div>
+            <div class="tab" data-tab="regular">定期定額</div>
+        </div>
+        <div id="basic" class="form-section active">
+            <h1>複利計算機</h1>
+            <form id="basicForm">
+                <label for="basicPrincipal">初期本金 (元):</label>
+                <input type="number" id="basicPrincipal" name="basicPrincipal" required>
 
-        <label for="rate">年利率 (r):</label>
-        <input type="number" id="rate" name="rate" step="0.01" required>
+                <label for="basicPeriods">計息期數 (n):</label>
+                <input type="number" id="basicPeriods" name="basicPeriods" required>
 
-        <label for="time">時間 (t, 年):</label>
-        <input type="number" id="time" name="time" required>
+                <label for="basicRate">收益率 (%):</label>
+                <input type="number" id="basicRate" name="basicRate" step="0.01" required>
 
-        <button type="submit">計算</button>
-    </form>
-    <h2>計算結果</h2>
-    <!-- 每一年利息多少 金額多少 -->
-    <p id="result"></p>
+                <button type="submit">計算</button>
+                <div class="result-summary">
+                    <div class="result-item">
+                        <p><strong>總收益</strong></p>
+                        <p id="basicTotalInterest" class="result-value green"><span>+</span>0元</p>
+                    </div>
+                    <div class="result-item">
+                        <p><strong>最終金額</strong></p>
+                        <p id="basicFinalAmount" class="result-value orange">0元</p>
+                    </div>
+                </div>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>年</th>
+                        <th>收益 (元)</th>
+                        <th>總額 (元)</th>
+                        <th>收益率</th>
+                    </tr>
+                </thead>
+                <tbody id="basicResultTable">
+                    <!-- 動態生成表格內容 -->
+                </tbody>
+            </table>
+        </div>
+        <div id="regular" class="form-section">
+            <h1>定期定額</h1>
+            <form id="regularForm">
+                <label for="regularPrincipal">初期本金 (元):</label>
+                <input type="number" id="regularPrincipal" name="regularPrincipal" required>
+
+                <label for="regularPeriods" class="form-row">
+                    計息期數 (n):
+                    <div class="form-radio-group">
+                        <label><input type="radio" name="regularPeriodsUnit" value="year" checked> 年</label>
+                        <label><input type="radio" name="regularPeriodsUnit" value="month"> 月</label>
+                    </div>
+                </label>
+                <input type="number" id="regularPeriods" name="regularPeriods" required class="full-width">
+
+                <label for="regularRate" class="form-row">
+                    收益率 (%):
+                    <div class="form-radio-group">
+                        <label><input type="radio" name="regularRateUnit" value="year" checked> 年</label>
+                        <label><input type="radio" name="regularRateUnit" value="month"> 月</label>
+                    </div>
+                </label>
+                <input type="number" id="regularRate" name="regularRate" step="0.01" required class="full-width">
+
+                <label for="regularMonthly">每月投入金額 (元):</label>
+                <input type="number" id="regularMonthly" name="regularMonthly" required>
+
+                <button type="submit">計算</button>
+                <div class="result-summary">
+                    <div class="result-item">
+                        <p><strong>總收益</strong></p>
+                        <p id="totalInterest" class="result-value green"><span>+</span>0元</p>
+                    </div>
+                    <div class="result-item">
+                        <p><strong>最終金額</strong></p>
+                        <p id="finalAmount" class="result-value orange">0元</p>
+                    </div>
+                </div>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>年</th>
+                        <th>收益 (元)</th>
+                        <th>總額 (元)</th>
+                        <th>收益率</th>
+                    </tr>
+                </thead>
+                <tbody id="regularResultTable">
+                    <!-- 動態生成表格內容 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
     <script>
-        // 當表單提交時，阻止默認行為並計算複利
-        document.getElementById('compoundForm').addEventListener('submit', function(event) {
+        const tabs = document.querySelectorAll('.tab');
+        const sections = document.querySelectorAll('.form-section');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        document.getElementById('basicForm').addEventListener('submit', function (event) {
             event.preventDefault();
-            // 取得輸入的本金、年利率和時間
-            // parseFloat 解析浮點數
-            const principal = parseFloat(document.getElementById('principal').value);
-            const rate = parseFloat(document.getElementById('rate').value) / 100;
-            const time = parseFloat(document.getElementById('time').value);
-            // 檢查輸入是否有效
-            if (isNaN(principal) || isNaN(rate) || isNaN(time) || principal <= 0 || rate < 0 || time <= 0) {
-                document.getElementById('result').innerHTML = '請輸入有效的數值。';
+            const principal = parseFloat(document.getElementById('basicPrincipal').value);
+            const periods = parseInt(document.getElementById('basicPeriods').value);
+            const rate = parseFloat(document.getElementById('basicRate').value) / 100;
+
+            if (isNaN(principal) || isNaN(periods) || isNaN(rate) || principal <= 0 || periods <= 0 || rate < 0) {
+                alert('請輸入有效的數值。');
                 return;
             }
-            // 計算每年的利息和總金額
-            // Math.pow(base, exponent) 計算 base 的 exponent 次方
-            let resultText = '';
-            for (let year = 1; year <= time; year++) {
-                const amount = principal * Math.pow((1 + rate), year);
-                const interest = amount - principal;
-                resultText += `第 ${year} 年: 利息 = <span class="interest">+${interest.toFixed(2)}</span>, 總金額 = <span class="amount">${amount.toFixed(2)}</span><br>`;
+
+            const resultTable = document.getElementById('basicResultTable');
+            const basicTotalInterestElement = document.getElementById('basicTotalInterest');
+            const basicFinalAmountElement = document.getElementById('basicFinalAmount');
+
+            resultTable.innerHTML = '';
+
+            let total = principal;
+            let totalInterest = 0; for (let i = 1; i <= periods; i++) {
+                const interest = total * rate;
+                total += interest;
+                totalInterest += interest;
+                resultTable.innerHTML += `
+                    <tr>
+                        <td>${i}</td>
+                        <td style="color: #ff6b9d;">+${interest.toFixed(2)}</td>
+                        <td style="color: #ff8fa3;">${total.toFixed(2)}</td>
+                        <td>${((interest / principal) * 100).toFixed(2)}%</td>
+                    </tr>
+                `;
+            } basicTotalInterestElement.textContent = '+' + totalInterest.toFixed(2) + '元';
+            basicFinalAmountElement.textContent = total.toFixed(2) + '元';
+            basicTotalInterestElement.style.display = 'block';
+            basicFinalAmountElement.style.display = 'block';
+        });
+
+        document.getElementById('regularForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const principal = parseFloat(document.getElementById('regularPrincipal').value);
+            let periods = parseInt(document.getElementById('regularPeriods').value);
+            const rate = parseFloat(document.getElementById('regularRate').value) / 100;
+            const monthly = parseFloat(document.getElementById('regularMonthly').value);
+
+            const periodsUnit = document.querySelector('input[name="regularPeriodsUnit"]:checked').value;
+            const rateUnit = document.querySelector('input[name="regularRateUnit"]:checked').value;
+
+            // 將年轉換為月
+            if (periodsUnit === 'year') {
+                periods *= 12;
             }
-            // 顯示結果
-            // toFixed(2) 保留兩位小數
-            document.getElementById('result').innerHTML = resultText;
+
+            let adjustedRate = rate;
+            if (rateUnit === 'year') {
+                adjustedRate /= 12;
+            }
+
+            if (isNaN(principal) || isNaN(periods) || isNaN(adjustedRate) || isNaN(monthly) || principal <= 0 || periods <= 0 || adjustedRate < 0 || monthly < 0) {
+                alert('請輸入有效的數值。');
+                return;
+            }
+
+            const resultTable = document.getElementById('regularResultTable');
+            const totalInterestElement = document.getElementById('totalInterest');
+            const finalAmountElement = document.getElementById('finalAmount');
+
+            resultTable.innerHTML = '';
+
+            let total = principal;
+            let totalInterest = 0;
+            for (let i = 1; i <= periods; i++) {
+                total += monthly;
+                const interest = total * adjustedRate;
+                total += interest;
+                totalInterest += interest; resultTable.innerHTML += `
+                    <tr>
+                        <td>${i}</td>
+                        <td style="color: #ff6b9d;">+${interest.toFixed(2)}</td>
+                        <td style="color: #ff8fa3;">${total.toFixed(2)}</td>
+                        <td>${((interest / principal) * 100).toFixed(2)}%</td>
+                    </tr>
+                `;
+            } totalInterestElement.textContent = '+' + totalInterest.toFixed(2) + '元';
+            finalAmountElement.textContent = total.toFixed(2) + '元';
+            totalInterestElement.style.display = 'block';
+            finalAmountElement.style.display = 'block';
         });
     </script>
 </body>
+
 </html>

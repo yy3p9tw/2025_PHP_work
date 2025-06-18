@@ -5,66 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>匯率即時爬蟲</title>
   <style>
-    body { background: #f7f8fa; }
-    .exchange-box {
+    body { background: linear-gradient(135deg, #ffeef0, #ffd7d9); }    .exchange-box {
       max-width: 420px;
       margin: 40px auto;
-      background: #fff;
+      background: #fff5f5;
       border-radius: 18px;
-      box-shadow: 0 4px 24px #bfa04633;
+      box-shadow: 0 4px 24px rgba(224, 107, 107, 0.2);
       padding: 36px 30px 28px 30px;
       text-align: center;
-    }
-    .exchange-box h1 {
-      color: #1a237e;
+    }    .exchange-box h1 {
+      color: #d45454;
       margin-bottom: 18px;
       font-size: 1.6em;
       letter-spacing: 2px;
     }
     .convert-ui { margin-bottom: 18px; }
     .convert-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
-    .convert-row label { color: #3b82f6; font-weight: bold; }
-    .convert-row select, .convert-row input[type=number] {
-      padding: 8px 10px; border-radius: 8px; border: 1px solid #b6c7e6; font-size: 1em; font-family: inherit;
-    }
-    .convert-row button {
-      background: linear-gradient(90deg, #3b82f6 60%, #60a5fa 100%); color: #fff; border: none; border-radius: 20px;
+    .convert-row label { color: #e06b6b; font-weight: bold; }    .convert-row select, .convert-row input[type=number] {
+      padding: 8px 10px; border-radius: 8px; border: 1px solid #f2c2c2; font-size: 1em; font-family: inherit;
+    }    .convert-row button {
+      background: linear-gradient(90deg, #e06b6b 60%, #ff8fa3 100%); color: #fff; border: none; border-radius: 20px;
       padding: 10px 24px; font-weight: bold; font-size: 1.08em; cursor: pointer; transition: background 0.2s;
     }
-    .convert-row button:hover { background: linear-gradient(90deg, #60a5fa 60%, #3b82f6 100%); }
-    .convert-result { margin-top: 8px; color: #1a237e; font-weight: bold; font-size: 1.15em; min-height: 24px; }
+    .convert-row button:hover { background: linear-gradient(90deg, #ff8fa3 60%, #e06b6b 100%); }
+    .convert-result { margin-top: 8px; color: #d45454; font-weight: bold; font-size: 1.15em; min-height: 24px; }
     .update-time { text-align: right; color: #888; font-size: 0.95em; margin-top: 10px; }
     .rate-list-box { margin-top: 18px; }
-    .rate-table { width: 100%; border-collapse: collapse; font-size: 0.98em; margin-top: 8px; }
-    .rate-table th, .rate-table td { padding: 7px 4px; border-bottom: 1px solid #e0e0e0; text-align: center; }
-    .rate-table th { background: #e0e7ff; color: #1a237e; }
-    .rate-table tr:last-child td { border-bottom: none; }
-    #fetchBtn { margin-bottom: 8px; background: #fbbf24; color: #222; border: none; border-radius: 16px; padding: 7px 18px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-    #fetchBtn:hover { background: #fde68a; }
+    .rate-table { width: 100%; border-collapse: collapse; font-size: 0.98em; margin-top: 8px; }    .rate-table th, .rate-table td { padding: 7px 4px; border-bottom: 1px solid #f2c2c2; text-align: center; }
+    .rate-table th { background: #ffeef0; color: #d45454; }
+    .rate-table tr:last-child td { border-bottom: none; }    #fetchBtn { margin-bottom: 8px; background: #ff8fa3; color: #fff; border: none; border-radius: 16px; padding: 7px 18px; font-weight: bold; cursor: pointer; transition: background 0.2s; display: none; }
+    #fetchBtn:hover { background: #ff6b9d; }
     .site-footer {
       margin-top: 32px;
       text-align: center;
       color: #888;
       font-size: 1em;
       padding: 18px 0 8px 0;
-    }
-    .back-to-portfolio {
+    }    .back-to-portfolio {
       position: fixed;
       right: 24px;
       bottom: 24px;
-      background: #3b82f6;
+      background: #e06b6b;
       color: #fff;
       padding: 12px 22px;
       border-radius: 30px;
       font-weight: bold;
       font-size: 1.08em;
       text-decoration: none;
-      box-shadow: 0 2px 12px #bfa04633;
+      box-shadow: 0 2px 12px rgba(224, 107, 107, 0.3);
       z-index: 100;
       transition: background 0.2s;
     }
     .back-to-portfolio:hover {
-      background: #1a237e;
+      background: #d45454;
     }
   </style>
 </head>
@@ -86,7 +79,7 @@
           <option value="AUD">澳幣(AUD)</option>
           <option value="CAD">加幣(CAD)</option>
         </select>
-        <button id="swapBtn" type="button" title="幣別互換" style="background:#e0e7ff;border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;margin:0 6px;cursor:pointer;"><span style="font-size:1.2em;">⇄</span></button>
+        <button id="swapBtn" type="button" title="幣別互換" style="background:#ffeef0;border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;margin:0 6px;cursor:pointer;color:#e06b6b;"><span style="font-size:1.2em;">⇄</span></button>
         <label for="to">兌換成</label>
         <select id="to">
           <option value="TWD">台幣(TWD)</option>
@@ -107,18 +100,14 @@
       </div>
       <div id="convertResult" class="convert-result"></div>
     </div>
-    <div class="update-time" id="updateTime"></div>
-    <div class="rate-list-box">
-      <button id="fetchBtn">取得最新匯率</button>
-      <table class="rate-table">
-        <thead>
+    <div class="update-time" id="updateTime"></div>    <div class="rate-list-box">
+      <table class="rate-table">        <thead>
           <tr>
-            <th>幣別</th>
-            <th>兌美元匯率</th>
+            <th>兌換對</th>
+            <th>匯率</th>
           </tr>
-        </thead>
-        <tbody id="rateBody">
-          <tr><td colspan="2">請點擊上方按鈕取得最新匯率</td></tr>
+        </thead><tbody id="rateBody">
+          <tr><td colspan="2" style="color: #888; font-style: italic;">匯率表將在首次查詢時自動載入</td></tr>
         </tbody>
       </table>
     </div>
@@ -128,49 +117,87 @@
   </footer>
   <a href="../index.html" class="back-to-portfolio" title="回作品集">⮌ 回作品集</a>
   <script>
-    let latestRates = null;
-    // 取得匯率資料（以台灣銀行公開API為例）
+    let latestRates = null;    // 取得匯率資料（以台灣銀行公開API為例）
     async function fetchRates() {
       const url = 'https://api.exchangerate-api.com/v4/latest/USD';
       const res = await fetch(url);
       const data = await res.json();
       latestRates = data.rates; // 儲存最新匯率
-      // 只顯示常用幣別
-      const showList = ['TWD','USD','JPY','EUR','CNY','HKD','KRW','GBP','AUD','CAD'];
-      let html = '';
-      showList.forEach(code => {
-        html += `<tr><td>${code}</td><td>${latestRates[code] ? latestRates[code] : '-'}</td></tr>`;
-      });
-      document.getElementById('rateBody').innerHTML = html;
+      
+      // 只顯示當前選擇的兌換匯率
+      updateRateTable();
+      
       document.getElementById('updateTime').textContent = '更新時間：' + new Date(data.time_last_updated * 1000).toLocaleString();
     }
-    document.getElementById('fetchBtn').onclick = fetchRates;
-    // 幣別互換功能
+    
+    // 更新匯率表格，只顯示當前選擇的兌換對
+    function updateRateTable() {
+      if (!latestRates) return;
+      
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+      
+      let html = '';
+      
+      // 顯示 from 對 USD 的匯率
+      if (from !== 'USD') {
+        html += `<tr><td>${from} → USD</td><td>${(1 / latestRates[from]).toFixed(6)}</td></tr>`;
+      }
+      
+      // 顯示 USD 對 to 的匯率
+      if (to !== 'USD') {
+        html += `<tr><td>USD → ${to}</td><td>${latestRates[to] ? latestRates[to].toFixed(6) : '-'}</td></tr>`;
+      }
+      
+      // 顯示 from 對 to 的直接匯率
+      if (from !== to) {
+        let rate;
+        if (from === 'USD') {
+          rate = latestRates[to];
+        } else if (to === 'USD') {
+          rate = 1 / latestRates[from];
+        } else {
+          rate = latestRates[to] / latestRates[from];
+        }
+        html += `<tr><td style="font-weight: bold; background: #fff0f1;">${from} → ${to}</td><td style="font-weight: bold; background: #fff0f1;">${rate ? rate.toFixed(6) : '-'}</td></tr>`;
+      }
+      
+      if (html === '') {
+        html = '<tr><td colspan="2" style="color: #888; font-style: italic;">請選擇不同的幣別進行兌換</td></tr>';
+      }
+      
+      document.getElementById('rateBody').innerHTML = html;
+    }
+    // document.getElementById('fetchBtn').onclick = fetchRates;    // 幣別互換功能
     document.getElementById('swapBtn').onclick = function() {
       const fromSel = document.getElementById('from');
       const toSel = document.getElementById('to');
       const tmp = fromSel.value;
       fromSel.value = toSel.value;
       toSel.value = tmp;
-    };
-    // 匯率轉換功能
-    document.getElementById('convertBtn').onclick = function() {
+      // 更新匯率表格
+      updateRateTable();
+    };// 匯率轉換功能
+    document.getElementById('convertBtn').onclick = async function() {
+      // 如果沒有匯率資料，自動取得最新匯率
       if (!latestRates) {
-        document.getElementById('convertResult').textContent = '請先取得最新匯率';
-        return;
+        document.getElementById('convertResult').innerHTML = '<span style="color: #ff8fa3;">正在取得最新匯率...</span>';
+        await fetchRates();
       }
+      
       const from = document.getElementById('from').value;
       const to = document.getElementById('to').value;
-      const amount = parseFloat(document.getElementById('amount').value);
-      if (isNaN(amount) || amount <= 0) {
-        document.getElementById('convertResult').textContent = '請輸入有效金額';
+      const amount = parseFloat(document.getElementById('amount').value);      if (isNaN(amount) || amount <= 0) {
+        document.getElementById('convertResult').innerHTML = '<span style="color: #ff6b9d;">⚠️ 請輸入有效金額</span>';
         return;
-      }
-      // 以 USD 為基準，先換成 USD，再換成目標幣別
+      }      // 以 USD 為基準，先換成 USD，再換成目標幣別
       let usdAmount = from === 'USD' ? amount : amount / latestRates[from];
       let result = to === 'USD' ? usdAmount : usdAmount * latestRates[to];
-      document.getElementById('convertResult').textContent = `${amount} ${from} ≈ ${result.toFixed(4)} ${to}`;
+      document.getElementById('convertResult').innerHTML = `<span style="color: #d45454; font-weight: bold;">${amount} ${from} ≈ ${result.toFixed(4)} ${to}</span>`;
     };
+        // 監聽下拉選單變化，即時更新匯率表格
+    document.getElementById('from').onchange = updateRateTable;
+    document.getElementById('to').onchange = updateRateTable;
   </script>
 </body>
 </html>
