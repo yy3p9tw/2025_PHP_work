@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax 會員登入系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', '微軟正黑體', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-portfolio {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            background: #444b;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 24px;
+            font-size: 1.1em;
+            text-decoration: none;
+            box-shadow: 0 2px 8px #0005;
+            z-index: 200;
+            transition: background 0.2s, color 0.2s;
+        }
+        .back-portfolio:hover {
+            background: #667eea;
+            color: #fff;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-title {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .demo-accounts {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .demo-accounts h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .account-item {
+            margin: 5px 0;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background 0.2s;
+        }
+
+        .account-item:hover {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-portfolio">← 回作品集</a>
+    
+    <div class="login-container">
+        <h2 class="login-title">🔐 會員登入</h2>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">👤 帳號</label>
+                <input type="text" id="username" name="username" required placeholder="請輸入帳號">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">🔒 密碼</label>
+                <input type="password" id="password" name="password" required placeholder="請輸入密碼">
+            </div>
+            
+            <button type="submit" class="login-btn" id="loginBtn">
+                登入
+            </button>
+            
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>登入中...</p>
+            </div>
+            
+            <div class="message" id="message"></div>
+        </form>
+        
+        <!-- 測試帳號說明 -->
+        <div class="demo-accounts">
+            <h4>📝 測試帳號</h4>
+            <div class="account-item" onclick="fillAccount('admin', '123456')">
+                管理員：admin / 123456
+            </div>
+            <div class="account-item" onclick="fillAccount('user', 'password')">
+                一般用戶：user / password
+            </div>
+            <div class="account-item" onclick="fillAccount('demo', 'demo123')">
+                演示帳號：demo / demo123
+            </div>
+        </div>
+    </div>
+
+    <!-- 載入 jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // 綁定表單提交事件
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault(); // 阻止表單預設提交
+                
+                // 取得輸入值
+                const username = $('#username').val().trim();
+                const password = $('#password').val().trim();
+                
+                // 基本驗證
+                if (!username || !password) {
+                    showMessage('請輸入帳號和密碼！', 'error');
+                    return;
+                }
+                
+                // 開始登入流程
+                startLogin();
+                
+                // 模擬 Ajax 登入請求
+                simulateLogin(username, password);
+            });
+        });
+
+        // 開始登入（顯示載入狀態）
+        function startLogin() {
+            $('#loginBtn').prop('disabled', true).text('登入中...');
+            $('#loading').show();
+            $('#message').hide();
+        }
+
+        // 結束登入（隱藏載入狀態）
+        function endLogin() {
+            $('#loginBtn').prop('disabled', false).text('登入');
+            $('#loading').hide();
+        }
+
+        // 模擬登入 Ajax 請求
+        function simulateLogin(username, password) {
+            // 模擬 Ajax 請求延遲
+            setTimeout(function() {
+                // 模擬後端驗證邏輯
+                const validAccounts = {
+                    'admin': '123456',
+                    'user': 'password',
+                    'demo': 'demo123'
+                };
+                
+                if (validAccounts[username] && validAccounts[username] === password) {
+                    // 登入成功
+                    loginSuccess(username);
+                } else {
+                    // 登入失敗
+                    loginFailed('帳號或密碼錯誤！');
+                }
+            }, 1500); // 模擬1.5秒的網路延遲
+        }
+
+        // 登入成功處理
+        function loginSuccess(username) {
+            endLogin();
+            showMessage(`歡迎 ${username}！登入成功`, 'success');
+            
+            // 模擬儲存登入狀態
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('username', username);
+            localStorage.setItem('loginTime', new Date().toISOString());
+            
+            // 3秒後跳轉到其他頁面（這裡只是顯示訊息）
+            setTimeout(function() {
+                alert('即將跳轉到會員專區...');
+                // window.location.href = 'dashboard.html';
+            }, 2000);
+        }
+
+        // 登入失敗處理
+        function loginFailed(errorMessage) {
+            endLogin();
+            showMessage(errorMessage, 'error');
+            
+            // 清空密碼欄位
+            $('#password').val('').focus();
+        }
+
+        // 顯示訊息
+        function showMessage(message, type) {
+            const messageDiv = $('#message');
+            messageDiv.removeClass('success error').addClass(type);
+            messageDiv.text(message).show();
+            
+            // 5秒後自動隱藏訊息
+            setTimeout(function() {
+                messageDiv.fadeOut();
+            }, 5000);
+        }
+
+        // 填入測試帳號
+        function fillAccount(username, password) {
+            $('#username').val(username);
+            $('#password').val(password);
+            showMessage(`已填入測試帳號：${username}`, 'success');
+        }
+
+        // 實際的 Ajax 登入函數（註解掉，供參考）
+        /*
+        function realAjaxLogin(username, password) {
+            $.ajax({
+                type: 'POST',
+                url: 'login.php', // 後端登入處理檔案
+                data: {
+                    username: username,
+                    password: password,
+                    action: 'login'
+                },
+                dataType: 'json',
+                timeout: 10000, // 10秒超時
+                success: function(response) {
+                    endLogin();
+                    
+                    if (response.success) {
+                        loginSuccess(response.username || username);
+                    } else {
+                        loginFailed(response.message || '登入失敗');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    endLogin();
+                    
+                    if (status === 'timeout') {
+                        loginFailed('請求超時，請檢查網路連線');
+                    } else {
+                        loginFailed('登入請求失敗：' + error);
+                    }
+                }
+            });
+        }
+        */
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜單管理 - 餐廳點餐系統</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>菜單管理</h1>
+            <nav class="admin-nav">
+                <a href="dashboard.html">主控台</a>
+                <a href="menu-manage.html" class="active">菜單管理</a>
+                <a href="reports.html">報表</a>
+            </nav>
+        </header>
+        
+        <main class="menu-manage">
+            <section class="action-bar">
+                <button id="addMenuItem" class="btn-primary">新增菜品</button>
+                <div class="search-box">
+                    <input type="text" id="searchMenu" placeholder="搜尋菜品...">
+                </div>
+                <select id="categoryFilter">
+                    <option value="">所有分類</option>
+                    <option value="主食">主食</option>
+                    <option value="湯品">湯品</option>
+                    <option value="小菜">小菜</option>
+                    <option value="飲料">飲料</option>
+                </select>
+            </section>
+
+            <section class="menu-list">
+                <table id="menuTable">                    <thead>
+                        <tr>
+                            <th>編號</th>
+                            <th>名稱</th>
+                            <th>分類</th>
+                            <th>價格</th>
+                            <th>狀態</th>
+                            <th>操作</th>
+                            <th class="hint-column">提示</th>
+                        </tr>
+                    </thead>
+                    <tbody id="menuItems">
+                        <!-- 菜單項目將由 JavaScript 動態載入 -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+
+        <!-- 新增/編輯菜品的對話框 -->
+        <div id="menuItemModal" class="modal">
+            <div class="modal-content">
+                <h2 id="modalTitle">新增菜品</h2>
+                <form id="menuItemForm">
+                    <div class="form-group">
+                        <label for="itemName">菜品名稱</label>
+                        <input type="text" id="itemName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemCategory">分類</label>
+                        <select id="itemCategory" required>
+                            <option value="主食">主食</option>
+                            <option value="湯品">湯品</option>
+                            <option value="小菜">小菜</option>
+                            <option value="飲料">飲料</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemPrice">價格</label>
+                        <input type="number" id="itemPrice" min="0" step="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemStatus">狀態</label>
+                        <select id="itemStatus" required>
+                            <option value="available">可供應</option>
+                            <option value="unavailable">停售</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" id="cancelEdit" class="btn-secondary">取消</button>
+                        <button type="submit" class="btn-primary">儲存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../js/admin-menu.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>輸入座位號碼 - 餐廳點餐系統</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .table-input-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        .table-input {
+            text-align: center;
+            font-size: 2rem;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            background: var(--white);
+        }
+        
+        .number-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .number-btn {
+            padding: 20px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            background: var(--light-bg);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .number-btn:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .confirm-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+        
+        .confirm-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="table-input-container">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title text-center">請輸入座位號碼</h2>
+                </div>
+                
+                <div class="table-input" id="tableDisplay">請輸入座位號碼</div>
+                
+                <div class="number-pad">
+                    <button class="number-btn" onclick="inputNumber(1)">1</button>
+                    <button class="number-btn" onclick="inputNumber(2)">2</button>
+                    <button class="number-btn" onclick="inputNumber(3)">3</button>
+                    <button class="number-btn" onclick="inputNumber(4)">4</button>
+                    <button class="number-btn" onclick="inputNumber(5)">5</button>
+                    <button class="number-btn" onclick="inputNumber(6)">6</button>
+                    <button class="number-btn" onclick="inputNumber(7)">7</button>
+                    <button class="number-btn" onclick="inputNumber(8)">8</button>
+                    <button class="number-btn" onclick="inputNumber(9)">9</button>
+                    <button class="number-btn" onclick="clearNumber()">清除</button>
+                    <button class="number-btn" onclick="inputNumber(0)">0</button>
+                    <button class="number-btn" onclick="deleteNumber()">刪除</button>
+                </div>
+                
+                <button class="btn confirm-btn" id="confirmBtn" onclick="confirmTable()" disabled>
+                    確認座位
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tableNumber = '';
+        
+        function inputNumber(num) {
+            if (tableNumber.length < 3) {
+                tableNumber += num;
+                updateDisplay();
+            }
+        }
+        
+        function deleteNumber() {
+            tableNumber = tableNumber.slice(0, -1);
+            updateDisplay();
+        }
+        
+        function clearNumber() {
+            tableNumber = '';
+            updateDisplay();
+        }
+        
+        function updateDisplay() {
+            const display = document.getElementById('tableDisplay');
+            const confirmBtn = document.getElementById('confirmBtn');
+            
+            if (tableNumber === '') {
+                display.textContent = '請輸入座位號碼';
+                confirmBtn.disabled = true;
+            } else {
+                display.textContent = `${tableNumber} 號桌`;
+                confirmBtn.disabled = false;
+            }
+        }
+          function confirmTable() {
+            if (tableNumber === '' || tableNumber === '0') {
+                alert('請輸入有效的座位號碼');
+                return;
+            }
+            
+            // 儲存座位號碼到 localStorage（僅用於當前會話）
+            localStorage.setItem('currentTable', tableNumber);
+            
+            // 跳轉到點餐頁面
+            window.location.href = 'menu.html';
+        }
+        
+        // 不檢查之前的座位號碼，每次都重新輸入
+        window.onload = function() {
+            // 清除之前可能儲存的座位號碼
+            localStorage.removeItem('currentTable');
+        };
+    </script>
+</body>
+</html>
