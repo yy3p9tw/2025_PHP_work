@@ -50,8 +50,14 @@ window.addEventListener('beforeunload', function() {
 // 載入菜單
 async function loadMenu() {
     try {
-        // 這裡應該要從 API 載入，目前使用示範資料
-        menuItems = sampleMenu;
+        // 首先嘗試從管理端同步的資料載入
+        const savedMenu = localStorage.getItem('customerMenuItems');
+        if (savedMenu) {
+            menuItems = JSON.parse(savedMenu);
+        } else {
+            // 如果沒有管理端資料，使用示範資料
+            menuItems = sampleMenu;
+        }
         renderMenu();
     } catch (error) {
         console.error('載入菜單失敗:', error);
@@ -73,10 +79,14 @@ function renderMenu() {
     menuGrid.innerHTML = filteredItems.map(item => {
         const cartItem = cart.find(cartItem => cartItem.id === item.id);
         const currentQuantity = cartItem ? cartItem.quantity : 0;
-        
-        return `
+          return `
             <div class="menu-item">
-                <div class="menu-item-image">${item.emoji || '🍽️'}</div>
+                <div class="menu-item-image">
+                    ${item.image ? 
+                        `<img src="${item.image}" alt="${item.name}" onerror="this.outerHTML='<div class=\\"menu-item-placeholder\\">無圖片</div>'">` :
+                        `<div class="menu-item-placeholder">無圖片</div>`
+                    }
+                </div>
                 <div class="menu-item-info">
                     <div class="menu-item-name">${item.name}</div>
                     <div class="menu-item-price">NT$ ${item.price}</div>

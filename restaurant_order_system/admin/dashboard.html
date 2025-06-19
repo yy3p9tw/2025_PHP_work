@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理主控台 - 餐廳點餐系統</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>🏪 餐廳管理系統</h1>
+            <nav class="admin-nav">
+                <a href="dashboard.html" class="active">主控台</a>
+                <a href="menu-manage.html">菜單管理</a>
+                <a href="orders.html">訂單管理</a>
+                <a href="reports.html">營業報表</a>
+                <a href="settings.html">系統設定</a>
+            </nav>
+        </header>
+        
+        <main class="dashboard">
+            <!-- 快速統計 -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🍽️</div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="totalMenuItems">0</div>
+                        <div class="stat-label">菜品總數</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="availableItems">0</div>
+                        <div class="stat-label">可供應菜品</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="todayOrders">0</div>
+                        <div class="stat-label">今日訂單</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="todayRevenue">$0</div>
+                        <div class="stat-label">今日營收</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 快速操作 -->
+            <section class="quick-actions">
+                <h2>快速操作</h2>
+                <div class="action-grid">
+                    <div class="action-card" onclick="navigateToPage('menu-manage.html')">
+                        <div class="action-icon">🍽️</div>
+                        <h3>菜單管理</h3>
+                        <p>新增、編輯、刪除菜品</p>
+                    </div>
+                    
+                    <div class="action-card" onclick="navigateToPage('orders.html')">
+                        <div class="action-icon">📋</div>
+                        <h3>訂單管理</h3>
+                        <p>查看和處理訂單</p>
+                    </div>
+                    
+                    <div class="action-card" onclick="navigateToPage('reports.html')">
+                        <div class="action-icon">📊</div>
+                        <h3>營業報表</h3>
+                        <p>銷售統計與分析</p>
+                    </div>
+                    
+                    <div class="action-card" onclick="navigateToPage('settings.html')">
+                        <div class="action-icon">⚙️</div>
+                        <h3>系統設定</h3>
+                        <p>基本設定與配置</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 最近活動 -->
+            <section class="recent-activity">
+                <h2>最近活動</h2>
+                <div class="activity-list" id="activityList">
+                    <div class="activity-item">
+                        <div class="activity-time">剛剛</div>
+                        <div class="activity-content">系統啟動完成</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 系統狀態 -->
+            <section class="system-status">
+                <h2>系統狀態</h2>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">資料庫連接</span>
+                        <span class="status-value" id="dbStatus">🟡 本地模式</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">菜單同步</span>
+                        <span class="status-value" id="syncStatus">🟢 正常</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">儲存空間</span>
+                        <span class="status-value" id="storageStatus">🟢 充足</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">最後更新</span>
+                        <span class="status-value" id="lastUpdate">-</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/admin-dashboard.js"></script>
+</body>
+</html>

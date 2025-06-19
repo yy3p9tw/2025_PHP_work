@@ -22,26 +22,24 @@
                 <button id="addMenuItem" class="btn-primary">新增菜品</button>
                 <div class="search-box">
                     <input type="text" id="searchMenu" placeholder="搜尋菜品...">
-                </div>
-                <select id="categoryFilter">
+                </div>                <select id="categoryFilter">
                     <option value="">所有分類</option>
-                    <option value="主食">主食</option>
-                    <option value="湯品">湯品</option>
-                    <option value="小菜">小菜</option>
-                    <option value="飲料">飲料</option>
+                    <option value="main">主食</option>
+                    <option value="appetizer">開胃菜</option>
+                    <option value="soup">湯品</option>
+                    <option value="dessert">甜點</option>
+                    <option value="drink">飲料</option>
                 </select>
-            </section>
-
-            <section class="menu-list">
-                <table id="menuTable">                    <thead>
-                        <tr>
+            </section>            <section class="menu-list">
+                <table id="menuTable">
+                    <thead>                        <tr>
                             <th>編號</th>
                             <th>名稱</th>
                             <th>分類</th>
                             <th>價格</th>
                             <th>狀態</th>
+                            <th>圖片</th>
                             <th>操作</th>
-                            <th class="hint-column">提示</th>
                         </tr>
                     </thead>
                     <tbody id="menuItems">
@@ -59,15 +57,21 @@
                     <div class="form-group">
                         <label for="itemName">菜品名稱</label>
                         <input type="text" id="itemName" required>
-                    </div>
-                    <div class="form-group">
+                    </div>                    <div class="form-group">
                         <label for="itemCategory">分類</label>
                         <select id="itemCategory" required>
-                            <option value="主食">主食</option>
-                            <option value="湯品">湯品</option>
-                            <option value="小菜">小菜</option>
-                            <option value="飲料">飲料</option>
+                            <option value="main">主食</option>
+                            <option value="appetizer">開胃菜</option>
+                            <option value="soup">湯品</option>
+                            <option value="dessert">甜點</option>
+                            <option value="drink">飲料</option>
                         </select>
+                    </div>                    <div class="form-group">
+                        <label for="itemImage">菜品圖片</label>
+                        <input type="file" id="itemImage" accept="image/*">
+                        <div id="imagePreview" class="image-preview">
+                            <div class="preview-placeholder">選擇圖片文件</div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="itemPrice">價格</label>

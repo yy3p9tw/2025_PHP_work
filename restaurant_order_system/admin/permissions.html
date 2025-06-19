@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>權限管理 - 餐廳點餐系統</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>🏪 餐廳管理系統</h1>
+            <nav class="admin-nav">
+                <a href="dashboard.html">主控台</a>
+                <a href="menu-manage.html">菜單管理</a>
+                <a href="orders.html">訂單管理</a>
+                <a href="reports.html">營業報表</a>
+                <a href="settings.html">系統設定</a>
+                <a href="permissions.html" class="active">權限管理</a>
+            </nav>
+        </header>
+        
+        <main class="permissions-page">
+            <div class="page-header">
+                <h1>權限管理</h1>
+                <p>管理用戶角色與權限設定</p>
+            </div>
+
+            <!-- 角色管理 -->
+            <section class="roles-section">
+                <div class="section-header">
+                    <h2>角色管理</h2>
+                    <button class="btn btn-primary" onclick="showAddRoleModal()">
+                        <span>➕</span> 新增角色
+                    </button>
+                </div>
+
+                <div class="roles-grid">
+                    <div class="role-card" data-role="admin">
+                        <div class="role-header">
+                            <h3>管理員</h3>
+                            <span class="role-count">1 位用戶</span>
+                        </div>
+                        <div class="role-description">
+                            系統最高權限，可以管理所有功能和用戶
+                        </div>
+                        <div class="role-permissions">
+                            <span class="permission-tag">所有權限</span>
+                        </div>
+                        <div class="role-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="editRole('admin')">編輯</button>
+                            <button class="btn btn-outline btn-sm" onclick="viewRolePermissions('admin')">查看權限</button>
+                        </div>
+                    </div>
+
+                    <div class="role-card" data-role="manager">
+                        <div class="role-header">
+                            <h3>經理</h3>
+                            <span class="role-count">0 位用戶</span>
+                        </div>
+                        <div class="role-description">
+                            餐廳經理，可以管理菜單、訂單和查看報表
+                        </div>
+                        <div class="role-permissions">
+                            <span class="permission-tag">菜單管理</span>
+                            <span class="permission-tag">訂單管理</span>
+                            <span class="permission-tag">報表查看</span>
+                        </div>
+                        <div class="role-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="editRole('manager')">編輯</button>
+                            <button class="btn btn-outline btn-sm" onclick="viewRolePermissions('manager')">查看權限</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteRole('manager')">刪除</button>
+                        </div>
+                    </div>
+
+                    <div class="role-card" data-role="staff">
+                        <div class="role-header">
+                            <h3>員工</h3>
+                            <span class="role-count">0 位用戶</span>
+                        </div>
+                        <div class="role-description">
+                            一般員工，可以處理訂單和查看基本資訊
+                        </div>
+                        <div class="role-permissions">
+                            <span class="permission-tag">訂單處理</span>
+                            <span class="permission-tag">菜單查看</span>
+                        </div>
+                        <div class="role-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="editRole('staff')">編輯</button>
+                            <button class="btn btn-outline btn-sm" onclick="viewRolePermissions('staff')">查看權限</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteRole('staff')">刪除</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 權限矩陣 -->
+            <section class="permissions-matrix">
+                <div class="section-header">
+                    <h2>權限矩陣</h2>
+                    <p>查看和管理各角色的詳細權限</p>
+                </div>
+
+                <div class="matrix-container">
+                    <table class="permissions-table">
+                        <thead>
+                            <tr>
+                                <th>功能模組</th>
+                                <th>管理員</th>
+                                <th>經理</th>
+                                <th>員工</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="module-name">
+                                    <strong>系統管理</strong>
+                                    <small>系統設定、用戶管理、權限設定</small>
+                                </td>
+                                <td><span class="permission-status granted">✓ 完全權限</span></td>
+                                <td><span class="permission-status denied">✗ 無權限</span></td>
+                                <td><span class="permission-status denied">✗ 無權限</span></td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">
+                                    <strong>菜單管理</strong>
+                                    <small>新增、編輯、刪除菜品</small>
+                                </td>
+                                <td><span class="permission-status granted">✓ 完全權限</span></td>
+                                <td><span class="permission-status granted">✓ 完全權限</span></td>
+                                <td><span class="permission-status limited">◐ 僅查看</span></td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">
+                                    <strong>訂單管理</strong>
+                                    <small>處理、修改、取消訂單</small>
+                                </td>
+                                <td><span class="permission-status granted">✓ 完全權限</span></td>
+                                <td><span class="permission-status granted">✓ 完全權限</span></td>
+                                <td><span class="permission-status limited">◐ 處理訂單</span></td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">
+                                    <strong>營業報表</strong>
+                                    <small>銷售統計、營收分析</small>
+                                </td>
+                                <td><span class="permission-status granted">✓ 完全權限</span></td>
+                                <td><span class="permission-status granted">✓ 完全權限</span></td>
+                                <td><span class="permission-status denied">✗ 無權限</span></td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">
+                                    <strong>廚房管理</strong>
+                                    <small>廚房訂單、出餐狀態</small>
+                                </td>
+                                <td><span class="permission-status granted">✓ 完全權限</span></td>
+                                <td><span class="permission-status granted">✓ 完全權限</span></td>
+                                <td><span class="permission-status granted">✓ 完全權限</span></td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">
+                                    <strong>備份還原</strong>
+                                    <small>資料備份、系統還原</small>
+                                </td>
+                                <td><span class="permission-status granted">✓ 完全權限</span></td>
+                                <td><span class="permission-status limited">◐ 僅備份</span></td>
+                                <td><span class="permission-status denied">✗ 無權限</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 用戶權限分配 -->
+            <section class="user-permissions">
+                <div class="section-header">
+                    <h2>用戶權限分配</h2>
+                    <p>為特定用戶設定個別權限</p>
+                </div>
+
+                <div class="user-list">
+                    <div class="user-permission-item">
+                        <div class="user-info">
+                            <div class="user-avatar">👤</div>
+                            <div class="user-details">
+                                <h4>admin</h4>
+                                <span class="user-role">管理員</span>
+                            </div>
+                        </div>
+                        <div class="user-status">
+                            <span class="status-badge active">啟用</span>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn btn-outline btn-sm" onclick="viewUserPermissions('admin')">查看權限</button>
+                            <button class="btn btn-secondary btn-sm" onclick="editUserPermissions('admin')">編輯權限</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 權限記錄 -->
+            <section class="permission-logs">
+                <div class="section-header">
+                    <h2>權限變更記錄</h2>
+                    <div class="log-filters">
+                        <select id="logUserFilter">
+                            <option value="">所有用戶</option>
+                            <option value="admin">admin</option>
+                        </select>
+                        <select id="logActionFilter">
+                            <option value="">所有操作</option>
+                            <option value="grant">授予權限</option>
+                            <option value="revoke">撤銷權限</option>
+                            <option value="role_change">角色變更</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="logs-container">
+                    <div class="log-item">
+                        <div class="log-time">2024-01-15 14:30:25</div>
+                        <div class="log-content">
+                            <span class="log-user">admin</span>
+                            <span class="log-action grant">授予</span>
+                            <span class="log-target">manager</span>
+                            <span class="log-permission">菜單管理權限</span>
+                        </div>
+                    </div>
+                    
+                    <div class="log-item">
+                        <div class="log-time">2024-01-15 12:15:10</div>
+                        <div class="log-content">
+                            <span class="log-user">admin</span>
+                            <span class="log-action role_change">變更角色</span>
+                            <span class="log-target">staff001</span>
+                            <span class="log-permission">員工 → 經理</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 新增角色模態框 -->
+    <div id="addRoleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>新增角色</h3>
+                <button class="modal-close" onclick="closeModal('addRoleModal')">&times;</button>
+            </div>
+            <form class="modal-form" id="addRoleForm">
+                <div class="form-group">
+                    <label for="roleName">角色名稱</label>
+                    <input type="text" id="roleName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="roleDescription">角色描述</label>
+                    <textarea id="roleDescription" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>基本權限</label>
+                    <div class="permissions-checkboxes">
+                        <label><input type="checkbox" value="menu_view"> 菜單查看</label>
+                        <label><input type="checkbox" value="menu_manage"> 菜單管理</label>
+                        <label><input type="checkbox" value="order_view"> 訂單查看</label>
+                        <label><input type="checkbox" value="order_manage"> 訂單管理</label>
+                        <label><input type="checkbox" value="report_view"> 報表查看</label>
+                        <label><input type="checkbox" value="user_manage"> 用戶管理</label>
+                        <label><input type="checkbox" value="system_config"> 系統設定</label>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">新增角色</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addRoleModal')">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 編輯權限模態框 -->
+    <div id="editPermissionsModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>編輯權限</h3>
+                <button class="modal-close" onclick="closeModal('editPermissionsModal')">&times;</button>
+            </div>
+            <div class="modal-form">
+                <div class="permission-categories">
+                    <div class="category-section">
+                        <h4>🏪 系統管理</h4>
+                        <div class="permissions-grid">
+                            <label><input type="checkbox" value="system_config"> 系統設定</label>
+                            <label><input type="checkbox" value="user_manage"> 用戶管理</label>
+                            <label><input type="checkbox" value="role_manage"> 角色管理</label>
+                            <label><input type="checkbox" value="backup_restore"> 備份還原</label>
+                        </div>
+                    </div>
+                    
+                    <div class="category-section">
+                        <h4>🍽️ 菜單管理</h4>
+                        <div class="permissions-grid">
+                            <label><input type="checkbox" value="menu_view"> 查看菜單</label>
+                            <label><input type="checkbox" value="menu_create"> 新增菜品</label>
+                            <label><input type="checkbox" value="menu_edit"> 編輯菜品</label>
+                            <label><input type="checkbox" value="menu_delete"> 刪除菜品</label>
+                            <label><input type="checkbox" value="menu_category"> 分類管理</label>
+                        </div>
+                    </div>
+                    
+                    <div class="category-section">
+                        <h4>📋 訂單管理</h4>
+                        <div class="permissions-grid">
+                            <label><input type="checkbox" value="order_view"> 查看訂單</label>
+                            <label><input type="checkbox" value="order_process"> 處理訂單</label>
+                            <label><input type="checkbox" value="order_cancel"> 取消訂單</label>
+                            <label><input type="checkbox" value="order_refund"> 退款處理</label>
+                        </div>
+                    </div>
+                    
+                    <div class="category-section">
+                        <h4>📊 報表分析</h4>
+                        <div class="permissions-grid">
+                            <label><input type="checkbox" value="report_sales"> 銷售報表</label>
+                            <label><input type="checkbox" value="report_revenue"> 營收分析</label>
+                            <label><input type="checkbox" value="report_export"> 匯出報表</label>
+                            <label><input type="checkbox" value="report_dashboard"> 儀表板</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-primary" onclick="savePermissions()">儲存權限</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editPermissionsModal')">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/admin-permissions.js"></script>
+</body>
+</html>

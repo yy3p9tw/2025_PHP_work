@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>測試管理頁面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .test-button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            opacity: 0.8;
+        }
+        #testResults {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>餐廳點餐系統 - 功能測試</h1>
+    
+    <div class="test-section">
+        <h2>資料測試</h2>
+        <button class="test-button" onclick="testMenuData()">測試菜單資料</button>
+        <button class="test-button" onclick="testDataSync()">測試資料同步</button>
+        <button class="test-button" onclick="clearAllData()">清除所有資料</button>
+        <button class="test-button" onclick="resetToDefault()">重置為預設菜單</button>
+    </div>
+
+    <div class="test-section">
+        <h2>管理功能</h2>
+        <button class="test-button" onclick="openAdminPage()">開啟管理頁面</button>
+        <button class="test-button" onclick="openCustomerPage()">開啟顧客頁面</button>
+    </div>
+
+    <div class="test-section">
+        <h2>測試結果</h2>
+        <div id="testResults"></div>
+    </div>
+
+    <script>
+        function log(message) {
+            const results = document.getElementById('testResults');
+            results.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
+            results.scrollTop = results.scrollHeight;
+        }
+
+        function testMenuData() {
+            log('開始測試菜單資料...');
+            
+            // 檢查管理端資料
+            const adminData = localStorage.getItem('restaurantMenuItems');
+            if (adminData) {
+                const items = JSON.parse(adminData);
+                log(`管理端菜單項目數量: ${items.length}`);
+                log(`管理端菜單內容: ${items.map(item => item.name).join(', ')}`);
+            } else {
+                log('管理端菜單資料不存在');
+            }
+
+            // 檢查顧客端資料
+            const customerData = localStorage.getItem('customerMenuItems');
+            if (customerData) {
+                const items = JSON.parse(customerData);
+                log(`顧客端菜單項目數量: ${items.length}`);
+                log(`顧客端菜單內容: ${items.map(item => item.name).join(', ')}`);
+            } else {
+                log('顧客端菜單資料不存在');
+            }
+        }
+
+        function testDataSync() {
+            log('開始測試資料同步...');
+              // 模擬新增一個菜品
+            const testItem = {
+                id: 999,
+                name: '測試菜品',
+                price: 99,
+                category: 'main',
+                image: '',
+                status: 'available'
+            };
+
+            // 取得現有資料
+            let adminData = JSON.parse(localStorage.getItem('restaurantMenuItems') || '[]');
+            adminData.push(testItem);
+            localStorage.setItem('restaurantMenuItems', JSON.stringify(adminData));            // 同步到顧客端
+            const customerData = adminData
+                .filter(item => item.status === 'available')
+                .map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    category: item.category,
+                    image: item.image
+                }));
+            
+            localStorage.setItem('customerMenuItems', JSON.stringify(customerData));
+            
+            log('已新增測試菜品並同步到顧客端');
+            log(`同步後的資料: ${customerData.map(item => item.name).join(', ')}`);
+        }
+
+        function clearAllData() {
+            localStorage.removeItem('restaurantMenuItems');
+            localStorage.removeItem('customerMenuItems');
+            localStorage.removeItem('menuItems'); // 舊版本的資料
+            log('已清除所有菜單資料');
+        }        function resetToDefault() {
+            const defaultMenu = [
+                { id: 1, name: '牛肉麵', price: 180, category: 'main', image: '', status: 'available' },
+                { id: 2, name: '炸雞排', price: 120, category: 'main', image: '', status: 'available' },
+                { id: 3, name: '蔥抓餅', price: 40, category: 'appetizer', image: '', status: 'available' },
+                { id: 4, name: '小籠包', price: 80, category: 'appetizer', image: '', status: 'available' },
+                { id: 5, name: '玉米濃湯', price: 60, category: 'soup', image: '', status: 'available' },
+                { id: 6, name: '紫菜蛋花湯', price: 50, category: 'soup', image: '', status: 'available' },
+                { id: 7, name: '紅豆湯', price: 45, category: 'dessert', image: '', status: 'available' },
+                { id: 8, name: '芒果冰', price: 90, category: 'dessert', image: '', status: 'available' },
+                { id: 9, name: '珍珠奶茶', price: 55, category: 'drink', image: '', status: 'available' },
+                { id: 10, name: '新鮮果汁', price: 65, category: 'drink', image: '', status: 'available' }
+            ];
+
+            localStorage.setItem('restaurantMenuItems', JSON.stringify(defaultMenu));
+              // 同步到顧客端
+            const customerData = defaultMenu.map(item => ({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                category: item.category,
+                image: item.image
+            }));
+            
+            localStorage.setItem('customerMenuItems', JSON.stringify(customerData));
+            
+            log('已重置為預設菜單');
+            log(`重置後的菜單: ${defaultMenu.map(item => item.name).join(', ')}`);
+        }
+
+        function openAdminPage() {
+            window.open('admin/menu-manage.html', '_blank');
+        }
+
+        function openCustomerPage() {
+            window.open('customer/table-input.html', '_blank');
+        }
+
+        // 初始化
+        log('測試頁面已載入');
+        log('點擊按鈕開始測試各項功能');
+    </script>
+</body>
+</html>
