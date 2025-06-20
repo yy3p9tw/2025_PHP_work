@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="餐廳菜單 - 瀏覽美味菜品，輕鬆點餐">
+    <title>菜單 - 餐廳點餐系統</title>
+    
+    <!-- CSS 樣式 -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- PWA 設定 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FF6B35">
+    
+    <!-- 預載入重要資源 -->
+    <link rel="preload" href="css/styles.css" as="style">
+    <link rel="preload" href="js/menu.js" as="script">
+</head>
+<body>    <!-- 頂部導航 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <button class="btn-back" onclick="history.back()">
+                    ← 返回
+                </button>
+                <h1 class="navbar-title">菜單</h1>
+                <div class="navbar-right">
+                    <div class="table-info">
+                        <span id="currentTableNumber">座號：--</span>
+                    </div>
+                    <button class="cart-btn" onclick="openCart()">
+                        🛒 <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 分類導航 -->
+            <section class="category-nav mb-4">
+                <div class="category-scroll">
+                    <button class="category-btn active" data-category="all">
+                        🍽️ 全部
+                    </button>
+                    <button class="category-btn" data-category="主食">
+                        🍜 主食
+                    </button>
+                    <button class="category-btn" data-category="飲品">
+                        🥤 飲品
+                    </button>
+                    <button class="category-btn" data-category="甜點">
+                        🍰 甜點
+                    </button>
+                    <button class="category-btn" data-category="小菜">
+                        🥗 小菜
+                    </button>
+                </div>
+            </section>
+
+            <!-- 搜尋功能 -->
+            <section class="search-section mb-4">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="🔍 搜尋菜品名稱..."
+                        autocomplete="off"
+                    >
+                    <button class="search-clear d-none" id="searchClearBtn">
+                        ×
+                    </button>
+                </div>
+            </section>
+
+            <!-- 菜品網格 -->
+            <section class="menu-grid" id="menuGrid">
+                <!-- 載入中狀態 -->
+                <div class="loading-state" id="menuLoading">
+                    <div class="loading"></div>
+                    <p class="mt-3">載入菜單中...</p>
+                </div>
+
+                <!-- 菜品項目將由 JavaScript 動態插入 -->
+            </section>
+
+            <!-- 空狀態 -->
+            <div class="empty-state d-none" id="emptyState">
+                <div class="empty-icon">🍽️</div>
+                <h3>沒有找到相關菜品</h3>
+                <p class="text-muted">試試搜尋其他關鍵字或選擇不同分類</p>
+            </div>
+        </div>
+    </main>    <!-- 菜品詳情模態框 -->
+    <div class="modal d-none" id="menuItemModal">
+        <div class="modal-content menu-item-modal">
+            <div class="modal-header">
+                <h3 id="itemModalTitle">菜品詳情</h3>
+                <button class="modal-close" id="itemModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="item-image-container">
+                    <img id="itemModalImage" src="" alt="" class="item-image">
+                </div>
+                <div class="item-details">
+                    <h4 id="itemModalName"></h4>
+                    <p id="itemModalDescription" class="text-muted"></p>
+                    <div class="item-price">
+                        <span class="price-label">價格：</span>
+                        <span id="itemModalPrice" class="price-value"></span>
+                    </div>
+                    <div class="item-tags" id="itemModalTags"></div>
+                </div>
+            </div>            <div class="modal-footer">
+                <button class="btn btn-secondary btn-lg" id="modalCloseFooter">
+                    關閉
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通知提示 -->
+    <div class="toast d-none" id="toast">
+        <div class="toast-content">
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module" src="js/firebase-config.js"></script>
+    <script src="js/menu.js"></script>
+
+    <style>
+        /* 頁面特定樣式 */
+        .navbar {
+            background-color: var(--primary-color);
+            color: white;
+            padding: var(--spacing-md) 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }        .navbar-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .btn-back {
+            background: none;
+            border: none;
+            color: white;
+            font-size: var(--font-md);
+            cursor: pointer;
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-back:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar-title {
+            margin: 0;
+            font-size: var(--font-xl);
+            font-weight: 600;
+        }        .table-info {
+            font-size: var(--font-sm);
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+        }
+
+        .cart-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: var(--font-md);
+            cursor: pointer;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            position: relative;
+        }
+
+        .cart-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .cart-btn .cart-count {
+            background-color: var(--error);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: var(--font-xs);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+        }
+
+        .cart-btn .cart-count.d-none {
+            display: none !important;
+        }        .main-content {
+            padding-top: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+        }
+
+        /* 分類導航 */
+        .category-nav {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .category-scroll {
+            display: flex;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) 0;
+            min-width: max-content;
+        }
+
+        .category-btn {
+            background-color: var(--surface);
+            border: 2px solid #e0e0e0;
+            color: var(--text-dark);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-xl);
+            font-size: var(--font-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-width: max-content;
+        }
+
+        .category-btn:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(255, 107, 53, 0.1);
+        }
+
+        .category-btn.active {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        /* 搜尋框 */
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--spacing-md);
+            padding-right: 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-md);
+            background-color: var(--surface);
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text-light);
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .search-clear:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* 菜品網格 */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            min-height: 200px;
+        }
+
+        .menu-item {
+            background-color: var(--surface);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .menu-item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #f5f5f5;
+        }
+
+        .menu-item-content {
+            padding: var(--spacing-md);
+        }
+
+        .menu-item-name {
+            font-size: var(--font-lg);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-dark);
+        }        .menu-item-description {
+            font-size: var(--font-sm);
+            color: var(--text-light);
+            margin-bottom: var(--spacing-sm);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .menu-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-item-price {
+            font-size: var(--font-lg);
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .menu-item-tags {
+            display: flex;
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-xs);
+        }
+
+        .menu-tag {
+            background-color: #f0f0f0;
+            color: var(--text-dark);
+            padding: 2px 6px;
+            border-radius: var(--border-radius-sm);
+            font-size: var(--font-xs);
+        }
+
+        .menu-tag.spicy {
+            background-color: #ffebee;
+            color: var(--error);
+        }        .menu-tag.vegetarian {
+            background-color: #e8f5e8;
+            color: var(--success);
+        }
+
+        /* 菜單項目中的數量控制 */
+        .menu-item-controls {
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .menu-item .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+        }
+
+        .menu-item .qty-btn {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--primary-color);
+            background-color: white;
+            color: var(--primary-color);
+            border-radius: 50%;
+            font-size: var(--font-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-item .qty-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .menu-item .qty-display {
+            font-size: var(--font-md);
+            font-weight: 600;
+            min-width: 24px;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        /* 載入和空狀態 */
+        .loading-state,
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: var(--spacing-xl);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: var(--spacing-md);
+        }        /* 菜品詳情模態框 */
+        .menu-item-modal {
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .item-image-container {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            border-radius: var(--border-radius-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-details h4 {
+            font-size: var(--font-xl);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .item-price {
+            margin: var(--spacing-md) 0;
+            font-size: var(--font-lg);
+        }
+
+        .price-value {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .qty-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--primary-color);
+            background-color: white;
+            color: var(--primary-color);
+            border-radius: 50%;
+            font-size: var(--font-lg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .qty-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .qty-display {
+            font-size: var(--font-lg);
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        /* 通知提示 */
+        .toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10001;
+            animation: toastSlideIn 0.3s ease-out;
+        }
+
+        .toast-content {
+            background-color: var(--success);
+            color: white;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            font-weight: 500;
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+
+            .menu-item {
+                max-width: none;
+            }
+
+            .navbar-right {
+                gap: var(--spacing-xs);
+            }
+
+            .table-info,
+            .cart-btn {
+                font-size: var(--font-xs);
+                padding: var(--spacing-xs);
+            }
+        }
+    </style>
+</body>
+</html>

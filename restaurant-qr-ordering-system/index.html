@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="餐廳QR Code點餐系統 - 輸入座號即可開始點餐">
+    <title>餐廳點餐系統</title>
+    
+    <!-- CSS 樣式 -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- PWA 設定 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FF6B35">
+    
+    <!-- Apple PWA 設定 -->
+    <link rel="apple-touch-icon" href="images/icon-192x192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="餐廳點餐">
+    
+    <!-- 預載入重要資源 -->
+    <link rel="preload" href="css/styles.css" as="style">
+    <link rel="preload" href="js/app.js" as="script">
+</head>
+<body>
+    <!-- 主要容器 -->
+    <div class="container">        <!-- 頭部區域 -->
+        <header class="text-center mt-4 mb-4">
+            <h1 class="text-primary mb-2">🍽️ 歡迎光臨</h1>
+            <p class="text-muted">請輸入您的座號開始點餐</p>
+        </header>
+
+        <!-- 主要內容區域 -->
+        <main>
+            <!-- 座號輸入卡片 (進入網頁即顯示) -->
+            <div class="table-input-section" id="tableInputSection">
+                <div class="card shadow-md mb-4">
+                    <div class="card-body text-center">
+                        <div class="scan-success-icon mb-3">🪑</div>
+                        <h2 class="mb-3">請輸入座號</h2>
+                        <p class="text-muted mb-4">請輸入桌上標示的座號開始點餐</p>
+                        
+                        <!-- 座號輸入表單 -->
+                        <form id="tableForm" class="mb-4">
+                            <div class="form-group">
+                                <label for="tableNumber" class="form-label">座號</label>
+                                <input 
+                                    type="text" 
+                                    id="tableNumber" 
+                                    class="form-control text-center" 
+                                    placeholder="例：A01, 1, 12" 
+                                    maxlength="10"
+                                    required
+                                    autocomplete="off"
+                                >
+                                <small class="text-muted">請輸入桌上標示的座號</small>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                開始點餐 🛒
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>            <!-- 功能說明卡片 -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="mb-3 text-center">接下來的步驟</h3>
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center mb-3">
+                            <div class="mb-2">🪑</div>
+                            <h4 class="text-primary">步驟 1</h4>
+                            <p class="text-sm text-muted">輸入您的座號</p>
+                        </div>
+                        <div class="col-12 col-sm-6 text-center mb-3">
+                            <div class="mb-2">🍜</div>
+                            <h4 class="text-primary">步驟 2</h4>
+                            <p class="text-sm text-muted">瀏覽菜單開始點餐</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 頁腳 -->
+        <footer class="text-center mt-5 mb-3">
+            <p class="text-muted text-sm">
+                © 2025 餐廳點餐系統 | 
+                <a href="admin/login.html" class="text-primary">管理員登入</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- 載入中覆蓋層 -->
+    <div id="loadingOverlay" class="loading-overlay d-none">
+        <div class="loading-content">
+            <div class="loading"></div>
+            <p class="mt-3">正在進入點餐系統...</p>
+        </div>
+    </div>    <!-- 錯誤提示模態框 -->
+    <div id="errorModal" class="modal d-none">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>提示</h3>
+                <button class="modal-close" id="modalCloseBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="modalConfirmBtn">確定</button>
+            </div>
+        </div>
+    </div>    <!-- JavaScript -->
+    <script type="module" src="js/firebase-config.js"></script>
+    <script src="js/app.js"></script>
+    
+    <!-- Service Worker 註冊 -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+
+    <style>
+        /* 頁面特定樣式 */
+        .welcome-icon,
+        .scan-success-icon {
+            font-size: 64px;
+            color: var(--primary-color);
+        }
+
+        .divider {
+            position: relative;
+            text-align: center;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+
+        .divider-text {
+            background-color: var(--background);
+            padding: 0 var(--spacing-md);
+            color: var(--text-light);
+            font-size: var(--font-sm);
+            position: relative;
+            z-index: 2;
+        }        /* 動效 */
+        .card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .table-input-section {
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 輸入框特效 */
+        #tableNumber {
+            font-size: var(--font-lg);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        #tableNumber:focus {
+            transform: scale(1.02);
+        }
+
+        /* 響應式調整 */
+        @media (max-width: 480px) {
+            .modal-content {
+                width: 95%;
+                margin: var(--spacing-md);
+            }
+        }
+    </style>
+</body>
+</html>
