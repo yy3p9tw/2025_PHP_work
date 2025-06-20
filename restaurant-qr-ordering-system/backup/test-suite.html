@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOP 架構測試套件 - 餐廳QR點餐系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .controls {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, #51cf66, #40c057);
+            box-shadow: 0 4px 15px rgba(81, 207, 102, 0.3);
+        }
+
+        .results {
+            padding: 30px;
+            min-height: 400px;
+        }
+
+        .test-summary {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            flex: 1;
+            margin: 0 10px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .stat-card h3 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            opacity: 0.9;
+        }
+
+        .stat-card.success {
+            background: linear-gradient(135deg, #51cf66, #40c057);
+        }
+
+        .stat-card.danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        }
+
+        .log-container {
+            background: #1e1e1e;
+            border-radius: 12px;
+            padding: 20px;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .log-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .log-container::-webkit-scrollbar-track {
+            background: #2d2d2d;
+            border-radius: 4px;
+        }
+
+        .log-container::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 4px;
+        }
+
+        .log-container::-webkit-scrollbar-thumb:hover {
+            background: #777;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .log-entry.success {
+            background: rgba(81, 207, 102, 0.2);
+            color: #51cf66;
+        }
+
+        .log-entry.error {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+        }
+
+        .log-entry.info {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .test-details {
+            margin-top: 30px;
+        }
+
+        .test-suite {
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid #dee2e6;
+        }
+
+        .test-suite-header {
+            background: #667eea;
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .test-suite-header:hover {
+            background: #5a6fd8;
+        }
+
+        .test-suite-content {
+            padding: 20px;
+            display: none;
+        }
+
+        .test-suite-content.show {
+            display: block;
+        }
+
+        .test-case {
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .test-case.passed {
+            background: rgba(81, 207, 102, 0.1);
+            border-left: 4px solid #51cf66;
+        }
+
+        .test-case.failed {
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .test-case-name {
+            flex: 1;
+        }
+
+        .test-case-status {
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .test-case-status.passed {
+            background: #51cf66;
+            color: white;
+        }
+
+        .test-case-status.failed {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .error-details {
+            background: #2d2d2d;
+            color: #ff6b6b;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .status-indicator.running {
+            background: #ffa500;
+            animation: pulse 1s infinite;
+        }
+
+        .status-indicator.passed {
+            background: #51cf66;
+        }
+
+        .status-indicator.failed {
+            background: #ff6b6b;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .test-summary {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .stat-card {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 OOP 架構測試套件</h1>
+            <p>餐廳QR Code點餐系統 - 全面品質保證</p>
+        </div>
+
+        <div class="controls">
+            <button class="btn success" onclick="runAllTests()">
+                🚀 運行所有測試
+            </button>
+            <button class="btn" onclick="runSpecificSuite('CartManager')">
+                🛒 購物車測試
+            </button>
+            <button class="btn" onclick="runSpecificSuite('EventBus')">
+                🚌 事件系統測試
+            </button>
+            <button class="btn" onclick="runSpecificSuite('ErrorHandler')">
+                🛡️ 錯誤處理測試
+            </button>
+            <button class="btn danger" onclick="clearResults()">
+                🗑️ 清除結果
+            </button>
+        </div>
+
+        <div class="results">
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>正在運行測試...</p>
+            </div>
+
+            <div id="summary" class="test-summary" style="display: none;">
+                <div class="stat-card">
+                    <h3 id="total-tests">0</h3>
+                    <p>總測試數</p>
+                </div>
+                <div class="stat-card success">
+                    <h3 id="passed-tests">0</h3>
+                    <p>通過測試</p>
+                </div>
+                <div class="stat-card danger">
+                    <h3 id="failed-tests">0</h3>
+                    <p>失敗測試</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="pass-rate">0%</h3>
+                    <p>通過率</p>
+                </div>
+            </div>
+
+            <div class="progress-bar" style="display: none;">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+
+            <div id="log-output" class="log-container">
+                <div class="log-entry info">🎯 測試套件已準備就緒，點擊上方按鈕開始測試</div>
+            </div>
+
+            <div id="test-details" class="test-details" style="display: none;">
+                <!-- 測試詳情將在這裡動態生成 -->
+            </div>
+        </div>
+    </div>    <!-- 載入測試框架和相關文件 -->
+    <script src="js/test/TestFramework.js"></script>
+    <script src="js/test/TestDataFactory.js"></script>
+    <script src="js/test/TestUtils.js"></script>
+    
+    <!-- 載入核心模組 (用於測試) -->
+    <script src="js/core/EventBus.js"></script>
+    <script src="js/core/ErrorHandler.js"></script>
+    <script src="js/core/StorageService.js"></script>
+    <script src="js/managers/CartManager.js"></script>
+    <script src="js/managers/OrderManager.js"></script>
+    
+    <!-- 載入測試套件 -->
+    <script src="js/test/CartManager.test.js"></script>
+    <script src="js/test/EventBus.test.js"></script>
+    <script src="js/test/ErrorHandler.test.js"></script>
+
+    <script>
+        let currentTestResults = null;
+        let isTestRunning = false;
+
+        // 主要測試運行功能
+        async function runAllTests() {
+            if (isTestRunning) return;
+            
+            isTestRunning = true;
+            showLoading();
+            clearLog();
+            addLogEntry('🚀 開始運行所有測試套件', 'info');
+            
+            try {
+                const results = await runTests();
+                currentTestResults = results;
+                displayResults(results);
+                addLogEntry(`✅ 測試完成！通過 ${results.passed}/${results.total} 個測試`, 'success');
+            } catch (error) {
+                addLogEntry(`❌ 測試運行失敗: ${error.message}`, 'error');
+                console.error('測試運行錯誤:', error);
+            } finally {
+                hideLoading();
+                isTestRunning = false;
+            }
+        }
+
+        async function runSpecificSuite(suiteName) {
+            if (isTestRunning) return;
+            
+            isTestRunning = true;
+            showLoading();
+            clearLog();
+            addLogEntry(`🎯 運行 ${suiteName} 測試套件`, 'info');
+            
+            try {
+                // 這裡需要實現特定測試套件的運行邏輯
+                // 暫時運行所有測試並過濾結果
+                const results = await runTests();
+                currentTestResults = results;
+                displayResults(results);
+                addLogEntry(`✅ ${suiteName} 測試完成`, 'success');
+            } catch (error) {
+                addLogEntry(`❌ ${suiteName} 測試失敗: ${error.message}`, 'error');
+                console.error('測試運行錯誤:', error);
+            } finally {
+                hideLoading();
+                isTestRunning = false;
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('summary').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'block';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+        }
+
+        function displayResults(results) {
+            // 顯示統計摘要
+            document.getElementById('total-tests').textContent = results.total;
+            document.getElementById('passed-tests').textContent = results.passed;
+            document.getElementById('failed-tests').textContent = results.failed;
+            
+            const passRate = results.total > 0 ? ((results.passed / results.total) * 100).toFixed(1) : 0;
+            document.getElementById('pass-rate').textContent = passRate + '%';
+            
+            document.getElementById('summary').style.display = 'flex';
+            
+            // 更新進度條
+            const progressFill = document.getElementById('progress');
+            progressFill.style.width = '100%';
+            
+            // 顯示詳細結果（這裡可以擴展來顯示每個測試的詳情）
+            if (results.errors.length > 0) {
+                addLogEntry('❌ 失敗的測試:', 'error');
+                results.errors.forEach(error => {
+                    addLogEntry(`  • ${error.test}: ${error.error.message}`, 'error');
+                });
+            }
+        }
+
+        function addLogEntry(message, type = 'info') {
+            const logContainer = document.getElementById('log-output');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function clearLog() {
+            const logContainer = document.getElementById('log-output');
+            logContainer.innerHTML = '';
+        }
+
+        function clearResults() {
+            clearLog();
+            document.getElementById('summary').style.display = 'none';
+            document.getElementById('test-details').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            currentTestResults = null;
+            addLogEntry('🗑️ 結果已清除', 'info');
+        }
+
+        // 初始化頁面
+        document.addEventListener('DOMContentLoaded', function() {
+            addLogEntry('🎯 測試環境初始化完成', 'success');
+            addLogEntry('📋 可用測試套件: CartManager, EventBus, ErrorHandler', 'info');
+            addLogEntry('💡 點擊上方按鈕開始測試', 'info');
+        });
+
+        // 捕獲全局錯誤
+        window.addEventListener('error', function(event) {
+            addLogEntry(`🚨 全局錯誤: ${event.error.message}`, 'error');
+        });
+
+        window.addEventListener('unhandledrejection', function(event) {
+            addLogEntry(`🚨 未處理的Promise拒絕: ${event.reason}`, 'error');
+        });
+    </script>
+</body>
+</html>

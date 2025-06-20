@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>簡單測試</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .pass { color: green; }
+        .fail { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>簡單測試</h1>
+    <div id="output"></div>
+    <button onclick="runSimpleTest()">運行測試</button>
+
+    <!-- 載入依賴 -->
+    <script src="js/test/TestFramework.js"></script>
+    <script src="js/test/TestDataFactory.js"></script>
+    <script src="js/test/TestUtils.js"></script>
+    <script src="js/core/EventBus.js"></script>
+    <script src="js/core/ErrorHandler.js"></script>
+    <script src="js/core/StorageService.js"></script>
+    <script src="js/managers/CartManager.js"></script>
+
+    <script>
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = message;
+            output.appendChild(div);
+        }        async function runSimpleTest() {
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            
+            log('開始簡單測試...', 'info');            try {
+                // 先檢查依賴是否載入
+                log('🔍 檢查依賴載入狀態...', 'info');
+                
+                if (typeof ErrorHandler === 'undefined') {
+                    log('❌ ErrorHandler 未載入', 'fail');
+                    return;
+                } else {
+                    log('✅ ErrorHandler 已載入', 'pass');
+                }
+                
+                if (typeof EventBus === 'undefined') {
+                    log('❌ EventBus 未載入', 'fail');
+                    return;
+                } else {
+                    log('✅ EventBus 已載入', 'pass');
+                }
+                
+                if (typeof jest === 'undefined') {
+                    log('❌ jest mock 未載入', 'fail');
+                    return;
+                } else {
+                    log('✅ jest mock 已載入', 'pass');
+                }
+                
+                log('✅ 所有核心依賴已載入，開始運行測試...', 'pass');
+
+                // 測試 1: 基本 expect 功能
+                describe('基本測試', () => {
+                    it('should work with basic expect', () => {
+                        expect(1 + 1).toBe(2);
+                    });
+                    
+                    it('should work with array', () => {
+                        expect([1, 2, 3]).toHaveLength(3);
+                    });
+                      it('should work with jest.fn', () => {
+                        const mockFn = jest.fn();
+                        mockFn('test');
+                        expect(mockFn).toHaveBeenCalledWith('test');
+                    });
+                    
+                    it('should work with toMatchObject', () => {
+                        const obj = { name: 'test', age: 25, date: new Date() };
+                        expect(obj).toMatchObject({
+                            name: 'test',
+                            age: expect.any(Number),
+                            date: expect.any(Date)
+                        });
+                    });
+                });
+
+                // 測試 2: EventBus 測試
+                describe('EventBus 測試', () => {
+                    it('should emit and receive events', () => {
+                        const eventBus = EventBus.getInstance();
+                        let received = false;
+                        
+                        eventBus.on('test-event', () => {
+                            received = true;
+                        });
+                        
+                        eventBus.emit('test-event');
+                        
+                        expect(received).toBe(true);
+                    });
+                });
+
+                // 測試 3: ErrorHandler 測試
+                describe('ErrorHandler 測試', () => {
+                    it('should handle errors', () => {
+                        const errorHandler = ErrorHandler.getInstance();
+                        const testError = new Error('Test error');
+                        
+                        // 這不應該拋出錯誤
+                        errorHandler.handleError(testError);
+                        
+                        expect(errorHandler.errorLog.length).toBe(1);
+                    });
+                });
+
+                // 運行測試
+                const results = await runTests();
+                
+                log(`測試結果: ${results.passed}/${results.total} 通過`, 
+                    results.failed === 0 ? 'pass' : 'fail');
+                
+                if (results.errors.length > 0) {
+                    log('錯誤詳情:', 'fail');
+                    results.errors.forEach(error => {
+                        log(`- ${error.test}: ${error.error.message}`, 'fail');
+                    });
+                }
+                
+            } catch (error) {
+                log(`測試框架錯誤: ${error.message}`, 'fail');
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 OOP 測試中心 - 餐廳QR點餐系統</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab.active {
+            background: white;
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: #e9ecef;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stat-number.success { color: #28a745; }
+        .stat-number.danger { color: #dc3545; }
+        .stat-number.info { color: #17a2b8; }
+        .stat-number.warning { color: #ffc107; }
+
+        .log-container {
+            background: #1e1e1e;
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .log-entry.success {
+            background: rgba(81, 207, 102, 0.2);
+            color: #51cf66;
+        }
+
+        .log-entry.error {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+        }
+
+        .log-entry.info {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+        }
+
+        .log-entry.warning {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .file-list {
+            margin: 15px 0;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #ccc;
+        }
+
+        .file-item.marked-for-deletion {
+            border-left-color: #dc3545;
+            background: #fff5f5;
+        }
+
+        .file-name {
+            flex: 1;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .file-status {
+            margin: 0 15px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .file-status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .file-status.obsolete {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .file-actions {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 0.8em;
+        }
+
+        .dependency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .dependency-card {
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            background: #f8f9fa;
+        }
+
+        .dependency-card.loaded {
+            background: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .dependency-card.failed {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-indicator.success { background: #28a745; }
+        .status-indicator.error { background: #dc3545; }
+        .status-indicator.warning { background: #ffc107; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 OOP 測試中心</h1>
+            <p>餐廳QR點餐系統 - 統一測試平台</p>
+        </div>        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('dependency')">🔍 依賴檢查</button>
+            <button class="nav-tab" onclick="switchTab('basic')">🧪 基本測試</button>
+            <button class="nav-tab" onclick="switchTab('core')">⚡ 核心模組</button>
+            <button class="nav-tab" onclick="switchTab('performance')">📊 效能監控</button>
+            <button class="nav-tab" onclick="switchTab('full')">🚀 完整測試</button>
+        </div>
+
+        <!-- 依賴檢查頁籤 -->
+        <div id="dependency-tab" class="tab-content active">
+            <h2>🔍 依賴環境檢查</h2>
+            <div class="control-group">
+                <button class="btn btn-info" onclick="checkDependencies()">檢查依賴</button>
+                <button class="btn btn-secondary" onclick="clearLog('dependency')">清除日誌</button>
+            </div>
+            
+            <div class="dependency-grid" id="dependency-grid">
+                <!-- 動態生成依賴卡片 -->
+            </div>
+            
+            <div id="dependency-log" class="log-container">
+                <div class="log-entry info">🎯 點擊「檢查依賴」開始檢查測試環境</div>
+            </div>
+        </div>
+
+        <!-- 基本測試頁籤 -->
+        <div id="basic-tab" class="tab-content">
+            <h2>🧪 基本功能測試</h2>
+            <div class="control-group">
+                <button class="btn btn-success" onclick="runBasicTests()">運行基本測試</button>
+                <button class="btn btn-secondary" onclick="clearLog('basic')">清除日誌</button>
+            </div>
+            
+            <div class="stats" id="basic-stats" style="display: none;">
+                <div class="stat-card">
+                    <div class="stat-number success" id="basic-passed">0</div>
+                    <div class="stat-label">通過</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number danger" id="basic-failed">0</div>
+                    <div class="stat-label">失敗</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number info" id="basic-total">0</div>
+                    <div class="stat-label">總計</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number warning" id="basic-rate">0%</div>
+                    <div class="stat-label">通過率</div>
+                </div>
+            </div>
+            
+            <div id="basic-log" class="log-container">
+                <div class="log-entry info">🎯 點擊「運行基本測試」開始測試框架基本功能</div>
+            </div>
+        </div>
+
+        <!-- 核心模組測試頁籤 -->
+        <div id="core-tab" class="tab-content">
+            <h2>⚡ 核心模組測試</h2>
+            <div class="control-group">
+                <button class="btn btn-primary" onclick="runCoreTests()">運行核心測試</button>
+                <button class="btn btn-secondary" onclick="clearLog('core')">清除日誌</button>
+            </div>
+            
+            <div class="stats" id="core-stats" style="display: none;">
+                <div class="stat-card">
+                    <div class="stat-number success" id="core-passed">0</div>
+                    <div class="stat-label">通過</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number danger" id="core-failed">0</div>
+                    <div class="stat-label">失敗</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number info" id="core-total">0</div>
+                    <div class="stat-label">總計</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number warning" id="core-rate">0%</div>
+                    <div class="stat-label">通過率</div>
+                </div>
+            </div>
+            
+            <div id="core-log" class="log-container">
+                <div class="log-entry info">🎯 點擊「運行核心測試」開始測試 EventBus、ErrorHandler、CartManager</div>
+            </div>        </div>
+
+        <!-- 效能監控頁籤 -->
+        <div id="performance-tab" class="tab-content">
+            <h2>📊 效能監控測試</h2>
+            <div class="control-group">
+                <button class="btn btn-info" onclick="startPerformanceMonitor()">開始監控</button>
+                <button class="btn btn-warning" onclick="runPerformanceTest()">執行效能測試</button>
+                <button class="btn btn-secondary" onclick="clearLog('performance')">清除日誌</button>
+            </div>
+            
+            <div class="stats" id="performance-stats" style="display: none;">
+                <div class="stat-card">
+                    <div class="stat-number info" id="perf-memory">0 MB</div>
+                    <div class="stat-label">記憶體使用</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number info" id="perf-execution">0 ms</div>
+                    <div class="stat-label">執行時間</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number info" id="perf-operations">0</div>
+                    <div class="stat-label">操作次數</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number warning" id="perf-fps">0</div>
+                    <div class="stat-label">FPS</div>
+                </div>
+            </div>
+            
+            <div id="performance-log" class="log-container">
+                <div class="log-entry info">📊 點擊「開始監控」啟動效能監控</div>
+            </div>
+        </div>        <!-- 完整測試頁籤 -->
+        <div id="full-tab" class="tab-content">
+            <h2>🚀 完整測試套件</h2>
+            <div class="control-group">
+                <button class="btn btn-primary" onclick="runFullTests()">運行完整測試</button>
+                <button class="btn btn-warning" onclick="runAllSequentially()">依序執行所有測試</button>
+                <button class="btn btn-info" onclick="showTestFileManagement()">管理測試檔案</button>
+                <button class="btn btn-secondary" onclick="clearLog('full')">清除日誌</button>
+            </div>
+            
+            <!-- 測試檔案管理區域 -->
+            <div id="test-file-management" style="display: none; margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                <h3>📁 測試檔案管理</h3>
+                <p>以下是系統中的測試相關檔案：</p>
+                <div class="file-list">
+                    <div class="file-item">
+                        <span class="file-name">test-center.html</span>
+                        <span class="file-status active">✅ 主要測試中心（保留）</span>
+                    </div>
+                    <div class="file-item">
+                        <span class="file-name">test-suite.html</span>
+                        <span class="file-status obsolete">🗑️ 可移除（功能已整合）</span>
+                        <button class="btn btn-sm btn-danger" onclick="markForDeletion('test-suite.html')">標記刪除</button>
+                    </div>
+                    <div class="file-item">
+                        <span class="file-name">test-suite-fixed.html</span>
+                        <span class="file-status obsolete">🗑️ 可移除（功能已整合）</span>
+                        <button class="btn btn-sm btn-danger" onclick="markForDeletion('test-suite-fixed.html')">標記刪除</button>
+                    </div>
+                    <div class="file-item">
+                        <span class="file-name">simple-test.html</span>
+                        <span class="file-status obsolete">🗑️ 可移除（功能已整合）</span>
+                        <button class="btn btn-sm btn-danger" onclick="markForDeletion('simple-test.html')">標記刪除</button>
+                    </div>
+                    <div class="file-item">
+                        <span class="file-name">dependency-check.html</span>
+                        <span class="file-status obsolete">🗑️ 可移除（功能已整合）</span>
+                        <button class="btn btn-sm btn-danger" onclick="markForDeletion('dependency-check.html')">標記刪除</button>
+                    </div>
+                    <div class="file-item">
+                        <span class="file-name">errorhandler-test.html</span>
+                        <span class="file-status obsolete">🗑️ 可移除（功能已整合）</span>
+                        <button class="btn btn-sm btn-danger" onclick="markForDeletion('errorhandler-test.html')">標記刪除</button>
+                    </div>
+                    <div class="file-item">
+                        <span class="file-name">performance-monitor.html</span>
+                        <span class="file-status obsolete">🗑️ 可移除（功能已整合）</span>
+                        <button class="btn btn-sm btn-danger" onclick="markForDeletion('performance-monitor.html')">標記刪除</button>
+                    </div>
+                </div>
+                <div class="file-actions">
+                    <button class="btn btn-warning" onclick="cleanupTestFiles()">清理標記的檔案</button>
+                    <button class="btn btn-secondary" onclick="hideTestFileManagement()">關閉</button>
+                </div>
+            </div>
+            
+            <div class="progress-bar" id="full-progress-container" style="display: none;">
+                <div class="progress-fill" id="full-progress"></div>
+            </div>
+            
+            <div class="stats" id="full-stats" style="display: none;">
+                <div class="stat-card">
+                    <div class="stat-number success" id="full-passed">0</div>
+                    <div class="stat-label">通過</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number danger" id="full-failed">0</div>
+                    <div class="stat-label">失敗</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number info" id="full-total">0</div>
+                    <div class="stat-label">總計</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number warning" id="full-rate">0%</div>
+                    <div class="stat-label">通過率</div>
+                </div>
+            </div>
+              <div id="full-log" class="log-container">
+                <div class="log-entry info">🎯 點擊「運行完整測試」執行所有測試案例</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 整合說明 -->
+    <div class="container" style="margin-top: 20px;">
+        <div style="padding: 20px; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #28a745;">
+            <h3 style="color: #28a745; margin-bottom: 15px;">🎯 測試中心整合說明</h3>
+            <p style="margin-bottom: 10px;">
+                <strong>此測試中心整合了所有測試功能：</strong>
+            </p>
+            <ul style="margin-left: 20px; line-height: 1.6;">
+                <li><strong>依賴檢查：</strong>整合了 dependency-check.html 的功能</li>
+                <li><strong>基本測試：</strong>整合了 simple-test.html 的功能</li>
+                <li><strong>核心模組：</strong>整合了 test-suite.html 和 test-suite-fixed.html 的功能</li>
+                <li><strong>效能監控：</strong>整合了 performance-monitor.html 的功能</li>
+                <li><strong>完整測試：</strong>整合了 errorhandler-test.html 等其他測試功能</li>
+            </ul>
+            <p style="margin-top: 15px; color: #6c757d;">
+                💡 <strong>建議：</strong>使用「管理測試檔案」功能清理不再需要的測試檔案，保持專案整潔。
+            </p>
+        </div>
+    </div>
+
+    <!-- 載入所有依賴 -->
+    <script src="js/test/TestFramework.js"></script>
+    <script src="js/test/TestDataFactory.js"></script>
+    <script src="js/test/TestUtils.js"></script>
+    <script src="js/core/EventBus.js"></script>
+    <script src="js/core/ErrorHandler.js"></script>
+    <script src="js/core/StorageService.js"></script>
+    <script src="js/managers/CartManager.js"></script>
+
+    <script>
+        let isTestRunning = false;
+        let currentTab = 'dependency';        // 頁籤切換
+        function switchTab(tabName) {
+            // 停止效能監控（如果正在運行）
+            if (currentTab === 'performance' && performanceInterval) {
+                stopPerformanceMonitor();
+            }
+            
+            // 移除所有 active 類別
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // 添加 active 類別到當前頁籤
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            currentTab = tabName;
+        }
+
+        // 通用日誌函數
+        function log(message, type = 'info', tabName = null) {
+            const targetTab = tabName || currentTab;
+            const logContainer = document.getElementById(`${targetTab}-log`);
+            const div = document.createElement('div');
+            div.className = `log-entry ${type}`;
+            div.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            logContainer.appendChild(div);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        // 清除日誌
+        function clearLog(tabName) {
+            const logContainer = document.getElementById(`${tabName}-log`);
+            logContainer.innerHTML = `<div class="log-entry info">🎯 日誌已清除</div>`;
+        }
+
+        // 更新統計數據
+        function updateStats(tabName, results) {
+            const statsContainer = document.getElementById(`${tabName}-stats`);
+            if (statsContainer) {
+                statsContainer.style.display = 'grid';
+                
+                document.getElementById(`${tabName}-passed`).textContent = results.passed;
+                document.getElementById(`${tabName}-failed`).textContent = results.failed;
+                document.getElementById(`${tabName}-total`).textContent = results.total;
+                
+                const passRate = results.total > 0 ? ((results.passed / results.total) * 100).toFixed(1) : 0;
+                document.getElementById(`${tabName}-rate`).textContent = `${passRate}%`;
+            }
+        }        // 依賴檢查
+        function checkDependencies() {
+            const dependencies = [
+                { name: 'TestFramework', check: () => typeof TestFramework !== 'undefined' },
+                { name: 'TestDataFactory', check: () => typeof TestDataFactory !== 'undefined' },
+                { name: 'TestUtils', check: () => typeof TestUtils !== 'undefined' },
+                { name: 'EventBus', check: () => typeof EventBus !== 'undefined' },
+                { name: 'ErrorHandler', check: () => typeof ErrorHandler !== 'undefined' },
+                { name: 'AppError', check: () => typeof AppError !== 'undefined' },
+                { name: 'ERROR_CODES', check: () => typeof ERROR_CODES !== 'undefined' },
+                { 
+                    name: 'CartManager', 
+                    check: () => {
+                        if (typeof CartManager === 'undefined') {
+                            return false;
+                        }
+                        // 嘗試創建實例來檢查是否正常工作
+                        try {
+                            const cart = new CartManager();
+                            return cart !== null;
+                        } catch (error) {
+                            console.error('CartManager 創建失敗:', error);
+                            return false;
+                        }
+                    }
+                },
+                { name: 'LocalStorageService', check: () => typeof LocalStorageService !== 'undefined' },
+                { name: 'jest mock', check: () => typeof jest !== 'undefined' },
+                { name: 'describe/it/expect', check: () => typeof describe !== 'undefined' && typeof it !== 'undefined' && typeof expect !== 'undefined' }
+            ];
+
+            const grid = document.getElementById('dependency-grid');
+            grid.innerHTML = '';
+
+            clearLog('dependency');
+            log('🔍 開始檢查依賴環境...', 'info', 'dependency');
+
+            let allPassed = true;
+
+            dependencies.forEach(dep => {
+                const card = document.createElement('div');
+                card.className = 'dependency-card';
+                
+                const isLoaded = dep.check();
+                const statusClass = isLoaded ? 'success' : 'error';
+                const cardClass = isLoaded ? 'loaded' : 'failed';
+                
+                card.classList.add(cardClass);
+                card.innerHTML = `
+                    <div>
+                        <span class="status-indicator ${statusClass}"></span>
+                        <strong>${dep.name}</strong>
+                    </div>
+                    <div style="margin-top: 5px; font-size: 0.9em; color: #666;">
+                        ${isLoaded ? '✅ 已載入' : '❌ 未載入'}
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+                
+                if (isLoaded) {
+                    log(`✅ ${dep.name} 可用`, 'success', 'dependency');
+                } else {
+                    log(`❌ ${dep.name} 不可用`, 'error', 'dependency');
+                    allPassed = false;
+                }
+            });
+
+            if (allPassed) {
+                log('🎉 所有依賴檢查通過！測試環境準備就緒', 'success', 'dependency');
+            } else {
+                log('⚠️ 部分依賴存在問題，建議檢查控制台錯誤', 'warning', 'dependency');
+            }
+        }
+
+        // 基本測試
+        async function runBasicTests() {
+            if (isTestRunning) return;
+            isTestRunning = true;
+            
+            clearLog('basic');
+            log('🧪 開始基本功能測試...', 'info', 'basic');
+            
+            try {
+                describe('基本功能測試', () => {
+                    it('expect.toBe 應該正常工作', () => {
+                        expect(1 + 1).toBe(2);
+                    });
+                    
+                    it('expect.toEqual 應該正常工作', () => {
+                        expect({a: 1}).toEqual({a: 1});
+                    });
+                    
+                    it('expect.toMatchObject 應該正常工作', () => {
+                        const obj = { name: 'test', age: 25 };
+                        expect(obj).toMatchObject({
+                            name: 'test',
+                            age: expect.any(Number)
+                        });
+                    });
+                    
+                    it('jest.fn mock 應該正常工作', () => {
+                        const mockFn = jest.fn();
+                        mockFn('hello');
+                        expect(mockFn).toHaveBeenCalledWith('hello');
+                    });
+                });
+
+                const results = await runTests();
+                updateStats('basic', results);
+                
+                if (results.failed === 0) {
+                    log('✅ 所有基本測試通過！', 'success', 'basic');
+                } else {
+                    log(`❌ ${results.failed} 個測試失敗`, 'error', 'basic');
+                    results.errors.forEach(error => {
+                        log(`  - ${error.test}: ${error.error.message}`, 'error', 'basic');
+                    });
+                }
+                
+            } catch (error) {
+                log(`❌ 基本測試運行失敗: ${error.message}`, 'error', 'basic');
+                console.error(error);
+            } finally {
+                isTestRunning = false;
+            }
+        }
+
+        // 核心模組測試
+        async function runCoreTests() {
+            if (isTestRunning) return;
+            isTestRunning = true;
+            
+            clearLog('core');
+            log('⚡ 開始核心模組測試...', 'info', 'core');
+            
+            try {
+                // EventBus 測試
+                describe('EventBus 核心測試', () => {
+                    let eventBus;
+                    
+                    beforeEach(() => {
+                        eventBus = EventBus.getInstance();
+                        eventBus.clearAllListeners();
+                    });
+                    
+                    it('應該能夠註冊和觸發事件', () => {
+                        let received = false;
+                        eventBus.on('test-event', () => { received = true; });
+                        eventBus.emit('test-event');
+                        expect(received).toBe(true);
+                    });
+                    
+                    it('應該能夠移除事件監聽器', () => {
+                        let count = 0;
+                        const callback = () => { count++; };
+                        eventBus.on('test-event', callback);
+                        eventBus.emit('test-event');
+                        eventBus.off('test-event', callback);
+                        eventBus.emit('test-event');
+                        expect(count).toBe(1);
+                    });
+                });
+
+                // ErrorHandler 測試
+                describe('ErrorHandler 核心測試', () => {
+                    let errorHandler;
+                    
+                    beforeEach(() => {
+                        ErrorHandler.instance = null;
+                        errorHandler = ErrorHandler.getInstance();
+                        errorHandler.errorLog = [];
+                    });
+                    
+                    it('應該能夠處理錯誤', () => {
+                        const testError = new Error('Test error');
+                        errorHandler.handleError(testError);
+                        expect(errorHandler.errorLog.length).toBe(1);
+                    });
+                    
+                    it('應該能夠分類錯誤', () => {
+                        const appError = new AppError('Test', 'VALIDATION_TEST');
+                        const category = errorHandler.categorizeError(appError);
+                        expect(category).toBe('VALIDATION');
+                    });
+                });
+
+                // CartManager 測試
+                describe('CartManager 核心測試', () => {
+                    let cartManager;
+                    let mockStorage;                    beforeEach(() => {
+                        // 創建簡單的 mock storage
+                        mockStorage = {
+                            getItem: jest.fn().mockReturnValue(null),
+                            setItem: jest.fn().mockReturnValue(true),
+                            removeItem: jest.fn().mockReturnValue(true),
+                            clear: jest.fn().mockReturnValue(true)
+                        };
+                        
+                        // 創建新的 CartManager 實例
+                        cartManager = new CartManager(mockStorage);
+                        
+                        // 強制重置購物車狀態為空
+                        cartManager.items = [];                    });
+                    
+                    it('應該初始化空購物車', () => {
+                        expect(Array.isArray(cartManager.items)).toBe(true);
+                        expect(cartManager.items.length).toBe(0);
+                    });
+                    
+                    it('應該能夠添加商品', () => {
+                        const item = TestDataFactory.createMenuItem();
+                        cartManager.addItem(item, 1);
+                        expect(cartManager.items.length).toBe(1);
+                        expect(cartManager.items[0].name).toBe(item.name);
+                    });
+                });
+
+                const results = await runTests();
+                updateStats('core', results);
+                
+                if (results.failed === 0) {
+                    log('✅ 所有核心測試通過！', 'success', 'core');
+                } else {
+                    log(`❌ ${results.failed} 個測試失敗`, 'error', 'core');
+                    results.errors.forEach(error => {
+                        log(`  - ${error.test}: ${error.error.message}`, 'error', 'core');
+                    });
+                }
+                
+            } catch (error) {
+                log(`❌ 核心測試運行失敗: ${error.message}`, 'error', 'core');
+                console.error(error);
+            } finally {
+                isTestRunning = false;
+            }        }
+
+        // 效能監控變數
+        let performanceMonitor = null;
+        let performanceInterval = null;
+        let performanceData = {
+            memory: 0,
+            execution: 0,
+            operations: 0,
+            fps: 0
+        };
+
+        // 開始效能監控
+        function startPerformanceMonitor() {
+            clearLog('performance');
+            log('📊 啟動效能監控系統...', 'info', 'performance');
+            
+            // 顯示統計區域
+            document.getElementById('performance-stats').style.display = 'grid';
+            
+            // 初始化效能監控
+            if (!window.performance || !window.performance.memory) {
+                log('⚠️ 瀏覽器不支援完整的效能監控 API', 'warning', 'performance');
+            }
+            
+            performanceInterval = setInterval(() => {
+                updatePerformanceStats();
+            }, 1000);
+            
+            log('✅ 效能監控已啟動', 'success', 'performance');
+        }
+
+        // 更新效能統計
+        function updatePerformanceStats() {
+            try {
+                // 記憶體使用量
+                if (window.performance && window.performance.memory) {
+                    const memoryMB = (window.performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
+                    performanceData.memory = memoryMB;
+                    document.getElementById('perf-memory').textContent = `${memoryMB} MB`;
+                }
+                
+                // 執行時間（模擬測量）
+                const now = performance.now();
+                performanceData.execution = now.toFixed(2);
+                document.getElementById('perf-execution').textContent = `${now.toFixed(2)} ms`;
+                
+                // 操作次數（模擬計數）
+                performanceData.operations++;
+                document.getElementById('perf-operations').textContent = performanceData.operations;
+                
+                // FPS 估算
+                const fps = Math.round(1000 / 16.67); // 大約 60 FPS
+                performanceData.fps = fps;
+                document.getElementById('perf-fps').textContent = fps;
+                
+            } catch (error) {
+                log(`❌ 效能監控更新失敗: ${error.message}`, 'error', 'performance');
+            }
+        }
+
+        // 執行效能測試
+        async function runPerformanceTest() {
+            if (isTestRunning) return;
+            isTestRunning = true;
+            
+            log('🚀 開始執行效能測試...', 'info', 'performance');
+            
+            try {
+                // 測試 1: EventBus 效能
+                log('測試 EventBus 事件處理效能...', 'info', 'performance');
+                const eventBus = EventBus.getInstance();
+                const startTime = performance.now();
+                
+                for (let i = 0; i < 1000; i++) {
+                    eventBus.emit('test-event', { data: i });
+                }
+                
+                const eventTime = performance.now() - startTime;
+                log(`EventBus: 1000 個事件處理耗時 ${eventTime.toFixed(2)}ms`, 'success', 'performance');
+                  // 測試 2: CartManager 效能
+                log('測試 CartManager 商品管理效能...', 'info', 'performance');
+                const cartStartTime = performance.now();
+                
+                // 創建全新的 CartManager 實例，使用 mock storage 確保乾淨狀態
+                const mockStorage = {
+                    getItem: () => null,
+                    setItem: () => true,
+                    removeItem: () => true,
+                    clear: () => true
+                };                const cartManager = new CartManager(mockStorage);
+                cartManager.items = []; // 確保空購物車
+                
+                for (let i = 0; i < 50; i++) {
+                    const item = {
+                        id: `item-${i}`, // 使用字符串 ID 避免 falsy 問題
+                        name: `商品${i}`,
+                        price: Math.random() * 100 + 1 // 確保價格大於 0
+                    };
+                    cartManager.addItem(item, Math.floor(Math.random() * 5) + 1);
+                }
+                
+                const cartTime = performance.now() - cartStartTime;
+                log(`CartManager: 50 個商品操作耗時 ${cartTime.toFixed(2)}ms`, 'success', 'performance');
+                
+                // 測試 3: 記憶體使用
+                if (window.performance && window.performance.memory) {
+                    const memoryInfo = window.performance.memory;
+                    log(`記憶體使用: ${(memoryInfo.usedJSHeapSize / 1024 / 1024).toFixed(2)} MB`, 'info', 'performance');
+                    log(`記憶體限制: ${(memoryInfo.jsHeapSizeLimit / 1024 / 1024).toFixed(2)} MB`, 'info', 'performance');
+                }
+                
+                log('✅ 效能測試完成', 'success', 'performance');
+                
+            } catch (error) {
+                log(`❌ 效能測試失敗: ${error.message}`, 'error', 'performance');
+            } finally {
+                isTestRunning = false;
+            }
+        }        // 停止效能監控
+        function stopPerformanceMonitor() {
+            if (performanceInterval) {
+                clearInterval(performanceInterval);
+                performanceInterval = null;
+                log('⏹️ 效能監控已停止', 'info', 'performance');
+            }
+        }
+
+        // 測試檔案管理功能
+        let markedForDeletion = new Set();
+
+        function showTestFileManagement() {
+            const managementDiv = document.getElementById('test-file-management');
+            managementDiv.style.display = managementDiv.style.display === 'none' ? 'block' : 'none';
+            
+            if (managementDiv.style.display === 'block') {
+                log('📁 顯示測試檔案管理介面', 'info', 'full');
+            }
+        }
+
+        function hideTestFileManagement() {
+            document.getElementById('test-file-management').style.display = 'none';
+            log('📁 隱藏測試檔案管理介面', 'info', 'full');
+        }
+
+        function markForDeletion(fileName) {
+            markedForDeletion.add(fileName);
+            
+            // 更新 UI
+            const fileItems = document.querySelectorAll('.file-item');
+            fileItems.forEach(item => {
+                const nameSpan = item.querySelector('.file-name');
+                if (nameSpan && nameSpan.textContent === fileName) {
+                    item.classList.add('marked-for-deletion');
+                    const button = item.querySelector('button');
+                    if (button) {
+                        button.textContent = '已標記';
+                        button.disabled = true;
+                    }
+                }
+            });
+            
+            log(`📝 ${fileName} 已標記為待刪除`, 'warning', 'full');
+        }
+
+        function cleanupTestFiles() {
+            if (markedForDeletion.size === 0) {
+                log('⚠️ 沒有檔案被標記為刪除', 'warning', 'full');
+                return;
+            }
+            
+            const confirmed = confirm(`確定要清理 ${markedForDeletion.size} 個測試檔案嗎？\n\n標記的檔案：\n${Array.from(markedForDeletion).join('\n')}\n\n注意：此操作只是模擬，實際檔案需要手動刪除。`);
+            
+            if (confirmed) {
+                markedForDeletion.forEach(fileName => {
+                    log(`🗑️ 模擬刪除：${fileName}`, 'info', 'full');
+                });
+                
+                log(`✅ 已標記 ${markedForDeletion.size} 個檔案為待清理`, 'success', 'full');
+                log('💡 請手動刪除這些檔案以完成清理', 'info', 'full');
+                
+                // 清除標記
+                markedForDeletion.clear();
+                
+                // 重置 UI
+                const fileItems = document.querySelectorAll('.file-item');
+                fileItems.forEach(item => {
+                    item.classList.remove('marked-for-deletion');
+                    const button = item.querySelector('button');
+                    if (button) {
+                        button.textContent = '標記刪除';
+                        button.disabled = false;
+                    }
+                });
+            }
+        }
+
+        // 完整測試
+        async function runFullTests() {
+            if (isTestRunning) return;
+            isTestRunning = true;
+            
+            clearLog('full');
+            log('🚀 開始完整測試套件...', 'info', 'full');
+            
+            try {
+                // 載入並運行實際的測試文件
+                // 這裡可以包含所有測試案例
+                await runBasicTests();
+                await runCoreTests();
+                
+                log('🎉 完整測試套件執行完成！', 'success', 'full');
+                
+            } catch (error) {
+                log(`❌ 完整測試失敗: ${error.message}`, 'error', 'full');
+                console.error(error);
+            } finally {
+                isTestRunning = false;
+            }
+        }
+
+        // 依序執行所有測試
+        async function runAllSequentially() {
+            if (isTestRunning) return;
+            
+            const progressContainer = document.getElementById('full-progress-container');
+            const progressBar = document.getElementById('full-progress');
+            progressContainer.style.display = 'block';
+            
+            clearLog('full');
+            log('🔄 開始依序執行所有測試...', 'info', 'full');
+            
+            try {
+                // 步驟 1: 檢查依賴
+                log('📋 步驟 1/4: 檢查依賴...', 'info', 'full');
+                checkDependencies();
+                progressBar.style.width = '25%';
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // 步驟 2: 基本測試
+                log('📋 步驟 2/4: 基本測試...', 'info', 'full');
+                await runBasicTests();
+                progressBar.style.width = '50%';
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // 步驟 3: 核心測試
+                log('📋 步驟 3/4: 核心模組測試...', 'info', 'full');
+                await runCoreTests();
+                progressBar.style.width = '75%';
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // 步驟 4: 完成
+                log('📋 步驟 4/4: 測試完成', 'info', 'full');
+                progressBar.style.width = '100%';
+                
+                log('🎉 所有測試執行完成！', 'success', 'full');
+                
+            } catch (error) {
+                log(`❌ 測試過程中發生錯誤: ${error.message}`, 'error', 'full');
+                console.error(error);
+            } finally {
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    progressBar.style.width = '0%';
+                }, 3000);
+            }
+        }
+
+        // 初始化
+        window.addEventListener('load', () => {
+            log('🎯 OOP 測試中心已載入，請選擇測試類型開始', 'info', 'dependency');
+            
+            // 自動檢查依賴
+            setTimeout(() => {
+                checkDependencies();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

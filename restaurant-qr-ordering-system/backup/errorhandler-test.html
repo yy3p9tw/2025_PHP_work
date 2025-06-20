@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ErrorHandler 載入測試</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+        .info { color: blue; }
+        .test-item { margin: 10px 0; padding: 10px; border-left: 4px solid #ccc; }
+        .test-item.pass { border-color: green; background: #f0fff0; }
+        .test-item.fail { border-color: red; background: #fff0f0; }
+    </style>
+</head>
+<body>
+    <h1>🔍 ErrorHandler 載入測試</h1>
+    <div id="output"></div>
+    <button onclick="runLoadTest()">開始測試</button>
+
+    <!-- 載入 ErrorHandler -->
+    <script src="js/core/ErrorHandler.js"></script>
+
+    <script>
+        function log(message, type = 'info', details = '') {
+            const output = document.getElementById('output');
+            const div = document.createElement('div');
+            div.className = `test-item ${type}`;
+            
+            const messageSpan = document.createElement('span');
+            messageSpan.className = type;
+            messageSpan.textContent = message;
+            div.appendChild(messageSpan);
+            
+            if (details) {
+                const detailsDiv = document.createElement('div');
+                detailsDiv.style.marginTop = '5px';
+                detailsDiv.style.fontSize = '0.9em';
+                detailsDiv.style.color = '#666';
+                detailsDiv.textContent = details;
+                div.appendChild(detailsDiv);
+            }
+            
+            output.appendChild(div);
+        }
+
+        function runLoadTest() {
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            
+            log('🧪 開始 ErrorHandler 載入測試...', 'info');
+
+            try {
+                // 測試 1: ErrorHandler 類別是否存在
+                if (typeof ErrorHandler !== 'undefined') {
+                    log('✅ ErrorHandler 類別已載入', 'pass');
+                } else {
+                    log('❌ ErrorHandler 類別未載入', 'fail');
+                    return;
+                }
+
+                // 測試 2: AppError 類別是否存在
+                if (typeof AppError !== 'undefined') {
+                    log('✅ AppError 類別已載入', 'pass');
+                } else {
+                    log('❌ AppError 類別未載入', 'fail');
+                }
+
+                // 測試 3: ERROR_CODES 是否存在
+                if (typeof ERROR_CODES !== 'undefined') {
+                    log('✅ ERROR_CODES 常數已載入', 'pass', `包含 ${Object.keys(ERROR_CODES).length} 個類別`);
+                } else {
+                    log('❌ ERROR_CODES 常數未載入', 'fail');
+                }
+
+                // 測試 4: ERROR_EVENTS 是否存在
+                if (typeof ERROR_EVENTS !== 'undefined') {
+                    log('✅ ERROR_EVENTS 常數已載入', 'pass', `包含 ${Object.keys(ERROR_EVENTS).length} 個類別`);
+                } else {
+                    log('❌ ERROR_EVENTS 常數未載入', 'fail');
+                }
+
+                // 測試 5: ErrorHandler 實例創建
+                try {
+                    const errorHandler = ErrorHandler.getInstance();
+                    if (errorHandler) {
+                        log('✅ ErrorHandler 實例創建成功', 'pass');
+                    } else {
+                        log('❌ ErrorHandler 實例創建失敗', 'fail');
+                    }
+                } catch (error) {
+                    log('❌ ErrorHandler 實例創建異常', 'fail', error.message);
+                }
+
+                // 測試 6: AppError 實例創建
+                try {
+                    const appError = new AppError('測試錯誤', 'TEST_ERROR');
+                    if (appError && appError.name === 'AppError') {
+                        log('✅ AppError 實例創建成功', 'pass', `錯誤代碼: ${appError.code}`);
+                    } else {
+                        log('❌ AppError 實例創建失敗', 'fail');
+                    }
+                } catch (error) {
+                    log('❌ AppError 實例創建異常', 'fail', error.message);
+                }
+
+                // 測試 7: 基本錯誤處理
+                try {
+                    const errorHandler = ErrorHandler.getInstance();
+                    const testError = new Error('測試基本錯誤');
+                    
+                    errorHandler.handleError(testError);
+                    
+                    if (errorHandler.errorLog && errorHandler.errorLog.length > 0) {
+                        log('✅ 基本錯誤處理功能正常', 'pass', `錯誤日誌數量: ${errorHandler.errorLog.length}`);
+                    } else {
+                        log('❌ 基本錯誤處理功能異常', 'fail');
+                    }
+                } catch (error) {
+                    log('❌ 基本錯誤處理測試異常', 'fail', error.message);
+                }
+
+                log('🎉 ErrorHandler 載入測試完成！', 'info');
+
+            } catch (error) {
+                log('❌ 測試過程中發生異常', 'fail', error.message);
+                console.error('詳細錯誤:', error);
+            }
+        }
+
+        // 頁面載入後自動運行測試
+        window.addEventListener('load', () => {
+            setTimeout(runLoadTest, 100);
+        });
+    </script>
+</body>
+</html>

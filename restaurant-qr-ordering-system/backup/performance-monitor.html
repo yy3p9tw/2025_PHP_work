@@ -1,0 +1,503 @@
+// 效能監控演示頁面
+// 展示 PerformanceMonitor 的功能
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 效能監控演示 - 餐廳QR點餐系統</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .controls {
+            padding: 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .chart {
+            width: 100%;
+            height: 200px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-bar {
+            position: absolute;
+            bottom: 0;
+            background: linear-gradient(to top, #667eea, #764ba2);
+            width: 20px;
+            margin: 0 2px;
+            border-radius: 2px 2px 0 0;
+            transition: height 0.3s ease;
+        }
+
+        .realtime-log {
+            background: #1e1e1e;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            border-radius: 8px;
+            height: 300px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 2px 0;
+        }
+
+        .log-success { color: #51cf66; }
+        .log-warn { color: #ffa500; }
+        .log-error { color: #ff6b6b; }
+        .log-info { color: #67b7dc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 效能監控演示</h1>
+            <p>餐廳QR Code點餐系統 - 即時效能分析與監控</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>🏃‍♂️ 執行效能</h3>
+                <div id="performance-stats">
+                    <div class="metric">
+                        <span>平均響應時間</span>
+                        <strong id="avg-time">0ms</strong>
+                    </div>
+                    <div class="metric">
+                        <span>最快執行</span>
+                        <strong id="min-time">0ms</strong>
+                    </div>
+                    <div class="metric">
+                        <span>最慢執行</span>
+                        <strong id="max-time">0ms</strong>
+                    </div>
+                    <div class="metric">
+                        <span>執行次數</span>
+                        <strong id="execution-count">0</strong>
+                    </div>
+                </div>
+                <div class="chart" id="performance-chart"></div>
+            </div>
+
+            <div class="stat-card">
+                <h3>🧠 記憶體使用</h3>
+                <div id="memory-stats">
+                    <div class="metric">
+                        <span>使用中記憶體</span>
+                        <strong id="used-memory">0 MB</strong>
+                    </div>
+                    <div class="metric">
+                        <span>總記憶體</span>
+                        <strong id="total-memory">0 MB</strong>
+                    </div>
+                    <div class="metric">
+                        <span>記憶體使用率</span>
+                        <strong id="memory-usage">0%</strong>
+                    </div>
+                    <div class="metric">
+                        <span>記憶體趨勢</span>
+                        <strong id="memory-trend">穩定</strong>
+                    </div>
+                </div>
+                <div class="chart" id="memory-chart"></div>
+            </div>
+
+            <div class="stat-card">
+                <h3>🚌 事件系統統計</h3>
+                <div id="event-stats">
+                    <div class="metric">
+                        <span>註冊事件數</span>
+                        <strong id="event-count">0</strong>
+                    </div>
+                    <div class="metric">
+                        <span>觸發總次數</span>
+                        <strong id="emit-count">0</strong>
+                    </div>
+                    <div class="metric">
+                        <span>活躍監聽器</span>
+                        <strong id="listener-count">0</strong>
+                    </div>
+                    <div class="metric">
+                        <span>事件頻率</span>
+                        <strong id="event-frequency">0/秒</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <h3>🛡️ 錯誤統計</h3>
+                <div id="error-stats">
+                    <div class="metric">
+                        <span>錯誤總數</span>
+                        <strong id="error-total">0</strong>
+                    </div>
+                    <div class="metric">
+                        <span>最近1分鐘</span>
+                        <strong id="recent-errors">0</strong>
+                    </div>
+                    <div class="metric">
+                        <span>錯誤率</span>
+                        <strong id="error-rate">0%</strong>
+                    </div>
+                    <div class="metric">
+                        <span>系統健康度</span>
+                        <strong id="system-health">良好</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="startLoad()">🚀 開始負載測試</button>
+            <button class="btn" onclick="simulateError()">⚠️ 模擬錯誤</button>
+            <button class="btn" onclick="testCartOperations()">🛒 測試購物車</button>
+            <button class="btn" onclick="testEventSystem()">🚌 測試事件系統</button>
+            <button class="btn" onclick="clearStats()">🗑️ 清除統計</button>
+        </div>
+
+        <div style="padding: 30px;">
+            <h3>📝 即時日誌</h3>
+            <div class="realtime-log" id="realtime-log">
+                <div class="log-entry log-info">📊 效能監控系統已啟動</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 載入核心模組 -->
+    <script src="js/core/EventBus.js"></script>
+    <script src="js/core/ErrorHandler.js"></script>
+    <script src="js/core/StorageService.js"></script>
+    <script src="js/core/DIContainer.js"></script>
+    <script src="js/managers/CartManager.js"></script>
+
+    <script>
+        let performanceMonitor;
+        let eventBus;
+        let container;
+        let performanceData = [];
+        let memoryData = [];
+        let updateInterval;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // 初始化核心服務
+                container = new DIContainer();
+                eventBus = EventBus.getInstance();
+                performanceMonitor = container.get('performanceMonitor');
+                
+                addLogEntry('✅ 核心服務初始化完成', 'success');
+                
+                // 開始監控循環
+                startMonitoring();
+                
+                addLogEntry('📊 監控系統已啟動', 'info');
+            } catch (error) {
+                addLogEntry(`❌ 初始化失敗: ${error.message}`, 'error');
+            }
+        });
+
+        function startMonitoring() {
+            updateInterval = setInterval(() => {
+                updateStats();
+                updateCharts();
+            }, 1000);
+        }
+
+        function updateStats() {
+            // 更新效能統計
+            const perfStats = performanceMonitor.getStats();
+            document.getElementById('avg-time').textContent = 
+                (perfStats.averageDuration || 0).toFixed(2) + 'ms';
+            document.getElementById('execution-count').textContent = 
+                perfStats.totalOperations || 0;
+
+            // 更新記憶體統計
+            if (performance.memory) {
+                const memory = performance.memory;
+                const usedMB = (memory.usedJSHeapSize / 1048576).toFixed(2);
+                const totalMB = (memory.totalJSHeapSize / 1048576).toFixed(2);
+                const usage = ((memory.usedJSHeapSize / memory.totalJSHeapSize) * 100).toFixed(1);
+                
+                document.getElementById('used-memory').textContent = usedMB + ' MB';
+                document.getElementById('total-memory').textContent = totalMB + ' MB';
+                document.getElementById('memory-usage').textContent = usage + '%';
+                
+                // 記錄記憶體數據用於圖表
+                memoryData.push(parseFloat(usedMB));
+                if (memoryData.length > 50) memoryData.shift();
+            }
+
+            // 更新事件統計
+            const eventStats = eventBus.getEventStats ? eventBus.getEventStats() : {};
+            const eventCount = Object.keys(eventStats).length;
+            document.getElementById('event-count').textContent = eventCount;
+            
+            // 更新錯誤統計
+            const errorHandler = ErrorHandler.getInstance();
+            const errorCount = errorHandler.errorLog ? errorHandler.errorLog.length : 0;
+            document.getElementById('error-total').textContent = errorCount;
+            
+            const healthStatus = errorCount < 5 ? '良好' : errorCount < 10 ? '警告' : '異常';
+            document.getElementById('system-health').textContent = healthStatus;
+        }
+
+        function updateCharts() {
+            // 更新效能圖表
+            updatePerformanceChart();
+            
+            // 更新記憶體圖表
+            updateMemoryChart();
+        }
+
+        function updatePerformanceChart() {
+            const chart = document.getElementById('performance-chart');
+            const maxBars = 40;
+            
+            // 清空現有圖表
+            chart.innerHTML = '';
+            
+            // 繪製效能數據
+            const maxValue = Math.max(...performanceData, 1);
+            
+            performanceData.slice(-maxBars).forEach((value, index) => {
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.left = (index * (100 / maxBars)) + '%';
+                bar.style.height = ((value / maxValue) * 180) + 'px';
+                bar.title = `${value.toFixed(2)}ms`;
+                chart.appendChild(bar);
+            });
+        }
+
+        function updateMemoryChart() {
+            const chart = document.getElementById('memory-chart');
+            const maxBars = 40;
+            
+            chart.innerHTML = '';
+            
+            const maxValue = Math.max(...memoryData, 1);
+            
+            memoryData.slice(-maxBars).forEach((value, index) => {
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.left = (index * (100 / maxBars)) + '%';
+                bar.style.height = ((value / maxValue) * 180) + 'px';
+                bar.style.background = 'linear-gradient(to top, #ff9a9e, #fecfef)';
+                bar.title = `${value.toFixed(2)}MB`;
+                chart.appendChild(bar);
+            });
+        }
+
+        // 測試功能
+        async function startLoad() {
+            addLogEntry('🚀 開始負載測試...', 'info');
+            
+            for (let i = 0; i < 50; i++) {
+                const startTime = performance.now();
+                
+                // 模擬一些計算
+                await new Promise(resolve => {
+                    setTimeout(() => {
+                        // 模擬 CPU 密集任務
+                        let sum = 0;
+                        for (let j = 0; j < 100000; j++) {
+                            sum += Math.random();
+                        }
+                        resolve(sum);
+                    }, Math.random() * 10);
+                });
+                
+                const endTime = performance.now();
+                const duration = endTime - startTime;
+                
+                performanceData.push(duration);
+                if (performanceData.length > 100) performanceData.shift();
+                
+                // 每10次操作記錄一次
+                if (i % 10 === 0) {
+                    addLogEntry(`⏱️ 完成 ${i + 1}/50 次操作，平均耗時: ${duration.toFixed(2)}ms`, 'info');
+                }
+            }
+            
+            addLogEntry('✅ 負載測試完成', 'success');
+        }
+
+        function simulateError() {
+            try {
+                addLogEntry('⚠️ 模擬錯誤情況...', 'warn');
+                
+                // 故意觸發錯誤
+                throw new Error('這是一個模擬的錯誤，用於測試錯誤處理系統');
+            } catch (error) {
+                ErrorHandler.getInstance().handleError(error, {
+                    source: 'performance-demo',
+                    action: 'simulate-error'
+                });
+                
+                addLogEntry('❌ 錯誤已被錯誤處理系統捕獲', 'error');
+            }
+        }
+
+        async function testCartOperations() {
+            addLogEntry('🛒 測試購物車操作...', 'info');
+            
+            const cartManager = container.get('cartManager');
+            
+            // 測試添加商品
+            for (let i = 0; i < 10; i++) {
+                const mockItem = {
+                    id: `item-${i}`,
+                    name: `測試商品 ${i}`,
+                    price: 100 + i * 10
+                };
+                
+                await performanceMonitor.measure('cart-add-item', async () => {
+                    cartManager.addItem(mockItem, Math.floor(Math.random() * 5) + 1);
+                });
+            }
+            
+            // 測試獲取購物車
+            await performanceMonitor.measure('cart-get-total', async () => {
+                const total = cartManager.getTotalPrice();
+                addLogEntry(`💰 購物車總金額: $${total}`, 'info');
+            });
+            
+            addLogEntry('✅ 購物車測試完成', 'success');
+        }
+
+        function testEventSystem() {
+            addLogEntry('🚌 測試事件系統...', 'info');
+            
+            // 註冊測試監聽器
+            const testListener = (data) => {
+                addLogEntry(`📨 收到事件: ${JSON.stringify(data)}`, 'info');
+            };
+            
+            eventBus.on('test-event', testListener);
+            
+            // 觸發多個事件
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    eventBus.emit('test-event', { 
+                        index: i, 
+                        timestamp: new Date().toISOString() 
+                    });
+                }, i * 100);
+            }
+            
+            setTimeout(() => {
+                eventBus.off('test-event', testListener);
+                addLogEntry('✅ 事件系統測試完成', 'success');
+            }, 1000);
+        }
+
+        function clearStats() {
+            performanceData = [];
+            memoryData = [];
+            document.getElementById('realtime-log').innerHTML = '';
+            addLogEntry('🗑️ 統計數據已清除', 'info');
+        }
+
+        function addLogEntry(message, type = 'info') {
+            const logContainer = document.getElementById('realtime-log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        // 清理資源
+        window.addEventListener('beforeunload', () => {
+            if (updateInterval) {
+                clearInterval(updateInterval);
+            }
+        });
+    </script>
+</body>
+</html>

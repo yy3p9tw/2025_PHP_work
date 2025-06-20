@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍽️ 結帳 - 餐廳點餐系統 (OOP版)</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 自定義樣式 -->
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-utensils me-2"></i>
+                餐廳點餐系統
+            </a>
+            
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-3" id="currentTableNumber">
+                    座號：載入中...
+                </span>
+                <a class="nav-link" href="cart.html">
+                    <i class="fas fa-shopping-cart me-1"></i>
+                    購物車
+                    <span class="badge bg-danger ms-1 cart-badge" style="display: none;">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main class="container mt-4">
+        <!-- 載入狀態 -->
+        <div id="loading" class="text-center py-5 d-none">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">載入中...</span>
+            </div>
+            <p class="mt-2">載入中...</p>
+        </div>
+
+        <!-- 錯誤訊息 -->
+        <div id="errorMessage" class="alert alert-danger d-none" role="alert">
+            錯誤訊息會顯示在這裡
+        </div>
+
+        <!-- 結帳內容 -->
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- 訂單摘要 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-receipt me-2"></i>
+                            訂單摘要
+                        </h5>
+                    </div>
+                    <div class="card-body" id="orderSummary">
+                        <div id="orderItems">
+                            <!-- 訂單項目會在這裡動態載入 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 付款方式 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-credit-card me-2"></i>
+                            付款方式
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="payment-methods">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="cash" value="cash" checked>
+                                <label class="form-check-label" for="cash">
+                                    <i class="fas fa-money-bill-wave me-2"></i>
+                                    現金付款
+                                    <small class="text-muted d-block">請至櫃檯完成付款</small>
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="credit_card" value="credit_card">
+                                <label class="form-check-label" for="credit_card">
+                                    <i class="fas fa-credit-card me-2"></i>
+                                    信用卡
+                                    <small class="text-muted d-block">請至櫃檯完成付款</small>
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="mobile_payment" value="mobile_payment">
+                                <label class="form-check-label" for="mobile_payment">
+                                    <i class="fas fa-mobile-alt me-2"></i>
+                                    行動支付
+                                    <small class="text-muted d-block">Line Pay / Apple Pay / Google Pay</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 顧客備註 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-comment me-2"></i>
+                            備註
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <textarea 
+                                class="form-control" 
+                                id="customerNote" 
+                                rows="3" 
+                                placeholder="請輸入特殊需求或備註（選填）"
+                                maxlength="200"
+                            ></textarea>
+                            <div class="form-text">
+                                <span id="noteCounter">0/200</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <!-- 金額摘要 -->
+                <div class="card sticky-top">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-calculator me-2"></i>
+                            金額摘要
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>小計：</span>
+                            <span id="subtotalAmount">$0</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>總計：</strong>
+                            <strong id="totalAmount" class="text-primary">$0</strong>
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary btn-lg w-100" id="submitOrderBtn">
+                            <span class="spinner-border spinner-border-sm me-2 d-none" role="status"></span>
+                            <span class="btn-text">確認訂單</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 成功模態框 -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="關閉"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="successMessage">
+                        <!-- 成功訊息會在這裡動態載入 -->
+                    </div>
+                    
+                    <div id="autoReturnMessage" class="mt-3">
+                        <!-- 自動返回倒數會在這裡顯示 -->
+                    </div>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-outline-primary" id="continueOrderingBtn">
+                        <i class="fas fa-plus me-1"></i>
+                        繼續點餐
+                    </button>
+                    <button type="button" class="btn btn-primary" id="returnHomeBtn">
+                        <i class="fas fa-home me-1"></i>
+                        返回首頁
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OOP 架構核心模組 -->
+    <!-- 注意：載入順序很重要 -->
+    
+    <!-- 1. 基礎架構 -->
+    <script src="js/core/EventBus.js"></script>
+    <script src="js/core/ErrorHandler.js"></script>
+    <script src="js/core/StorageService.js"></script>
+    
+    <!-- 2. 核心類別 -->
+    <script src="js/core/BasePage.js"></script>
+    <script src="js/core/ModalManager.js"></script>
+    <script src="js/core/DIContainer.js"></script>
+    
+    <!-- 3. 業務邏輯管理器 -->
+    <script src="js/managers/CartManager.js"></script>
+    <script src="js/managers/OrderManager.js"></script>
+    
+    <!-- 4. 頁面類別 -->
+    <script src="js/pages/CheckoutPageOOP.js"></script>
+      <!-- 5. 應用程式啟動器 -->
+    <script src="js/core/bootstrap.js"></script>
+
+    <!-- 6. 演示工具 (可選) -->
+    <script src="js/demo/OOPDemo.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- 除錯工具 (僅開發環境) -->
+    <script>
+        // 開發環境除錯功能
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            // 全域除錯函數
+            window.debug = {
+                app: () => window.app?.debug(),
+                eventBus: () => console.log(EventBus.getInstance().getStats()),
+                errors: () => console.log(ErrorHandler.getInstance().getErrorStats()),
+                container: () => console.log(window.container.getStats()),
+                performance: () => console.log(window.container.get('performanceMonitor').getStats()),
+                cart: () => console.log(window.container.get('cartManager').getStats()),
+                orders: () => console.log(window.container.get('orderManager').getOrderStats())
+            };
+            
+            console.log(`
+                🔧 開發模式除錯工具已載入
+                使用方式：
+                - debug.app() - 應用程式狀態
+                - debug.eventBus() - 事件系統統計
+                - debug.errors() - 錯誤統計
+                - debug.container() - 依賴注入容器
+                - debug.performance() - 效能統計
+                - debug.cart() - 購物車統計
+                - debug.orders() - 訂單統計
+            `);
+        }
+    </script>
+</body>
+</html>
