@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 Firebase 測試頁面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            background: #f9f9f9;
+        }
+
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 Firebase 整合測試</h1>
+            <p>測試 Firebase Firestore 資料庫連線與基本操作</p>
+        </div>
+
+        <div class="content">
+            <!-- 連線狀態 -->
+            <div class="test-section">
+                <h3>🔌 連線狀態</h3>
+                <div id="connectionStatus" class="status info">🔄 正在連線...</div>
+                <button class="btn" onclick="testConnection()">重新測試連線</button>
+            </div>
+
+            <!-- 測試訂單儲存 -->
+            <div class="test-section">
+                <h3>💾 測試訂單儲存</h3>
+                
+                <div class="form-group">
+                    <label>桌號：</label>
+                    <input type="text" id="testTableNumber" value="A01" placeholder="例如：A01">
+                </div>
+                
+                <div class="form-group">
+                    <label>顧客姓名：</label>
+                    <input type="text" id="testCustomerName" value="測試顧客" placeholder="輸入姓名">
+                </div>
+                
+                <div class="form-group">
+                    <label>訂單備註：</label>
+                    <textarea id="testOrderNote" placeholder="特殊需求...">不要辣椒</textarea>
+                </div>
+                
+                <button class="btn" onclick="testSaveOrder()">💾 儲存測試訂單</button>
+                <div id="saveOrderStatus"></div>
+            </div>
+
+            <!-- 測試讀取訂單 -->
+            <div class="test-section">
+                <h3>📋 測試讀取訂單</h3>
+                <button class="btn" onclick="testGetOrders()">📋 讀取所有訂單</button>
+                <button class="btn" onclick="testGetPendingOrders()">⏳ 讀取待處理訂單</button>
+                <div id="getOrdersStatus"></div>
+                <div id="ordersList" class="log"></div>
+            </div>
+
+            <!-- 測試即時監聽 -->
+            <div class="test-section">
+                <h3>🔄 測試即時監聽</h3>
+                <button class="btn" onclick="startListening()" id="listenBtn">🎧 開始監聽</button>
+                <button class="btn" onclick="stopListening()" id="stopListenBtn" disabled>⏹️ 停止監聽</button>
+                <div id="listenStatus"></div>
+                <div id="realtimeOrders" class="log"></div>
+            </div>
+
+            <!-- 操作記錄 -->
+            <div class="test-section">
+                <h3>📝 操作記錄</h3>
+                <button class="btn" onclick="clearLog()">🗑️ 清除記錄</button>
+                <div id="operationLog" class="log"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <!-- Firebase 設定與初始化 -->
+    <script type="module">        // 🔥 Firebase 專案設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUNTVoTyNAuolkwhEvzOeRSWg8dgXJ9Bs",
+            authDomain: "restaurant-qr-system.firebaseapp.com",
+            projectId: "restaurant-qr-system",
+            storageBucket: "restaurant-qr-system.firebasestorage.app",
+            messagingSenderId: "704292695294",
+            appId: "1:704292695294:web:8c8ad1c3ece056dae649af"
+        };
+
+        // 初始化 Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+            window.firebaseDb = firebase.firestore();
+            window.firebase = firebase;
+            
+            log('✅ Firebase 初始化成功');
+            updateConnectionStatus('✅ 已連線到 Firebase', 'success');
+        } catch (error) {
+            log('❌ Firebase 初始化失敗: ' + error.message);
+            updateConnectionStatus('❌ Firebase 連線失敗: ' + error.message, 'error');
+        }
+    </script>
+
+    <!-- 載入 Firebase 服務 -->
+    <script src="js/services/FirebaseService.js"></script>
+
+    <script>
+        let firebaseService = null;
+        let orderListener = null;
+
+        // 初始化 Firebase 服務
+        async function initFirebaseService() {
+            try {
+                firebaseService = new FirebaseService();
+                await firebaseService.init();
+                return true;
+            } catch (error) {
+                log('❌ FirebaseService 初始化失敗: ' + error.message);
+                return false;
+            }
+        }
+
+        // 測試連線
+        async function testConnection() {
+            updateConnectionStatus('🔄 正在測試連線...', 'info');
+            
+            const success = await initFirebaseService();
+            if (success) {
+                updateConnectionStatus('✅ Firebase 服務連線成功', 'success');
+                log('✅ 連線測試通過');
+            } else {
+                updateConnectionStatus('❌ Firebase 服務連線失敗', 'error');
+            }
+        }
+
+        // 測試儲存訂單
+        async function testSaveOrder() {
+            if (!firebaseService) {
+                const success = await initFirebaseService();
+                if (!success) return;
+            }
+
+            const tableNumber = document.getElementById('testTableNumber').value;
+            const customerName = document.getElementById('testCustomerName').value;
+            const orderNote = document.getElementById('testOrderNote').value;
+
+            const testOrder = {
+                tableNumber: tableNumber || 'A01',
+                customerName: customerName || '測試顧客',
+                items: [
+                    { id: 1, name: '牛肉麵', price: 200, quantity: 1 },
+                    { id: 2, name: '珍珠奶茶', price: 60, quantity: 2 }
+                ],
+                totalAmount: 320,
+                paymentMethod: 'cash',
+                note: orderNote || '測試訂單',
+                source: 'firebase-test-page'
+            };
+
+            try {
+                updateStatus('saveOrderStatus', '💾 正在儲存訂單...', 'info');
+                
+                const result = await firebaseService.saveOrder(testOrder);
+                
+                updateStatus('saveOrderStatus', '✅ 訂單儲存成功！訂單 ID: ' + result.orderId, 'success');
+                log(`✅ 測試訂單儲存成功，ID: ${result.orderId}`);
+                
+            } catch (error) {
+                updateStatus('saveOrderStatus', '❌ 儲存失敗: ' + error.message, 'error');
+                log('❌ 測試訂單儲存失敗: ' + error.message);
+            }
+        }
+
+        // 測試讀取所有訂單
+        async function testGetOrders() {
+            if (!firebaseService) {
+                const success = await initFirebaseService();
+                if (!success) return;
+            }
+
+            try {
+                updateStatus('getOrdersStatus', '📋 正在讀取訂單...', 'info');
+                
+                const orders = await firebaseService.getOrders();
+                
+                updateStatus('getOrdersStatus', `✅ 成功讀取 ${orders.length} 筆訂單`, 'success');
+                displayOrders(orders, 'ordersList');
+                log(`✅ 成功讀取 ${orders.length} 筆訂單`);
+                
+            } catch (error) {
+                updateStatus('getOrdersStatus', '❌ 讀取失敗: ' + error.message, 'error');
+                log('❌ 讀取訂單失敗: ' + error.message);
+            }
+        }
+
+        // 測試讀取待處理訂單
+        async function testGetPendingOrders() {
+            if (!firebaseService) {
+                const success = await initFirebaseService();
+                if (!success) return;
+            }
+
+            try {
+                updateStatus('getOrdersStatus', '⏳ 正在讀取待處理訂單...', 'info');
+                
+                const orders = await firebaseService.getOrders({ status: 'pending' });
+                
+                updateStatus('getOrdersStatus', `✅ 成功讀取 ${orders.length} 筆待處理訂單`, 'success');
+                displayOrders(orders, 'ordersList');
+                log(`✅ 成功讀取 ${orders.length} 筆待處理訂單`);
+                
+            } catch (error) {
+                updateStatus('getOrdersStatus', '❌ 讀取失敗: ' + error.message, 'error');
+                log('❌ 讀取待處理訂單失敗: ' + error.message);
+            }
+        }
+
+        // 開始即時監聽
+        async function startListening() {
+            if (!firebaseService) {
+                const success = await initFirebaseService();
+                if (!success) return;
+            }
+
+            try {
+                updateStatus('listenStatus', '🎧 正在建立即時監聽...', 'info');
+                
+                orderListener = firebaseService.listenToOrders((orders, error) => {
+                    if (error) {
+                        updateStatus('listenStatus', '❌ 監聽錯誤: ' + error.message, 'error');
+                        log('❌ 即時監聽錯誤: ' + error.message);
+                        return;
+                    }
+                    
+                    updateStatus('listenStatus', `🔄 即時更新：收到 ${orders.length} 筆訂單`, 'success');
+                    displayOrders(orders, 'realtimeOrders');
+                    log(`🔄 即時監聽更新：${orders.length} 筆訂單`);
+                });
+                
+                document.getElementById('listenBtn').disabled = true;
+                document.getElementById('stopListenBtn').disabled = false;
+                log('✅ 即時監聽已啟動');
+                
+            } catch (error) {
+                updateStatus('listenStatus', '❌ 監聽失敗: ' + error.message, 'error');
+                log('❌ 啟動即時監聽失敗: ' + error.message);
+            }
+        }
+
+        // 停止即時監聽
+        function stopListening() {
+            if (orderListener) {
+                orderListener();
+                orderListener = null;
+                
+                updateStatus('listenStatus', '⏹️ 已停止即時監聽', 'info');
+                document.getElementById('listenBtn').disabled = false;
+                document.getElementById('stopListenBtn').disabled = true;
+                log('⏹️ 即時監聽已停止');
+            }
+        }
+
+        // 顯示訂單列表
+        function displayOrders(orders, containerId) {
+            const container = document.getElementById(containerId);
+            if (orders.length === 0) {
+                container.innerHTML = '📝 暫無訂單資料';
+                return;
+            }
+
+            let html = '';
+            orders.forEach((order, index) => {
+                const createdAt = order.createdAt ? 
+                    new Date(order.createdAt.toDate()).toLocaleString('zh-TW') : 
+                    '時間未知';
+                
+                html += `
+                    <div style="border-bottom: 1px solid #ddd; padding: 10px 0;">
+                        <strong>📋 訂單 ${index + 1} (ID: ${order.id})</strong><br>
+                        🏷️ 桌號: ${order.tableNumber}<br>
+                        👤 顾客: ${order.customerName || '未提供'}<br>
+                        💰 金額: $${order.totalAmount}<br>
+                        📅 時間: ${createdAt}<br>
+                        📋 狀態: ${order.status}<br>
+                        📝 備註: ${order.note || '無'}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // 更新連線狀態
+        function updateConnectionStatus(message, type) {
+            const element = document.getElementById('connectionStatus');
+            element.textContent = message;
+            element.className = `status ${type}`;
+        }
+
+        // 更新狀態訊息
+        function updateStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        // 記錄操作
+        function log(message) {
+            const logElement = document.getElementById('operationLog');
+            const timestamp = new Date().toLocaleTimeString('zh-TW');
+            logElement.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        // 清除記錄
+        function clearLog() {
+            document.getElementById('operationLog').innerHTML = '';
+        }
+
+        // 頁面載入完成後自動測試連線
+        window.addEventListener('load', () => {
+            setTimeout(testConnection, 1000);
+        });
+    </script>
+</body>
+</html>

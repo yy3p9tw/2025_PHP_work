@@ -5,12 +5,17 @@ class CheckoutPage {
         this.currentTable = null;
         this.currentOrder = null;
         this.paymentMethod = 'cash';
+        this.firebaseService = null;
+        this.isFirebaseEnabled = false;
         
         this.init();
     }
 
-    init() {
+    async init() {
         console.log('💳 結帳頁面初始化中...');
+        
+        // 初始化 Firebase 服務
+        await this.initFirebaseService();
         
         // 檢查座號
         this.checkTableNumber();
@@ -25,6 +30,24 @@ class CheckoutPage {
         this.updateSubmitButtonText();
         
         console.log('✅ 結帳頁面初始化完成');
+    }
+
+    async initFirebaseService() {
+        try {
+            // 檢查 Firebase 是否可用
+            if (typeof window.FirebaseService !== 'undefined' && window.firebaseDb) {
+                this.firebaseService = new FirebaseService();
+                await this.firebaseService.init();
+                this.isFirebaseEnabled = true;
+                console.log('🔥 Firebase 服務已啟用');
+            } else {
+                console.log('📱 Firebase 未啟用，使用本地儲存模式');
+                this.isFirebaseEnabled = false;
+            }
+        } catch (error) {
+            console.warn('⚠️ Firebase 初始化失敗，回退到本地儲存模式:', error);
+            this.isFirebaseEnabled = false;
+        }
     }
 
     checkTableNumber() {
@@ -246,15 +269,14 @@ class CheckoutPage {
             };
 
             // 模擬提交延遲
-            await this.delay(2000);
-
-            // 這裡將來會接入真實的 API 或 Firebase
-            // await this.submitToServer(finalOrder);
-            
-            // 目前先儲存到本地儲存作為模擬
-            const orders = JSON.parse(localStorage.getItem('submittedOrders') || '[]');
-            orders.push(finalOrder);
-            localStorage.setItem('submittedOrders', JSON.stringify(orders));
+            await this.delay(2000);            // 準備提交到後端
+            if (this.isFirebaseEnabled) {
+                // 使用 Firebase 儲存
+                await this.submitToFirebase(finalOrder);
+            } else {
+                // 使用本地儲存
+                await this.submitToLocal(finalOrder);
+            }
 
             // 清除當前訂單和購物車
             localStorage.removeItem('currentOrder');
@@ -275,6 +297,58 @@ class CheckoutPage {
                 submitBtn.disabled = false;
                 this.updateSubmitButtonText();
             }
+        }
+    }
+
+    async submitToFirebase(orderData) {
+        try {
+            console.log('🔥 正在提交訂單到 Firebase...');
+            
+            // 使用 Firebase 服務儲存訂單
+            const result = await this.firebaseService.saveOrder(orderData);
+            
+            console.log('🔥 Firebase 訂單提交成功:', result.orderId);
+            
+            // 同時也保存到本地儲存作為備份
+            const orders = JSON.parse(localStorage.getItem('submittedOrders') || '[]');
+            orders.push({
+                ...orderData,
+                firebaseId: result.orderId,
+                submittedAt: new Date().toISOString()
+            });
+            localStorage.setItem('submittedOrders', JSON.stringify(orders));
+            
+            return result;
+        } catch (error) {
+            console.error('❌ Firebase 提交失敗:', error);
+            
+            // Firebase 失敗時回退到本地儲存
+            console.log('📱 回退到本地儲存模式...');
+            await this.submitToLocal(orderData);
+            
+            // 顯示提示但不中斷流程
+            this.showToast('訂單已儲存到本地，請稍後同步', 'warning');
+        }
+    }
+
+    async submitToLocal(orderData) {
+        try {
+            console.log('📱 正在提交訂單到本地儲存...');
+            
+            // 儲存到本地儲存
+            const orders = JSON.parse(localStorage.getItem('submittedOrders') || '[]');
+            orders.push({
+                ...orderData,
+                localId: `local_${Date.now()}`,
+                submittedAt: new Date().toISOString(),
+                syncStatus: 'pending' // 標記為待同步
+            });
+            localStorage.setItem('submittedOrders', JSON.stringify(orders));
+            
+            console.log('📱 本地儲存提交成功');
+        } catch (error) {
+            console.error('❌ 本地儲存失敗:', error);
+            throw new Error('儲存訂單失敗');
         }
     }
 

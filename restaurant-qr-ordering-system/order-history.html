@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📋 訂單歷史 - 餐廳點餐系統</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .order-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .order-number {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+
+        .order-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .order-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .order-status.paid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .order-status.completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .order-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .order-info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .order-info-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .order-info-value {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .order-items {
+            margin-top: 15px;
+        }
+
+        .order-items-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            flex: 1;
+            color: #333;
+        }
+
+        .item-quantity {
+            color: #666;
+            margin: 0 15px;
+        }
+
+        .item-price {
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .order-total {
+            text-align: right;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid var(--primary-color);
+        }
+
+        .total-label {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .total-amount {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-left: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+
+        .filter-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 15px;
+            padding: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .filter-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .filter-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .filter-tab:not(.active):hover {
+            background: #f5f5f5;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        @media (max-width: 768px) {
+            .order-info {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 頂部導航 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <button class="btn-back" onclick="history.back()">
+                    ← 返回
+                </button>
+                <h1 class="navbar-title">📋 訂單歷史</h1>
+                <div class="table-info">
+                    <span id="currentTableNumber">座號：--</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 載入中狀態 -->
+            <div class="loading-state" id="loadingState">
+                <div class="loading"></div>
+                <p class="mt-3">載入訂單記錄中...</p>
+            </div>
+
+            <!-- 篩選標籤 -->
+            <div class="filter-tabs d-none" id="filterTabs">
+                <div class="filter-tab active" data-filter="all">
+                    📋 全部
+                </div>
+                <div class="filter-tab" data-filter="pending">
+                    ⏳ 處理中
+                </div>
+                <div class="filter-tab" data-filter="paid">
+                    ✅ 已付款
+                </div>
+                <div class="filter-tab" data-filter="completed">
+                    🎉 已完成
+                </div>
+            </div>
+
+            <!-- 訂單列表 -->
+            <div class="orders-list d-none" id="ordersList">
+                <!-- 訂單卡片將在這裡動態生成 -->
+            </div>
+
+            <!-- 空狀態 -->
+            <div class="empty-state d-none" id="emptyState">
+                <div class="empty-state-icon">📋</div>
+                <h3>暫無訂單記錄</h3>
+                <p>您還沒有任何訂單記錄</p>
+                <a href="menu.html" class="btn btn-primary mt-3">開始點餐</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <!-- Firebase 設定與初始化 -->
+    <script type="module">        // 🔥 Firebase 專案設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUNTVoTyNAuolkwhEvzOeRSWg8dgXJ9Bs",
+            authDomain: "restaurant-qr-system.firebaseapp.com",
+            projectId: "restaurant-qr-system",
+            storageBucket: "restaurant-qr-system.firebasestorage.app",
+            messagingSenderId: "704292695294",
+            appId: "1:704292695294:web:8c8ad1c3ece056dae649af"
+        };
+
+        // 初始化 Firebase
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            window.firebaseDb = firebase.firestore();
+            window.firebase = firebase;
+            console.log('🔥 Firebase 已初始化');
+        } catch (error) {
+            console.error('❌ Firebase 初始化失敗:', error);
+            window.isFirebaseEnabled = false;
+        }
+    </script>
+
+    <!-- 載入服務與頁面邏輯 -->
+    <script src="js/services/FirebaseService.js"></script>
+    <script>
+        class OrderHistoryPage {
+            constructor() {
+                this.firebaseService = null;
+                this.isFirebaseEnabled = false;
+                this.currentFilter = 'all';
+                this.allOrders = [];
+                
+                this.init();
+            }
+
+            async init() {
+                console.log('📋 訂單歷史頁面初始化中...');
+                
+                // 初始化 Firebase 服務
+                await this.initFirebaseService();
+                
+                // 檢查座號
+                this.checkTableNumber();
+                
+                // 設定事件監聽
+                this.setupEventListeners();
+                
+                // 載入訂單資料
+                await this.loadOrders();
+                
+                console.log('✅ 訂單歷史頁面初始化完成');
+            }
+
+            async initFirebaseService() {
+                try {
+                    if (typeof window.FirebaseService !== 'undefined' && window.firebaseDb) {
+                        this.firebaseService = new FirebaseService();
+                        await this.firebaseService.init();
+                        this.isFirebaseEnabled = true;
+                        console.log('🔥 Firebase 服務已啟用');
+                    } else {
+                        console.log('📱 Firebase 未啟用，使用本地儲存模式');
+                        this.isFirebaseEnabled = false;
+                    }
+                } catch (error) {
+                    console.warn('⚠️ Firebase 初始化失敗，使用本地儲存模式:', error);
+                    this.isFirebaseEnabled = false;
+                }
+            }
+
+            checkTableNumber() {
+                const savedTable = localStorage.getItem('currentTable');
+                if (savedTable) {
+                    const tableData = JSON.parse(savedTable);
+                    const tableDisplay = document.getElementById('currentTableNumber');
+                    if (tableDisplay) {
+                        tableDisplay.textContent = `座號：${tableData.number}`;
+                    }
+                }
+            }
+
+            setupEventListeners() {
+                // 篩選標籤點擊事件
+                const filterTabs = document.querySelectorAll('.filter-tab');
+                filterTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const filter = tab.dataset.filter;
+                        this.setActiveFilter(filter);
+                        this.filterOrders(filter);
+                    });
+                });
+            }
+
+            setActiveFilter(filter) {
+                this.currentFilter = filter;
+                
+                // 更新標籤樣式
+                const filterTabs = document.querySelectorAll('.filter-tab');
+                filterTabs.forEach(tab => {
+                    if (tab.dataset.filter === filter) {
+                        tab.classList.add('active');
+                    } else {
+                        tab.classList.remove('active');
+                    }
+                });
+            }
+
+            async loadOrders() {
+                try {
+                    this.showLoading(true);
+                    
+                    let orders = [];
+                    
+                    if (this.isFirebaseEnabled) {
+                        // 從 Firebase 載入
+                        orders = await this.loadFromFirebase();
+                    } else {
+                        // 從本地儲存載入
+                        orders = this.loadFromLocal();
+                    }
+                    
+                    this.allOrders = orders;
+                    this.displayOrders(orders);
+                    
+                    console.log(`✅ 載入 ${orders.length} 筆訂單記錄`);
+                    
+                } catch (error) {
+                    console.error('❌ 載入訂單失敗:', error);
+                    this.showError('載入訂單記錄失敗');
+                } finally {
+                    this.showLoading(false);
+                }
+            }
+
+            async loadFromFirebase() {
+                try {
+                    const orders = await this.firebaseService.getOrders();
+                    return orders.map(order => ({
+                        ...order,
+                        source: 'firebase'
+                    }));
+                } catch (error) {
+                    console.warn('⚠️ Firebase 載入失敗，回退到本地儲存');
+                    return this.loadFromLocal();
+                }
+            }
+
+            loadFromLocal() {
+                const orders = JSON.parse(localStorage.getItem('submittedOrders') || '[]');
+                return orders.map(order => ({
+                    ...order,
+                    source: 'local'
+                }));
+            }
+
+            filterOrders(filter) {
+                let filteredOrders = this.allOrders;
+                
+                if (filter !== 'all') {
+                    filteredOrders = this.allOrders.filter(order => {
+                        const status = order.orderStatus || order.status || 'pending';
+                        return status === filter;
+                    });
+                }
+                
+                this.displayOrders(filteredOrders);
+                console.log(`📋 篩選結果: ${filteredOrders.length} 筆訂單 (${filter})`);
+            }
+
+            displayOrders(orders) {
+                const ordersList = document.getElementById('ordersList');
+                const emptyState = document.getElementById('emptyState');
+                const filterTabs = document.getElementById('filterTabs');
+                
+                if (orders.length === 0) {
+                    ordersList.classList.add('d-none');
+                    emptyState.classList.remove('d-none');
+                    filterTabs.classList.add('d-none');
+                } else {
+                    ordersList.classList.remove('d-none');
+                    emptyState.classList.add('d-none');
+                    filterTabs.classList.remove('d-none');
+                    
+                    // 生成訂單卡片
+                    ordersList.innerHTML = orders.map(order => this.createOrderCard(order)).join('');
+                }
+            }
+
+            createOrderCard(order) {
+                const statusMap = {
+                    'pending': { text: '處理中', class: 'pending' },
+                    'awaiting_payment': { text: '等待付款', class: 'pending' },
+                    'paid': { text: '已付款', class: 'paid' },
+                    'completed': { text: '已完成', class: 'completed' }
+                };
+                
+                const status = statusMap[order.orderStatus || order.status || 'pending'] || statusMap.pending;
+                
+                const createdAt = order.createdAt ? 
+                    (order.createdAt.toDate ? 
+                        order.createdAt.toDate().toLocaleString('zh-TW') : 
+                        new Date(order.createdAt).toLocaleString('zh-TW')) :
+                    new Date(order.submittedAt || Date.now()).toLocaleString('zh-TW');
+
+                const orderId = order.id || order.firebaseId || order.localId || order.orderNumber;
+                
+                return `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="order-number">📋 訂單 ${orderId}</div>
+                            <div class="order-status ${status.class}">${status.text}</div>
+                        </div>
+                        
+                        <div class="order-info">
+                            <div class="order-info-item">
+                                <div class="order-info-label">桌號</div>
+                                <div class="order-info-value">🏷️ ${order.tableNumber}</div>
+                            </div>
+                            <div class="order-info-item">
+                                <div class="order-info-label">下單時間</div>
+                                <div class="order-info-value">📅 ${createdAt}</div>
+                            </div>
+                            <div class="order-info-item">
+                                <div class="order-info-label">付款方式</div>
+                                <div class="order-info-value">💳 ${this.getPaymentMethodName(order.paymentMethod)}</div>
+                            </div>
+                            <div class="order-info-item">
+                                <div class="order-info-label">資料來源</div>
+                                <div class="order-info-value">${order.source === 'firebase' ? '🔥 雲端' : '📱 本地'}</div>
+                            </div>
+                        </div>
+                        
+                        ${order.note ? `
+                            <div style="margin: 15px 0; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                                <strong>備註：</strong> ${order.note}
+                            </div>
+                        ` : ''}
+                        
+                        <div class="order-items">
+                            <div class="order-items-title">訂單項目：</div>
+                            ${order.items.map(item => `
+                                <div class="order-item">
+                                    <div class="item-name">${item.name}</div>
+                                    <div class="item-quantity">x${item.quantity}</div>
+                                    <div class="item-price">$${item.price * item.quantity}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="order-total">
+                            <span class="total-label">總金額：</span>
+                            <span class="total-amount">$${order.totalAmount}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getPaymentMethodName(method) {
+                const methodMap = {
+                    'cash': '現金付款',
+                    'card': '信用卡',
+                    'mobile': '行動支付'
+                };
+                return methodMap[method] || method;
+            }
+
+            showLoading(show) {
+                const loadingState = document.getElementById('loadingState');
+                const ordersList = document.getElementById('ordersList');
+                const emptyState = document.getElementById('emptyState');
+                const filterTabs = document.getElementById('filterTabs');
+                
+                if (show) {
+                    loadingState.classList.remove('d-none');
+                    ordersList.classList.add('d-none');
+                    emptyState.classList.add('d-none');
+                    filterTabs.classList.add('d-none');
+                } else {
+                    loadingState.classList.add('d-none');
+                }
+            }
+
+            showError(message) {
+                const ordersList = document.getElementById('ordersList');
+                ordersList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❌</div>
+                        <h3>載入失敗</h3>
+                        <p>${message}</p>
+                        <button class="btn btn-primary mt-3" onclick="location.reload()">重新載入</button>
+                    </div>
+                `;
+                ordersList.classList.remove('d-none');
+            }
+        }
+
+        // 初始化頁面
+        document.addEventListener('DOMContentLoaded', () => {
+            new OrderHistoryPage();
+        });
+    </script>
+</body>
+</html>

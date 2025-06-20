@@ -452,7 +452,40 @@
             .payment-option {
                 padding: var(--spacing-sm);
             }
+        }    </style>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <!-- Firebase 設定與初始化 -->
+    <script type="module">        // 🔥 Firebase 專案設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUNTVoTyNAuolkwhEvzOeRSWg8dgXJ9Bs",
+            authDomain: "restaurant-qr-system.firebaseapp.com",
+            projectId: "restaurant-qr-system",
+            storageBucket: "restaurant-qr-system.firebasestorage.app",
+            messagingSenderId: "704292695294",
+            appId: "1:704292695294:web:8c8ad1c3ece056dae649af"
+        };
+
+        // 初始化 Firebase
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            window.firebaseDb = firebase.firestore();
+            window.firebase = firebase;
+            console.log('🔥 Firebase 已初始化');
+        } catch (error) {
+            console.error('❌ Firebase 初始化失敗:', error);
+            // 如果 Firebase 初始化失敗，設定本地模式標記
+            window.isFirebaseEnabled = false;
         }
-    </style>
+    </script>
+
+    <!-- 載入服務 -->
+    <script src="js/services/FirebaseService.js"></script>
+    <script src="js/checkout.js"></script>
 </body>
 </html>
