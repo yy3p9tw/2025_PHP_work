@@ -102,7 +102,7 @@ function update($data){
     $sql="UPDATE $this->table SET ".join(" , ",$tmp)."
                       WHERE id='{$data['id']}'";
     
-     echo $sql;
+    //echo $sql;
     return $this->pdo->exec($sql);
 
 }
@@ -117,7 +117,7 @@ function insert($data){
 
     $keys=array_keys($data);
     $sql="INSERT INTO $this->table (`".join("`,`",$keys)."`) values('".join("','",$data)."');";
-    echo $sql;
+    //echo $sql;
     return $this->pdo->exec($sql);
 }
 
@@ -176,4 +176,5 @@ private function array2sql($array){
 
 $Item=new DB('items');
 $Sales=new DB('sales');
-dd($Item->find(['id'=>4]));
+
+
