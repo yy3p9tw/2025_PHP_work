@@ -41,45 +41,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>新增銷售記錄</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增銷售紀錄</title>
     <link rel="stylesheet" href="../../css/style.css">
     <style>
         body.warm-bg { background: #fff7f0; }
         h1.main-title { color: #d2691e; text-align: center; margin-top: 2em; }
         .form-container {
-            background: #fff;
-            max-width: 500px;
+            max-width: 420px;
             margin: 40px auto;
-            padding: 2em 2em 1em 2em;
-            border-radius: 14px;
+            background: #fff;
+            border-radius: 12px;
             box-shadow: 0 2px 16px #ffb34733;
+            padding: 2em 1.5em 1.5em 1.5em;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2em;
         }
-        label { display: block; margin-bottom: 0.5em; color: #b97a56; font-weight: 500; }
-        input[type="text"], input[type="number"], input[type="date"], select {
-            width: 100%;
-            padding: 0.5em;
+        .form-container label {
+            font-weight: bold;
+            color: #b97a56;
+            margin-bottom: 0.3em;
+        }
+        .form-container input, .form-container select, .form-container textarea {
+            padding: 0.6em 1em;
             border: 1px solid #ffb347;
             border-radius: 6px;
-            margin-bottom: 1.2em;
             font-size: 1em;
+            margin-bottom: 0.5em;
         }
-        .btn-back, button, input[type="submit"] {
-            background: linear-gradient(135deg, #ffb347 0%, #ff9966 100%);
+        .form-container button, .form-container .btn-back {
+            padding: 0.5em 1.2em;
+            border-radius: 6px;
+            border: 1px solid #ffb347;
+            background: #ffb347;
             color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 0.6em 1.5em;
             font-size: 1em;
-            font-weight: 500;
-            margin-right: 0.5em;
-            text-decoration: none;
+            margin-top: 0.5em;
             cursor: pointer;
-            transition: background 0.18s, box-shadow 0.18s;
-            box-shadow: 0 2px 8px #ffb34744;
-            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s;
         }
-        .btn-back:hover, button:hover, input[type="submit"]:hover {
-            background: linear-gradient(135deg, #ff9966 0%, #ffb347 100%);
+        .form-container button:hover, .form-container .btn-back:hover {
+            background: #ffa500;
+        }
+        @media (max-width: 600px) {
+            .form-container {
+                max-width: 98vw;
+                padding: 1.2em 0.5em 1em 0.5em;
+            }
+            .main-title { font-size: 1.1em; }
         }
     </style>
 </head>

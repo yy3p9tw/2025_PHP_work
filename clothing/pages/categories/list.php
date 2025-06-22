@@ -59,6 +59,15 @@ $categories = $Category->all();
         .btn-back:hover, button:hover {
             background: linear-gradient(135deg, #ff9966 0%, #ffb347 100%);
         }
+        @media (max-width: 700px) {
+            .main-title { font-size: 1.2em; }
+            table, thead, tbody, th, td, tr { display: block; width: 100%; }
+            thead { display: none; }
+            tr { margin-bottom: 1.2em; background: #fff; border-radius: 10px; box-shadow: 0 1px 6px #ffb34722; }
+            td { padding: 0.7em 1em; border: none; border-bottom: 1px solid #ffe0e0; position: relative; }
+            td:before { content: attr(data-label); font-weight: bold; color: #b97a56; display: block; margin-bottom: 0.3em; }
+            .btn-back { width: 100%; margin-bottom: 0.5em; }
+        }
     </style>
 </head>
 <body class="warm-bg">

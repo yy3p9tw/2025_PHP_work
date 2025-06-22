@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>衣服管理系統 - 首頁</title>
     <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             background: #fff7f0;
@@ -12,10 +13,10 @@
             color: #d2691e;
         }
         .card-nav {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 24px;
-            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 340px;
             margin: 60px auto 40px auto;
             padding: 0;
             list-style: none;
@@ -27,7 +28,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 90px;
+            height: 60px;
             background: linear-gradient(135deg, #ffb347 0%, #ff9966 100%);
             color: #fff;
             border-radius: 14px;
@@ -45,8 +46,8 @@
             box-shadow: 0 6px 24px #ffb34766;
         }
         @media (max-width: 600px) {
-            .card-nav { grid-template-columns: 1fr 1fr; }
-            .card-link { font-size: 1em; height: 70px; }
+            .card-nav { max-width: 98vw; }
+            .card-link { font-size: 1em; height: 54px; }
         }
         footer {
             color: #b97a56;

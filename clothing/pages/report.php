@@ -71,6 +71,15 @@ foreach ($items as $item) {
     .report-btns button { margin:0 0.5em 0.5em 0.5em; font-size:1em; padding:0.5em 1.5em; border-radius:8px; border:none; background:linear-gradient(135deg,#ffb347 0%,#ff9966 100%); color:#fff; font-weight:500; cursor:pointer; box-shadow:0 2px 8px #ffb34744; transition:background 0.18s; }
     .report-btns button.active, .report-btns button:focus { background:linear-gradient(135deg,#ff9966 0%,#ffb347 100%); outline:none; }
     .low-stock-row { background: #ffe0e0 !important; }
+    @media (max-width: 700px) {
+        .main-title { font-size: 1.2em; }
+        table, thead, tbody, th, td, tr { display: block; width: 100%; }
+        thead { display: none; }
+        tr { margin-bottom: 1.2em; background: #fff; border-radius: 10px; box-shadow: 0 1px 6px #ffb34722; }
+        td { padding: 0.7em 1em; border: none; border-bottom: 1px solid #ffe0e0; position: relative; }
+        td:before { content: attr(data-label); font-weight: bold; color: #b97a56; display: block; margin-bottom: 0.3em; }
+        .btn-back { width: 100%; margin-bottom: 0.5em; }
+    }
     </style>
 </head>
 <body class="warm-bg">
