@@ -1,0 +1,242 @@
+<?php
+require_once '../../includes/db.php';
+$Item = new DB('items');
+$Category = new DB('categories');
+$categories = $Category->all();
+$Color = new DB('colors');
+$colors = $Color->all();
+$Variant = new DB('item_variants');
+
+$id = $_GET['id'] ?? 0;
+$item = $Item->all("id = $id")[0] ?? null;
+$variants = $Variant->all("item_id = $id");
+
+if (!$item) {
+    echo "找不到商品";
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $imageName = $item['image'];
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+        $allowExt = ['jpg', 'jpeg', 'png', 'gif'];
+        if (in_array($ext, $allowExt)) {
+            $imageName = uniqid('img_', true) . '.' . $ext;
+            move_uploaded_file($_FILES['image']['tmp_name'], '../../uploads/' . $imageName);
+        }
+    }
+    $Item->update($id, [
+        'name' => $_POST['name'],
+        'category_id' => $_POST['category_id'],
+        'description' => $_POST['description'],
+        'image' => $imageName
+    ]);
+    // --- variants ---
+    $oldVariants = $Variant->all("item_id = $id");
+    $oldIds = array_column($oldVariants, 'id');
+    $postIds = [];
+    foreach ($_POST['variant'] as $v) {
+        if (!empty($v['id'])) {
+            // update
+            $Variant->update($v['id'], [
+                'color_id' => $v['color_id'],
+                'cost_price' => $v['cost_price'],
+                'sell_price' => $v['sell_price'],
+                'stock' => $v['stock'],
+                'min_stock' => $v['min_stock']
+            ]);
+            $postIds[] = $v['id'];
+        } else {
+            // insert
+            $Variant->insert([
+                'item_id' => $id,
+                'color_id' => $v['color_id'],
+                'cost_price' => $v['cost_price'],
+                'sell_price' => $v['sell_price'],
+                'stock' => $v['stock'],
+                'min_stock' => $v['min_stock']
+            ]);
+        }
+    }
+    // 刪除被移除的規格（只刪除資料庫，畫面上的 JS 行刪除不會送 id）
+    foreach ($oldIds as $oid) {
+        $found = false;
+        foreach ($_POST['variant'] as $v) {
+            if (!empty($v['id']) && $v['id'] == $oid) {
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            $Variant->delete($oid);
+        }
+    }
+    header('Location: list.php');
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>編輯商品</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        body.warm-bg { background: #fff7f0; }
+        h1.main-title { color: #d2691e; text-align: center; margin-top: 2em; }
+        .form-container {
+            background: #fff;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 2em 2em 1em 2em;
+            border-radius: 14px;
+            box-shadow: 0 2px 16px #ffb34733;
+        }
+        label { display: block; margin-bottom: 0.5em; color: #b97a56; font-weight: 500; }
+        input[type="text"], input[type="number"], select, textarea {
+            width: 100%;
+            padding: 0.5em;
+            border: 1px solid #ffb347;
+            border-radius: 6px;
+            margin-bottom: 1.2em;
+            font-size: 1em;
+        }
+        textarea { min-height: 60px; }
+        .btn-back, button, input[type="submit"] {
+            background: linear-gradient(135deg, #ffb347 0%, #ff9966 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6em 1.5em;
+            font-size: 1em;
+            font-weight: 500;
+            margin-right: 0.5em;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.18s, box-shadow 0.18s;
+            box-shadow: 0 2px 8px #ffb34744;
+            display: inline-block;
+        }
+        .btn-back:hover, button:hover, input[type="submit"]:hover {
+            background: linear-gradient(135deg, #ff9966 0%, #ffb347 100%);
+        }
+        .variant-table th, .variant-table td { padding: 6px 8px; }
+        .variant-table { width: 100%; margin-bottom: 1em; background: #fff7f0; border-radius: 8px; }
+        .variant-table select {
+            font-size: 1.2em;
+            min-width: 120px;
+            height: 2.6em;
+            padding: 0.4em 1.2em 0.4em 0.8em;
+            border-radius: 8px;
+            border: 1.5px solid #ffb347;
+            box-shadow: 0 1px 6px #ffb34733;
+        }
+    </style>
+</head>
+<body class="warm-bg">
+    <h1 class="main-title">編輯商品</h1>
+    <form method="post" enctype="multipart/form-data" class="form-container">
+        <label>名稱：<input type="text" name="name" value="<?= htmlspecialchars($item['name']) ?>" required></label>
+        <label>分類：
+            <select name="category_id" id="category_id" required>
+                <?php foreach($categories as $cat): ?>
+                    <option value="<?= $cat['id'] ?>" <?= $cat['id'] == $item['category_id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($cat['name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </label>
+        <label>商品圖片：<input type="file" name="image" accept="image/*"></label>
+        <?php if($item['image']): ?>
+            <br><img src="../../uploads/<?= htmlspecialchars($item['image']) ?>" style="max-width:60px;">
+        <?php endif; ?>
+        <label>描述：<textarea name="description"><?= htmlspecialchars($item['description']) ?></textarea></label>
+        <hr style="margin:2em 0;">
+        <h3 style="color:#d2691e;">顏色/規格與庫存</h3>
+        <table class="variant-table" border="1" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>顏色</th>
+                    <th>成本價</th>
+                    <th>售價</th>
+                    <th>庫存</th>
+                    <th>最低庫存</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="variantTbody">
+                <?php foreach($variants as $idx => $v): ?>
+                <tr>
+                    <td>
+                        <select name="variant[<?= $idx ?>][color_id]" required>
+                            <option value="">請選擇</option>
+                            <?php foreach($colors as $col): ?>
+                                <option value="<?= $col['id'] ?>" <?= $col['id'] == $v['color_id'] ? 'selected' : '' ?>><?= htmlspecialchars($col['name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <input type="hidden" name="variant[<?= $idx ?>][id]" value="<?= $v['id'] ?>">
+                    </td>
+                    <td><input type="number" name="variant[<?= $idx ?>][cost_price]" value="<?= intval($v['cost_price']) ?>" step="1" required></td>
+                    <td><input type="number" name="variant[<?= $idx ?>][sell_price]" value="<?= intval($v['sell_price']) ?>" step="1" required></td>
+                    <td><input type="number" name="variant[<?= $idx ?>][stock]" value="<?= $v['stock'] ?>" required></td>
+                    <td><input type="number" name="variant[<?= $idx ?>][min_stock]" value="<?= $v['min_stock'] ?>" required></td>
+                    <td><button type="button" class="removeVariant btn-back" style="background:#fff0e0;color:#d2691e;">刪除</button></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <button type="button" id="addVariantBtn">＋新增規格</button>
+        <br><br>
+        <button type="submit">儲存</button>
+        <a href="list.php">返回列表</a>
+    </form>
+    <script>
+// 動態新增/刪除顏色規格
+let variantIdx = <?= count($variants) ?>;
+document.getElementById('addVariantBtn').onclick = function() {
+    const tbody = document.getElementById('variantTbody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td>
+            <select name="variant[${variantIdx}][color_id]" required>
+                <option value="">請選擇</option>
+                <?php foreach($colors as $col): ?>
+                    <option value="<?= $col['id'] ?>"><?= htmlspecialchars($col['name']) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </td>
+        <td><input type="number" name="variant[${variantIdx}][cost_price]" step="1" required></td>
+        <td><input type="number" name="variant[${variantIdx}][sell_price]" step="1" required></td>
+        <td><input type="number" name="variant[${variantIdx}][stock]" required></td>
+        <td><input type="number" name="variant[${variantIdx}][min_stock]" value="5" required></td>
+        <td><button type="button" class="removeVariant btn-back" style="background:#fff0e0;color:#d2691e;">刪除</button></td>
+    `;
+    tbody.appendChild(tr);
+    variantIdx++;
+};
+document.getElementById('variantTbody').onclick = function(e) {
+    if (e.target.classList.contains('removeVariant')) {
+        if (document.querySelectorAll('#variantTbody tr').length > 1) {
+            e.target.closest('tr').remove();
+        } else {
+            alert('至少要有一個顏色/規格');
+        }
+    }
+};
+// 表單送出前檢查所有顏色必選
+    document.querySelector('form').onsubmit = function(e) {
+        let selects = document.querySelectorAll("select[name*='color_id']");
+        for(let sel of selects) {
+            if(!sel.value || isNaN(sel.value) || parseInt(sel.value) <= 0) {
+                alert('請為每一行選擇有效顏色！');
+                sel.focus();
+                e.preventDefault();
+                return false;
+            }
+        }
+        return true;
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+body {
+    font-family: 'Microsoft JhengHei', Arial, sans-serif;
+    background: #f7f7f7;
+    color: #222;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background: #2a5d84;
+    color: #fff;
+    padding: 1em 0.5em;
+    margin-bottom: 2em;
+    box-shadow: 0 2px 8px #0002;
+}
+nav {
+    margin: 0 auto;
+    max-width: 900px;
+}
+.nav-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.nav-list li {
+    margin: 0;
+}
+.nav-list a {
+    color: #fff;
+    background: #2a5d84;
+    border-radius: 3px;
+    padding: 6px 16px;
+    font-size: 1em;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.nav-list a:hover {
+    background: #17405e;
+}
+h1, h2, h3 {
+    color: #2a5d84;
+}
+table {
+    background: #fff;
+    border-collapse: collapse;
+    margin-bottom: 2em;
+    box-shadow: 0 2px 8px #0001;
+    width: 100%;
+    max-width: 900px;
+}
+th, td {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+}
+th, td {
+    /* 移除小數點 */
+    font-variant-numeric: tabular-nums;
+}
+/* 表格內數字欄位不顯示小數點 */
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+a {
+    color: #2a5d84;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+button, input[type="submit"] {
+    background: #2a5d84;
+    color: #fff;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+button:hover, input[type="submit"]:hover {
+    background: #17405e;
+}
+/* 請加到 c:\2025-PHP\clothing\css\style.css 最後 */
+.warm-bg {
+    background: #fff7f0;
+}
+.main-title {
+    color: #d2691e;
+    text-align: center;
+    margin-top: 2em;
+}
+.form-container {
+    background: #fff;
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 2em 2em 1em 2em;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px #ffb34733;
+}
+label {
+    display: block;
+    margin-bottom: 0.5em;
+    color: #b97a56;
+    font-weight: 500;
+}
+input[type="text"] {
+    width: 100%;
+    padding: 0.5em;
+    border: 1px solid #ffb347;
+    border-radius: 6px;
+    margin-bottom: 1.2em;
+    font-size: 1em;
+}
+button, .btn-back {
+    background: linear-gradient(135deg, #ffb347 0%, #ff9966 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6em 1.5em;
+    font-size: 1em;
+    font-weight: 500;
+    margin-right: 0.5em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.18s, box-shadow 0.18s;
+    box-shadow: 0 2px 8px #ffb34744;
+    display: inline-block;
+}
+button:hover, .btn-back:hover {
+    background: linear-gradient(135deg, #ff9966 0%, #ffb347 100%);
+}
+/* 商品列表表格內 input、select 欄位高度統一 */
+table input[type="text"],
+table input[type="number"],
+table select {
+    height: 38px;           /* 與 input 欄位一致 */
+    border-radius: 6px;
+    font-size: 1em;
+    padding: 0 10px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    background: #fff7f0;
+    border: 1px solid #ffb347;
+    margin: 0;
+}
+/* 商品成本、售價欄位不顯示小數點 */
+td.cost-price, td.sell-price {
+    font-variant-numeric: tabular-nums;
+}
+@media (max-width: 700px) {
+    .nav-list { flex-direction: column; gap: 0.5em; }
+    table, th, td { font-size: 0.95em; }
+}
