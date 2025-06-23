@@ -18,22 +18,36 @@ $colors = $Color->all();
         td:before { content: attr(data-label); font-weight: bold; color: #b97a56; display: block; margin-bottom: 0.3em; }
         .btn-back { width: 100%; margin-bottom: 0.5em; }
     }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.2em;
+    }
+    .product-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px #ffb34722;
+        padding: 1.2em 1em;
+        margin-bottom: 1.2em;
+    }
     </style>
 </head>
 <body>
-    <h1>顏色列表</h1>
-    <a href="add.php">新增顏色</a>
-    <table border="1" cellpadding="5">
-        <tr>
-            <th>ID</th>
-            <th>名稱</th>
-        </tr>
-        <?php foreach($colors as $col): ?>
-        <tr>
-            <td data-label="ID"><?= $col['id'] ?></td>
-            <td data-label="名稱"><?= htmlspecialchars($col['name']) ?></td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
+    <h1 class="main-title">顏色列表</h1>
+    <div class="action-bar" style="margin-bottom:1.5em;">
+        <a href="add.php" class="btn-back btn-sm">＋ 新增顏色</a>
+    </div>
+    <div class="grid">
+    <?php foreach($colors as $col): ?>
+        <div class="product-card">
+            <div style="font-weight:bold;font-size:1.1em;margin-bottom:0.5em;">ID：<?= $col['id'] ?></div>
+            <div>名稱：<?= htmlspecialchars($col['name']) ?></div>
+            <div class="card-action-bar" style="margin-top:0.7em;display:flex;gap:0.5em;flex-wrap:wrap;">
+                <a href="edit.php?id=<?= $col['id'] ?>" class="btn-back btn-sm">編輯</a>
+                <a href="delete.php?id=<?= $col['id'] ?>" class="btn-back btn-sm btn-del" onclick="return confirm('確定要刪除嗎？')">刪除</a>
+            </div>
+        </div>
+    <?php endforeach; ?>
+    </div>
 </body>
 </html>

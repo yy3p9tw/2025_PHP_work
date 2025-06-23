@@ -1,8 +1,8 @@
 <?php
 class DB {
-    private $dsn = "mysql:host=localhost;dbname=store;charset=utf8mb4";
-    private $user = "root"; // 請依您的 MySQL 帳號調整
-    private $pw = "";       // 請依您的 MySQL 密碼調整
+    private $dsn = "mysql:host=sql306.infinityfree.com;dbname=if0_39295983_store;charset=utf8mb4";
+    private $user = "if0_39295983"; // 請依您的 MySQL 帳號調整
+    private $pw = "3jxu7ucRkSI";       // 請依您的 MySQL 密碼調整
     private $pdo;
     private $table;
 

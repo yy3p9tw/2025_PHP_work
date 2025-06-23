@@ -25,32 +25,25 @@ $customers = $Customer->all();
 <body class="warm-bg">
     <div style="max-width:950px;margin:40px auto 0;">
         <h1 class="main-title">客戶管理</h1>
-        <div style="text-align:right;margin-bottom:1.5em;">
-            <a href="../../index.php" class="btn-back">返回首頁</a>
-            <a href="add.php" class="btn-back" style="margin-left:8px;">＋ 新增客戶</a>
+        <div class="action-bar" style="margin-bottom:1.5em;">
+            <a href="../../index.php" class="btn-back btn-sm">返回首頁</a>
+            <a href="add.php" class="btn-back btn-sm">＋ 新增客戶</a>
         </div>
         <div style="background:#fff;border-radius:14px;box-shadow:0 2px 16px #ffb34733;padding:2em 1em 1em 1em;">
-        <table style="width:100%;">
-            <tr>
-                <th>姓名</th>
-                <th>電話</th>
-                <th>Email</th>
-                <th>地址</th>
-                <th>操作</th>
-            </tr>
-            <?php foreach($customers as $c): ?>
-            <tr>
-                <td data-label="姓名"><?= htmlspecialchars($c['name']) ?></td>
-                <td data-label="電話"><?= htmlspecialchars($c['phone']) ?></td>
-                <td data-label="Email"><?= htmlspecialchars($c['email']) ?></td>
-                <td data-label="地址"><?= htmlspecialchars($c['address']) ?></td>
-                <td data-label="操作">
-                    <a href="edit.php?id=<?= $c['id'] ?>" class="btn-back" style="padding:0.3em 1em;font-size:0.95em;">編輯</a>
-                    <a href="delete.php?id=<?= $c['id'] ?>" class="btn-back" style="background:#fff0e0;color:#d2691e;padding:0.3em 1em;font-size:0.95em;border:1px solid #ffb347;" onclick="return confirm('確定要刪除嗎？')">刪除</a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
+        <div class="grid">
+        <?php foreach($customers as $c): ?>
+            <div class="product-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;">
+                <div style="font-weight:bold;font-size:1.1em;margin-bottom:0.5em;">姓名：<?= htmlspecialchars($c['name']) ?></div>
+                <div>電話：<?= htmlspecialchars($c['phone']) ?></div>
+                <div>Email：<?= htmlspecialchars($c['email']) ?></div>
+                <div>地址：<?= htmlspecialchars($c['address']) ?></div>
+                <div class="card-action-bar" style="margin-top:0.7em;display:flex;gap:0.5em;flex-wrap:wrap;">
+                    <a href="edit.php?id=<?= $c['id'] ?>" class="btn-back btn-sm">編輯</a>
+                    <a href="delete.php?id=<?= $c['id'] ?>" class="btn-back btn-sm btn-del" onclick="return confirm('確定要刪除嗎？')">刪除</a>
+                </div>
+            </div>
+        <?php endforeach; ?>
+        </div>
         </div>
     </div>
 </body>

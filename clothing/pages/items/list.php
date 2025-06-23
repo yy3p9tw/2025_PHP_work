@@ -56,7 +56,7 @@ $items = array_merge($lowStockItems, $normalItems);
     <title>商品列表</title>
     <link rel="stylesheet" href="../../css/style.css">
     <style>
-    @media (max-width: 700px) {
+    @media (max-width: 768px) {
         .main-title { font-size: 1.2em; }
         table, thead, tbody, th, td, tr { display: block; width: 100%; }
         thead { display: none; }
@@ -64,7 +64,13 @@ $items = array_merge($lowStockItems, $normalItems);
         td { padding: 0.7em 1em; border: none; border-bottom: 1px solid #ffe0e0; position: relative; }
         td:before { content: attr(data-label); font-weight: bold; color: #b97a56; display: block; margin-bottom: 0.3em; }
         .btn-back { width: 100%; margin-bottom: 0.5em; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5em;
+        }
     }
+
     /* 搜尋按鈕往上 15px */
     .search-form button { margin-top: -15px; }
     </style>
@@ -72,11 +78,11 @@ $items = array_merge($lowStockItems, $normalItems);
 <body class="warm-bg">
     <div style="max-width:950px;margin:40px auto 0;">
         <h1 class="main-title">商品列表</h1>
-        <div style="text-align:right;margin-bottom:1.5em;">
+        <div class="action-bar" style="margin-bottom:1.5em;">
             <a href="../../index.php" class="btn-back">返回首頁</a>
-            <a href="add.php" class="btn-back" style="margin-left:8px;">＋ 新增商品</a>
-            <a href="../colors/add.php" class="btn-back" style="margin-left:8px;">＋ 新增顏色</a>
-            <a href="../categories/list.php" class="btn-back" style="margin-left:8px;">＋ 新增分類</a>
+            <a href="add.php" class="btn-back">＋ 新增商品</a>
+            <a href="../colors/add.php" class="btn-back">＋ 新增顏色</a>
+            <a href="../categories/list.php" class="btn-back">＋ 新增分類</a>
         </div>
         <div style="background:#fff;border-radius:14px;box-shadow:0 2px 16px #ffb34733;padding:2em 1em 1em 1em;">
         <div style="margin-bottom:1.5em;">
@@ -85,67 +91,53 @@ $items = array_merge($lowStockItems, $normalItems);
                 <button type="submit">搜尋</button>
             </form>
         </div>
-        <table>
-            <tr>
-                <th>圖片</th>
-                <th>名稱</th>
-                <th>分類</th>
-                <th>顏色</th>
-                <th>成本</th>
-                <th>售價</th>
-                <th>庫存</th>
-                <th>操作</th>
-            </tr>
-            <?php
-            foreach($items as $item) {
-                $variants = $itemVariantsMap[$item['id']] ?? [];
-                $isLowStock = isset($lowStockItemIds[$item['id']]);
-                if (empty($variants)) {
-                    echo '<tr' . ($isLowStock ? ' style="background:#ffeaea;"' : '') . '>' .
-                        '<td data-label="圖片" style="text-align:center;">' .
-                            ($item['image'] ? '<img src="../../uploads/' . htmlspecialchars($item['image']) . '" style="max-width:60px;max-height:60px;border-radius:8px;box-shadow:0 1px 6px #ffb34733;">' : '') .
-                        '</td>' .
-                        '<td data-label="名稱">' . htmlspecialchars($item['name']) . '</td>' .
-                        '<td data-label="分類">' . (isset($catMap[$item['category_id']]) ? htmlspecialchars($catMap[$item['category_id']]) : '') . '</td>' .
-                        '<td data-label="顏色">-</td><td data-label="成本">-</td><td data-label="售價">-</td><td data-label="庫存">-</td>' .
-                        '<td data-label="操作">' .
-                            '<a href="edit.php?id=' . $item['id'] . '" class="btn-back" style="padding:0.3em 1em;font-size:0.95em;">編輯</a>' .
-                            '<a href="delete.php?id=' . $item['id'] . '" class="btn-back" style="background:#fff0e0;color:#d2691e;padding:0.3em 1em;font-size:0.95em;border:1px solid #ffb347;" onclick="return confirm(\'確定要刪除嗎？\')">刪除</a>' .
-                        '</td>' .
-                    '</tr>';
-                } else {
-                    foreach($variants as $idx => $v) {
-                        $stock = $v['stock'];
-                        $minStock = isset($v['min_stock']) && $v['min_stock'] !== '' ? $v['min_stock'] : 0;
-                        echo '<tr' . ($isLowStock ? ' style="background:#ffeaea;"' : '') . '>';
-                        if($idx === 0) {
-                            echo '<td data-label="圖片" style="text-align:center;" rowspan="' . count($variants) . '">' .
-                                ($item['image'] ? '<img src="../../uploads/' . htmlspecialchars($item['image']) . '" style="max-width:60px;max-height:60px;border-radius:8px;box-shadow:0 1px 6px #ffb34733;">' : '') .
-                            '</td>';
-                            echo '<td data-label="名稱" rowspan="' . count($variants) . '">' . htmlspecialchars($item['name']) . '</td>';
-                            echo '<td data-label="分類" rowspan="' . count($variants) . '">' . (isset($catMap[$item['category_id']]) ? htmlspecialchars($catMap[$item['category_id']]) : '') . '</td>';
-                        }
-                        echo '<td data-label="顏色">' . (isset($colorMap[$v['color_id']]) ? htmlspecialchars($colorMap[$v['color_id']]) : '') . ' <span style="color:#aaa;font-size:0.9em;">#' . $v['id'] . '</span></td>';
-                        echo '<td data-label="成本" class="cost-price">' . number_format($v['cost_price'], 0) . '</td>';
-                        echo '<td data-label="售價" class="sell-price">' . number_format($v['sell_price'], 0) . '</td>';
-                        echo '<td data-label="庫存" class="stock-cell">';
-                        if ($stock <= $minStock) {
-                            echo '<span style="color:#d11c1c;font-weight:bold;">' . htmlspecialchars($stock) . '</span>';
-                        } else {
-                            echo htmlspecialchars($stock);
-                        }
-                        echo '</td>';
-                        if($idx === 0) {
-                            echo '<td data-label="操作" rowspan="' . count($variants) . '"><a href="edit.php?id=' . $item['id'] . '" class="btn-back" style="padding:0.3em 1em;font-size:0.95em;">編輯</a>';
-                            echo '<a href="delete.php?id=' . $item['id'] . '" class="btn-back" style="background:#fff0e0;color:#d2691e;padding:0.3em 1em;font-size:0.95em;border:1px solid #ffb347;" onclick="return confirm(\'確定要刪除嗎？\')">刪除</a>';
-                        }
-                        if($idx === 0) echo '</td>';
-                        echo '</tr>';
-                    }
-                }
-            }
-            ?>
-        </table>
+        <div class="grid">
+        <?php foreach($items as $item):
+            $variants = $itemVariantsMap[$item['id']] ?? [];
+            $isLowStock = isset($lowStockItemIds[$item['id']]);
+            if (empty($variants)):
+        ?>
+            <div class="product-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;<?= $isLowStock ? 'background:#ffeaea;' : '' ?>">
+                <div style="text-align:center;">
+                    <?php if ($item['image']): ?>
+                        <img src="../../uploads/<?= htmlspecialchars($item['image']) ?>" style="max-width:60px;max-height:60px;border-radius:8px;box-shadow:0 1px 6px #ffb34733;">
+                    <?php endif; ?>
+                </div>
+                <div style="font-weight:bold;font-size:1.1em;margin:0.5em 0;">商品：<?= htmlspecialchars($item['name']) ?></div>
+                <div>分類：<?= isset($catMap[$item['category_id']]) ? htmlspecialchars($catMap[$item['category_id']]) : '' ?></div>
+                <div>顏色：-</div>
+                <div>成本：-</div>
+                <div>售價：-</div>
+                <div>庫存：-</div>
+                <div class="card-action-bar" style="margin-top:0.7em;display:flex;gap:0.5em;flex-wrap:wrap;">
+                    <a href="edit.php?id=<?= $item['id'] ?>" class="btn-back btn-sm">編輯</a>
+                    <a href="delete.php?id=<?= $item['id'] ?>" class="btn-back btn-sm btn-del" onclick="return confirm('確定要刪除嗎？')">刪除</a>
+                </div>
+            </div>
+        <?php else:
+            foreach($variants as $v):
+                $stock = $v['stock'];
+                $minStock = isset($v['min_stock']) && $v['min_stock'] !== '' ? $v['min_stock'] : 0;
+        ?>
+            <div class="product-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;<?= $isLowStock ? 'background:#ffeaea;' : '' ?>">
+                <div style="text-align:center;">
+                    <?php if ($item['image']): ?>
+                        <img src="../../uploads/<?= htmlspecialchars($item['image']) ?>" style="max-width:60px;max-height:60px;border-radius:8px;box-shadow:0 1px 6px #ffb34733;">
+                    <?php endif; ?>
+                </div>
+                <div style="font-weight:bold;font-size:1.1em;margin:0.5em 0;">商品：<?= htmlspecialchars($item['name']) ?></div>
+                <div>分類：<?= isset($catMap[$item['category_id']]) ? htmlspecialchars($catMap[$item['category_id']]) : '' ?></div>
+                <div>顏色：<?= isset($colorMap[$v['color_id']]) ? htmlspecialchars($colorMap[$v['color_id']]) : '' ?> <span style="color:#aaa;font-size:0.9em;">#<?= $v['id'] ?></span></div>
+                <div>成本：<?= number_format($v['cost_price'], 0) ?></div>
+                <div>售價：<?= number_format($v['sell_price'], 0) ?></div>
+                <div>庫存：<?php if ($stock <= $minStock): ?><span style="color:#d11c1c;font-weight:bold;"><?= htmlspecialchars($stock) ?></span><?php else: ?><?= htmlspecialchars($stock) ?><?php endif; ?></div>
+                <div class="card-action-bar" style="margin-top:0.7em;display:flex;gap:0.5em;flex-wrap:wrap;">
+                    <a href="edit.php?id=<?= $item['id'] ?>" class="btn-back btn-sm">編輯</a>
+                    <a href="delete.php?id=<?= $item['id'] ?>" class="btn-back btn-sm btn-del" onclick="return confirm('確定要刪除嗎？')">刪除</a>
+                </div>
+            </div>
+        <?php endforeach; endif; endforeach; ?>
+        </div>
         </div>
     </div>
     <script>

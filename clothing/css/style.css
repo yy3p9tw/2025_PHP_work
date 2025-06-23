@@ -1,3 +1,8 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 body {
     font-family: 'Microsoft JhengHei', Arial, sans-serif;
     background: #f7f7f7;
@@ -154,7 +159,104 @@ table select {
 td.cost-price, td.sell-price {
     font-variant-numeric: tabular-nums;
 }
+/* 卡片式列表自動排版 grid 容器 */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5em;
+}
+@media (max-width: 900px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* 商品列表上方按鈕 RWD 優化 */
+.action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  justify-content: flex-end;
+}
+.action-bar .btn-back {
+  font-size: 1em;
+  padding: 0.45em 1.1em;
+  min-width: 90px;
+  margin: 0 !important;
+}
+@media (max-width: 900px) {
+  .action-bar .btn-back {
+    font-size: 0.98em;
+    padding: 0.35em 0.9em;
+    min-width: 80px;
+  }
+}
+/* 商品卡片內操作按鈕 RWD 小型化 */
+.card-action-bar {
+  display: flex;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+.btn-sm {
+  font-size: 0.95em;
+  padding: 0.28em 0.8em;
+  min-width: 60px;
+}
+@media (max-width: 900px) {
+  .btn-sm {
+    font-size: 0.92em;
+    padding: 0.22em 0.7em;
+    min-width: 48px;
+  }
+}
+.btn-del {
+  background: #fff0e0;
+  color: #d2691e;
+  border: 1px solid #ffb347;
+}
+/* 首頁選單卡片化與現代化美化 */
+.card-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2em 2em;
+  list-style: none;
+  padding: 0;
+  margin: 2.5em 0 2em 0;
+  justify-items: center;
+}
+.card-link.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffb347;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px #ffb34733;
+  padding: 2.2em 1em 2em 1em;
+  text-align: center;
+  font-size: 1.18em;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: box-shadow 0.18s, background 0.18s, color 0.18s;
+  border: 2px solid #fff7f0;
+}
+.card-link.card:hover {
+  background: #ff9966;
+  color: #fffbe6;
+  box-shadow: 0 4px 24px #ffb34755;
+  border-color: #ffb347;
+}
+.card-icon {
+  font-size: 2.2em;
+  margin-bottom: 0.6em;
+}
+.card-title {
+  font-size: 1.1em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
 @media (max-width: 700px) {
-    .nav-list { flex-direction: column; gap: 0.5em; }
-    table, th, td { font-size: 0.95em; }
+  .main-title { font-size: 1.2em; }
+  .card-link.card { font-size: 1.02em; padding: 1.5em 0.5em 1.5em 0.5em; }
+  .card-icon { font-size: 1.5em; }
 }

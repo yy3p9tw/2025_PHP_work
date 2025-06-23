@@ -64,6 +64,7 @@ foreach ($items as $item) {
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>銷售統計報表</title>
     <link rel="stylesheet" href="../css/style.css">
     <style>
@@ -95,102 +96,93 @@ foreach ($items as $item) {
                 <span style="font-size:1.1em;color:#b97a56;">今日營業額</span><br>
                 <span style="font-size:2em;color:#d2691e;"><?= number_format($todayTotal, 0) ?> 元</span>
             </div>
-            <div style="text-align:right;margin-bottom:1em;">
-                <a href="export_sales_today.php" class="btn-back" style="background:#ffb347;color:#fff;padding:0.4em 1.2em;border-radius:6px;">匯出今日銷售明細(CSV)</a>
+            <div class="card-action-bar" style="text-align:right;margin-bottom:1em;display:flex;gap:0.5em;flex-wrap:wrap;justify-content:flex-end;">
+                <a href="export_sales_today.php" class="btn-back btn-sm" style="background:#ffb347;color:#fff;">匯出今日銷售明細(CSV)</a>
             </div>
             <h2 style="color:#d2691e;text-align:center;font-size:1.1em;margin-bottom:1em;">今日銷售明細</h2>
-            <table style="width:100%;background:#fff7f0;border-radius:8px;box-shadow:0 1px 6px #ffb34722;">
-                <tr style="background:#fff0e0;">
-                    <th>商品</th><th>顏色</th><th>成本</th><th>售價</th><th>數量</th><th>總價</th>
-                </tr>
+            <div class="grid">
                 <?php foreach($todaySales as $sale): ?>
                 <?php $variant = $variantMap[$sale['item_id']] ?? null;
                       $item = $variant && isset($itemMap[$variant['item_id']]) ? $itemMap[$variant['item_id']] : null;
                       $color = $variant && isset($colorMap[$variant['color_id']]) ? $colorMap[$variant['color_id']] : '';
                       $isLowStock = $item && isset($lowStockItemIds[$item['id']]);
                 ?>
-                <tr<?= $isLowStock ? ' style="background:#ffe0e0;"' : '' ?>>
-                    <td><?= $item ? htmlspecialchars($item['name']) : '<span style="color:#aaa;">(已刪除)</span>' ?></td>
-                    <td><?= $color ?></td>
-                    <td><?= $variant ? intval($variant['cost_price']) : '-' ?></td>
-                    <td><?= $variant ? intval($variant['sell_price']) : '-' ?></td>
-                    <td><?= intval($sale['quantity']) ?></td>
-                    <td><?= intval($sale['total_price']) ?></td>
-                </tr>
+                <div class="report-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;<?= $isLowStock ? 'background:#ffeaea;' : '' ?>">
+                    <div><b>商品：</b><?= $item ? htmlspecialchars($item['name']) : '<span style="color:#aaa;">(已刪除)</span>' ?></div>
+                    <div><b>顏色：</b><?= $color ?></div>
+                    <div><b>成本：</b><?= $variant ? intval($variant['cost_price']) : '-' ?></div>
+                    <div><b>售價：</b><?= $variant ? intval($variant['sell_price']) : '-' ?></div>
+                    <div><b>數量：</b><?= intval($sale['quantity']) ?></div>
+                    <div><b>總價：</b><?= intval($sale['total_price']) ?></div>
+                </div>
                 <?php endforeach; ?>
                 <?php if (empty($todaySales)): ?>
-                <tr><td colspan="6" style="text-align:center;color:#aaa;">今日無銷售紀錄</td></tr>
+                <div style="grid-column:1/-1;text-align:center;color:#aaa;">今日無銷售紀錄</div>
                 <?php endif; ?>
-            </table>
+            </div>
         </div>
         <div id="report-month" class="report-table-block" style="display:none;">
             <div style="text-align:center; margin-bottom:1em;">
                 <span style="font-size:1.1em;color:#b97a56;">本月營業額</span><br>
                 <span style="font-size:2em;color:#d2691e;"><?= number_format($monthTotal, 0) ?> 元</span>
             </div>
-            <div style="text-align:right;margin-bottom:1em;">
-                <a href="export_sales_month.php" class="btn-back" style="background:#ffb347;color:#fff;padding:0.4em 1.2em;border-radius:6px;">匯出本月銷售明細(CSV)</a>
+            <div class="card-action-bar" style="text-align:right;margin-bottom:1em;display:flex;gap:0.5em;flex-wrap:wrap;justify-content:flex-end;">
+                <a href="export_sales_month.php" class="btn-back btn-sm" style="background:#ffb347;color:#fff;">匯出本月銷售明細(CSV)</a>
             </div>
             <h2 style="color:#d2691e;text-align:center;font-size:1.1em;margin-bottom:1em;">本月銷售明細</h2>
-            <table style="width:100%;background:#fff7f0;border-radius:8px;box-shadow:0 1px 6px #ffb34722;">
-                <tr style="background:#fff0e0;">
-                    <th>商品</th><th>顏色</th><th>成本</th><th>售價</th><th>數量</th><th>總價</th>
-                </tr>
+            <div class="grid">
                 <?php foreach($monthSales as $sale): ?>
                 <?php $variant = $variantMap[$sale['item_id']] ?? null;
                       $item = $variant && isset($itemMap[$variant['item_id']]) ? $itemMap[$variant['item_id']] : null;
                       $color = $variant && isset($colorMap[$variant['color_id']]) ? $colorMap[$variant['color_id']] : '';
                       $isLowStock = $item && isset($lowStockItemIds[$item['id']]);
                 ?>
-                <tr<?= $isLowStock ? ' style="background:#ffe0e0;"' : '' ?>>
-                    <td><?= $item ? htmlspecialchars($item['name']) : '<span style="color:#aaa;">(已刪除)</span>' ?></td>
-                    <td><?= $color ?></td>
-                    <td><?= $variant ? intval($variant['cost_price']) : '-' ?></td>
-                    <td><?= $variant ? intval($variant['sell_price']) : '-' ?></td>
-                    <td><?= intval($sale['quantity']) ?></td>
-                    <td><?= intval($sale['total_price']) ?></td>
-                </tr>
+                <div class="report-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;<?= $isLowStock ? 'background:#ffeaea;' : '' ?>">
+                    <div><b>商品：</b><?= $item ? htmlspecialchars($item['name']) : '<span style="color:#aaa;">(已刪除)</span>' ?></div>
+                    <div><b>顏色：</b><?= $color ?></div>
+                    <div><b>成本：</b><?= $variant ? intval($variant['cost_price']) : '-' ?></div>
+                    <div><b>售價：</b><?= $variant ? intval($variant['sell_price']) : '-' ?></div>
+                    <div><b>數量：</b><?= intval($sale['quantity']) ?></div>
+                    <div><b>總價：</b><?= intval($sale['total_price']) ?></div>
+                </div>
                 <?php endforeach; ?>
                 <?php if (empty($monthSales)): ?>
-                <tr><td colspan="6" style="text-align:center;color:#aaa;">本月無銷售紀錄</td></tr>
+                <div style="grid-column:1/-1;text-align:center;color:#aaa;">本月無銷售紀錄</div>
                 <?php endif; ?>
-            </table>
+            </div>
         </div>
         <div id="report-all" class="report-table-block" style="display:none;">
             <div style="text-align:center; margin-bottom:1em;">
                 <span style="font-size:1.1em;color:#b97a56;">總營業額</span><br>
                 <span style="font-size:2em;color:#d2691e;"><?= number_format(array_sum(array_column($allSales, 'total_price')), 0) ?> 元</span>
             </div>
-            <div style="text-align:right;margin-bottom:1em;">
-                <a href="export_sales.php" class="btn-back" style="background:#ffb347;color:#fff;padding:0.4em 1.2em;border-radius:6px;">匯出全部銷售明細(CSV)</a>
+            <div class="card-action-bar" style="text-align:right;margin-bottom:1em;display:flex;gap:0.5em;flex-wrap:wrap;justify-content:flex-end;">
+                <a href="export_sales.php" class="btn-back btn-sm" style="background:#ffb347;color:#fff;">匯出全部銷售明細(CSV)</a>
             </div>
             <h2 style="color:#d2691e;text-align:center;font-size:1.1em;margin-bottom:1em;">全部銷售明細</h2>
-            <table style="width:100%;background:#fff7f0;border-radius:8px;box-shadow:0 1px 6px #ffb34722;">
-                <tr style="background:#fff0e0;">
-                    <th>商品</th><th>顏色</th><th>成本</th><th>售價</th><th>數量</th><th>總價</th>
-                </tr>
+            <div class="grid">
                 <?php foreach($allSales as $sale): ?>
                 <?php $variant = $variantMap[$sale['item_id']] ?? null;
                       $item = $variant && isset($itemMap[$variant['item_id']]) ? $itemMap[$variant['item_id']] : null;
                       $color = $variant && isset($colorMap[$variant['color_id']]) ? $colorMap[$variant['color_id']] : '';
                       $isLowStock = $item && isset($lowStockItemIds[$item['id']]);
                 ?>
-                <tr<?= $isLowStock ? ' style="background:#ffe0e0;"' : '' ?>>
-                    <td><?= $item ? htmlspecialchars($item['name']) : '<span style="color:#aaa;">(已刪除)</span>' ?></td>
-                    <td><?= $color ?></td>
-                    <td><?= $variant ? intval($variant['cost_price']) : '-' ?></td>
-                    <td><?= $variant ? intval($variant['sell_price']) : '-' ?></td>
-                    <td><?= intval($sale['quantity']) ?></td>
-                    <td><?= intval($sale['total_price']) ?></td>
-                </tr>
+                <div class="report-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;<?= $isLowStock ? 'background:#ffeaea;' : '' ?>">
+                    <div><b>商品：</b><?= $item ? htmlspecialchars($item['name']) : '<span style="color:#aaa;">(已刪除)</span>' ?></div>
+                    <div><b>顏色：</b><?= $color ?></div>
+                    <div><b>成本：</b><?= $variant ? intval($variant['cost_price']) : '-' ?></div>
+                    <div><b>售價：</b><?= $variant ? intval($variant['sell_price']) : '-' ?></div>
+                    <div><b>數量：</b><?= intval($sale['quantity']) ?></div>
+                    <div><b>總價：</b><?= intval($sale['total_price']) ?></div>
+                </div>
                 <?php endforeach; ?>
                 <?php if (empty($allSales)): ?>
-                <tr><td colspan="6" style="text-align:center;color:#aaa;">無銷售紀錄</td></tr>
+                <div style="grid-column:1/-1;text-align:center;color:#aaa;">無銷售紀錄</div>
                 <?php endif; ?>
-            </table>
+            </div>
         </div>
-        <div style="text-align:center;margin-top:2em;">
-            <a href="../index.php" class="btn btn-back">回首頁</a>
+        <div class="card-action-bar" style="text-align:center;margin-top:2em;display:flex;gap:0.5em;flex-wrap:wrap;justify-content:center;">
+            <a href="../index.php" class="btn-back btn-sm">回首頁</a>
         </div>
     </div>
     <script>

@@ -83,67 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>編輯商品</title>
     <link rel="stylesheet" href="../../css/style.css">
-    <style>
-        body.warm-bg { background: #fff7f0; }
-        h1.main-title { color: #d2691e; text-align: center; margin-top: 2em; }
-        .form-container {
-            max-width: 420px;
-            margin: 40px auto;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 16px #ffb34733;
-            padding: 2em 1.5em 1.5em 1.5em;
-            display: flex;
-            flex-direction: column;
-            gap: 1.2em;
-        }
-        .form-container label {
-            font-weight: bold;
-            color: #b97a56;
-            margin-bottom: 0.3em;
-        }
-        .form-container input, .form-container select, .form-container textarea {
-            padding: 0.6em 1em;
-            border: 1px solid #ffb347;
-            border-radius: 6px;
-            font-size: 1em;
-            margin-bottom: 0.5em;
-        }
-        .form-container button, .form-container .btn-back {
-            padding: 0.5em 1.2em;
-            border-radius: 6px;
-            border: 1px solid #ffb347;
-            background: #ffb347;
-            color: #fff;
-            font-size: 1em;
-            margin-top: 0.5em;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-        .form-container button:hover, .form-container .btn-back:hover {
-            background: #ffa500;
-        }
-        .variant-table th, .variant-table td { padding: 6px 8px; }
-        .variant-table { width: 100%; margin-bottom: 1em; background: #fff7f0; border-radius: 8px; }
-        .variant-table select {
-            font-size: 1.2em;
-            min-width: 120px;
-            height: 2.6em;
-            padding: 0.4em 1.2em 0.4em 0.8em;
-            border-radius: 8px;
-            border: 1.5px solid #ffb347;
-            box-shadow: 0 1px 6px #ffb34733;
-        }
-        @media (max-width: 600px) {
-            .form-container {
-                max-width: 98vw;
-                padding: 1.2em 0.5em 1em 0.5em;
-            }
-            .main-title { font-size: 1.1em; }
-        }
-    </style>
 </head>
 <body class="warm-bg">
     <h1 class="main-title">編輯商品</h1>
@@ -165,71 +104,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>描述：<textarea name="description"><?= htmlspecialchars($item['description']) ?></textarea></label>
         <hr style="margin:2em 0;">
         <h3 style="color:#d2691e;">顏色/規格與庫存</h3>
-        <table class="variant-table" border="1" cellpadding="5">
-            <thead>
-                <tr>
-                    <th>顏色</th>
-                    <th>成本價</th>
-                    <th>售價</th>
-                    <th>庫存</th>
-                    <th>最低庫存</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody id="variantTbody">
-                <?php foreach($variants as $idx => $v): ?>
-                <tr>
-                    <td>
-                        <select name="variant[<?= $idx ?>][color_id]" required>
-                            <option value="">請選擇</option>
-                            <?php foreach($colors as $col): ?>
-                                <option value="<?= $col['id'] ?>" <?= $col['id'] == $v['color_id'] ? 'selected' : '' ?>><?= htmlspecialchars($col['name']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <input type="hidden" name="variant[<?= $idx ?>][id]" value="<?= $v['id'] ?>">
-                    </td>
-                    <td><input type="number" name="variant[<?= $idx ?>][cost_price]" value="<?= intval($v['cost_price']) ?>" step="1" required></td>
-                    <td><input type="number" name="variant[<?= $idx ?>][sell_price]" value="<?= intval($v['sell_price']) ?>" step="1" required></td>
-                    <td><input type="number" name="variant[<?= $idx ?>][stock]" value="<?= $v['stock'] ?>" required></td>
-                    <td><input type="number" name="variant[<?= $idx ?>][min_stock]" value="<?= $v['min_stock'] ?>" required></td>
-                    <td><button type="button" class="removeVariant btn-back" style="background:#fff0e0;color:#d2691e;">刪除</button></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <div class="grid" id="variantGrid">
+            <?php foreach($variants as $idx => $v): ?>
+            <div class="variant-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;">
+                <label>顏色：
+                    <select name="variant[<?= $idx ?>][color_id]" required>
+                        <option value="">請選擇</option>
+                        <?php foreach($colors as $col): ?>
+                            <option value="<?= $col['id'] ?>" <?= $col['id'] == $v['color_id'] ? 'selected' : '' ?>><?= htmlspecialchars($col['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <input type="hidden" name="variant[<?= $idx ?>][id]" value="<?= $v['id'] ?>">
+                </label>
+                <label>成本價：<input type="number" name="variant[<?= $idx ?>][cost_price]" value="<?= intval($v['cost_price']) ?>" step="1" required></label>
+                <label>售價：<input type="number" name="variant[<?= $idx ?>][sell_price]" value="<?= intval($v['sell_price']) ?>" step="1" required></label>
+                <label>庫存：<input type="number" name="variant[<?= $idx ?>][stock]" value="<?= $v['stock'] ?>" required></label>
+                <label>最低庫存：<input type="number" name="variant[<?= $idx ?>][min_stock]" value="<?= $v['min_stock'] ?>" required></label>
+                <button type="button" class="removeVariant btn-back" style="background:#fff0e0;color:#d2691e;">刪除</button>
+            </div>
+            <?php endforeach; ?>
+        </div>
         <button type="button" id="addVariantBtn">＋新增規格</button>
         <br><br>
-        <button type="submit">儲存</button>
-        <a href="list.php">返回列表</a>
+        <div class="card-action-bar" style="margin-top:1.2em;display:flex;gap:0.5em;flex-wrap:wrap;">
+            <button type="submit" class="btn-back btn-sm" style="background:#ffb347;color:#fff;">儲存</button>
+            <a href="list.php" class="btn-back btn-sm">返回列表</a>
+        </div>
     </form>
     <script>
-// 動態新增/刪除顏色規格
+// 動態新增/刪除顏色規格（卡片式）
 let variantIdx = <?= count($variants) ?>;
 document.getElementById('addVariantBtn').onclick = function() {
-    const tbody = document.getElementById('variantTbody');
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-        <td>
+    const grid = document.getElementById('variantGrid');
+    const div = document.createElement('div');
+    div.className = 'variant-card';
+    div.style = 'background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;';
+    div.innerHTML = `
+        <label>顏色：
             <select name="variant[${variantIdx}][color_id]" required>
                 <option value="">請選擇</option>
                 <?php foreach($colors as $col): ?>
                     <option value="<?= $col['id'] ?>"><?= htmlspecialchars($col['name']) ?></option>
                 <?php endforeach; ?>
             </select>
-        </td>
-        <td><input type="number" name="variant[${variantIdx}][cost_price]" step="1" required></td>
-        <td><input type="number" name="variant[${variantIdx}][sell_price]" step="1" required></td>
-        <td><input type="number" name="variant[${variantIdx}][stock]" required></td>
-        <td><input type="number" name="variant[${variantIdx}][min_stock]" value="5" required></td>
-        <td><button type="button" class="removeVariant btn-back" style="background:#fff0e0;color:#d2691e;">刪除</button></td>
+        </label>
+        <label>成本價：<input type="number" name="variant[${variantIdx}][cost_price]" step="1" required></label>
+        <label>售價：<input type="number" name="variant[${variantIdx}][sell_price]" step="1" required></label>
+        <label>庫存：<input type="number" name="variant[${variantIdx}][stock]" required></label>
+        <label>最低庫存：<input type="number" name="variant[${variantIdx}][min_stock]" value="5" required></label>
+        <button type="button" class="removeVariant btn-back" style="background:#fff0e0;color:#d2691e;">刪除</button>
     `;
-    tbody.appendChild(tr);
+    grid.appendChild(div);
     variantIdx++;
 };
-document.getElementById('variantTbody').onclick = function(e) {
-    if (e.target.classList.contains('removeVariant')) {
-        if (document.querySelectorAll('#variantTbody tr').length > 1) {
-            e.target.closest('tr').remove();
+document.getElementById('variantGrid').onclick = function(e) {
+    if e.target.classList.contains('removeVariant')) {
+        if (document.querySelectorAll('#variantGrid .variant-card').length > 1) {
+            e.target.closest('.variant-card').remove();
         } else {
             alert('至少要有一個顏色/規格');
         }

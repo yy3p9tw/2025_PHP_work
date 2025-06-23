@@ -97,37 +97,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="warm-bg">
     <h1 class="main-title">新增銷售記錄</h1>
-    <form method="post" class="form-container">
-        <label>客戶：
-            <select name="customer_id">
-                <option value="">無</option>
-                <?php foreach($customers as $c): ?>
-                    <option value="<?= $c['id'] ?>"><?= htmlspecialchars($c['name']) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </label>
-        <!-- 商品選單 -->
-        <label>商品：
-            <select name="item_id" id="itemSelect" required>
-                <option value="">請選擇</option>
-                <?php foreach($items as $item): ?>
-                    <option value="<?= $item['id'] ?>"><?= htmlspecialchars($item['name']) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </label>
-        <!-- 規格選單 -->
-        <label>規格：
-            <select name="spec_id" id="specSelect" required>
-                <option value="">請選擇商品後再選擇規格</option>
-            </select>
-        </label>
-        <!-- 單價 -->
-        <label>單價：<input type="number" name="unit_price" id="unitPrice" step="1" required readonly></label>
-        <label>數量：<input type="number" name="quantity" required></label>
-        <label>日期：<input type="date" name="sale_date" required></label>
-        <label>備註：<input type="text" name="notes"></label>
-        <button type="submit">新增</button>
-        <a href="list.php" class="btn-back">返回列表</a>
+    <form method="post" class="form-container card" style="max-width:520px;margin:auto;">
+        <div class="card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;">
+            <label>客戶：
+                <select name="customer_id">
+                    <option value="">無</option>
+                    <?php foreach($customers as $c): ?>
+                        <option value="<?= $c['id'] ?>"><?= htmlspecialchars($c['name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <!-- 商品選單 -->
+            <label>商品：
+                <select name="item_id" id="itemSelect" required>
+                    <option value="">請選擇</option>
+                    <?php foreach($items as $item): ?>
+                        <option value="<?= $item['id'] ?>"><?= htmlspecialchars($item['name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <!-- 規格選單 -->
+            <label>規格：
+                <select name="spec_id" id="specSelect" required>
+                    <option value="">請選擇商品後再選擇規格</option>
+                </select>
+            </label>
+            <!-- 單價 -->
+            <label>單價：<input type="number" name="unit_price" id="unitPrice" step="1" required readonly></label>
+            <label>數量：<input type="number" name="quantity" required></label>
+            <label>日期：<input type="date" name="sale_date" required></label>
+            <label>備註：<input type="text" name="notes"></label>
+        </div>
+        <div class="card-action-bar" style="margin-top:1.2em;display:flex;gap:0.5em;flex-wrap:wrap;">
+            <button type="submit" class="btn-back btn-sm" style="background:#ffb347;color:#fff;">新增</button>
+            <a href="list.php" class="btn-back btn-sm">返回列表</a>
+        </div>
     </form>
     <script>
     // 將所有規格資料傳給 JS

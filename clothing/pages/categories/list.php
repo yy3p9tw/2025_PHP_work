@@ -26,20 +26,17 @@ $categories = $Category->all();
             border-radius: 14px;
             box-shadow: 0 2px 16px #ffb34733;
         }
-        table {
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.2em;
+        }
+        .product-card {
             background: #fff;
-            border-collapse: collapse;
-            margin: 0 auto 2em auto;
-            box-shadow: 0 2px 8px #0001;
-            width: 100%;
-            max-width: 500px;
-        }
-        th, td {
-            padding: 8px 16px;
-            border: 1px solid #ccc;
-        }
-        th {
-            background: #e3f0fa;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px #ffb34722;
+            padding: 1.2em 1em;
+            margin-bottom: 1.2em;
         }
         .btn-back, button {
             background: linear-gradient(135deg, #ffb347 0%, #ff9966 100%);
@@ -74,26 +71,21 @@ $categories = $Category->all();
     <div style="max-width:600px;margin:40px auto 0;">
         <h1 class="main-title">分類列表</h1>
         <div style="text-align:right;margin-bottom:1.5em;">
-            <a href="add.php" class="btn-back">＋ 顏色列表</a>
+            <a href="add.php" class="btn-back">＋ 新增分類</a>
             <a href="../items/list.php" class="btn-back">返回商品列表</a>
         </div>
         <div class="form-container">
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>名稱</th>
-                <th>操作</th>
-            </tr>
-            <?php foreach($categories as $cat): ?>
-            <tr>
-                <td><?= $cat['id'] ?></td>
-                <td><?= htmlspecialchars($cat['name']) ?></td>
-                <td>
-                    <a href="?delete=<?= $cat['id'] ?>" class="btn-back" style="background:#fff0e0;color:#d2691e;padding:0.2em 1em;font-size:0.95em;border:1px solid #ffb347;" onclick="return confirm('確定要刪除這個分類？')">刪除</a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
+    <div class="grid">
+    <?php foreach($categories as $cat): ?>
+        <div class="product-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;">
+            <div style="font-weight:bold;font-size:1.1em;margin-bottom:0.5em;">分類名稱：<?= htmlspecialchars($cat['name']) ?></div>
+            <div class="card-action-bar" style="margin-top:0.7em;display:flex;gap:0.5em;flex-wrap:wrap;">
+                <a href="edit.php?id=<?= $cat['id'] ?>" class="btn-back btn-sm">編輯</a>
+                <a href="list.php?delete=<?= $cat['id'] ?>" class="btn-back btn-sm btn-del" onclick="return confirm('確定要刪除嗎？')">刪除</a>
+            </div>
+        </div>
+    <?php endforeach; ?>
+    </div>
         </div>
     </div>
 </body>

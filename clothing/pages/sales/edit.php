@@ -119,53 +119,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="warm-bg">
     <h1 class="main-title">編輯銷售記錄</h1>
-    <div class="card form-card form-container">
-    <form method="post">
-        <div class="form-group">
-        <label>客戶：
-            <select name="customer_id" class="input input-select">
-                <option value="">無</option>
-                <?php foreach($customers as $c): ?>
-                    <option value="<?= $c['id'] ?>" <?= $sale['customer_id']==$c['id']?'selected':'' ?>><?= htmlspecialchars($c['name']) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </label>
+    <form method="post" class="form-container card" style="max-width:520px;margin:auto;">
+        <div class="card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;">
+            <label>客戶：
+                <select name="customer_id" class="input input-select">
+                    <option value="">無</option>
+                    <?php foreach($customers as $c): ?>
+                        <option value="<?= $c['id'] ?>" <?= $sale['customer_id']==$c['id']?'selected':'' ?>><?= htmlspecialchars($c['name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <label>商品：
+                <select name="item_id" id="itemSelect" required class="input input-select">
+                    <option value="">請選擇</option>
+                    <?php foreach($items as $item): ?>
+                        <option value="<?= $item['id'] ?>" <?= $sale['item_id']==$item['id']?'selected':'' ?>><?= htmlspecialchars($item['name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <label>規格：
+                <select name="spec_id" id="specSelect" required class="input input-select">
+                    <option value="">請選擇商品後再選擇規格</option>
+                </select>
+            </label>
+            <label>單價：<input type="number" name="unit_price" id="unitPrice" value="<?= intval($sale['unit_price']) ?>" required min="0" step="1" class="input input-number"></label>
+            <label>數量：<input type="number" name="quantity" value="<?= $sale['quantity'] ?>" required min="1" step="1" class="input input-number"></label>
+            <label>日期：<input type="date" name="sale_date" value="<?= $sale['sale_date'] ?>" required class="input input-date"></label>
+            <label>備註：<input type="text" name="notes" value="<?= htmlspecialchars($sale['notes']) ?>" class="input input-text"></label>
         </div>
-        <div class="form-group">
-        <label>商品：
-            <select name="item_id" id="itemSelect" required class="input input-select">
-                <option value="">請選擇</option>
-                <?php foreach($items as $item): ?>
-                    <option value="<?= $item['id'] ?>" <?= $sale['item_id']==$item['id']?'selected':'' ?>><?= htmlspecialchars($item['name']) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </label>
-        </div>
-        <div class="form-group">
-        <label>規格：
-            <select name="spec_id" id="specSelect" required class="input input-select">
-                <option value="">請選擇商品後再選擇規格</option>
-            </select>
-        </label>
-        </div>
-        <div class="form-group">
-        <label>單價：<input type="number" name="unit_price" id="unitPrice" value="<?= intval($sale['unit_price']) ?>" required min="0" step="1" class="input input-number"></label>
-        </div>
-        <div class="form-group">
-        <label>數量：<input type="number" name="quantity" value="<?= $sale['quantity'] ?>" required min="1" step="1" class="input input-number"></label>
-        </div>
-        <div class="form-group">
-        <label>日期：<input type="date" name="sale_date" value="<?= $sale['sale_date'] ?>" required class="input input-date"></label>
-        </div>
-        <div class="form-group">
-        <label>備註：<input type="text" name="notes" value="<?= htmlspecialchars($sale['notes']) ?>" class="input input-text"></label>
-        </div>
-        <div class="form-actions" style="text-align:center;margin-top:1.5em;">
-            <button type="submit" class="btn btn-main">儲存</button>
-            <a href="list.php" class="btn btn-back">回銷售記錄列表</a>
+        <div class="card-action-bar" style="margin-top:1.2em;display:flex;gap:0.5em;flex-wrap:wrap;">
+            <button type="submit" class="btn-back btn-sm" style="background:#ffb347;color:#fff;">儲存</button>
+            <a href="list.php" class="btn-back btn-sm">返回列表</a>
         </div>
     </form>
-    </div>
     <script>
     // 將所有規格資料傳給 JS
     const allVariants = <?= json_encode($allVariants) ?>;
