@@ -92,6 +92,7 @@ foreach ($sales as $sale) {
         <div class="action-bar" style="margin-bottom:1.5em;">
             <a href="add.php" class="btn-back btn-sm">＋ 新增銷售</a>
             <a href="../items/list.php" class="btn-back btn-sm">返回商品列表</a>
+            <a href="../../index.php" class="btn-back btn-sm">回首頁</a>
         </div>
         <div class="grid">
         <?php foreach($grouped as $group): ?>

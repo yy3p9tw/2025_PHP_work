@@ -189,6 +189,19 @@ document.getElementById('variantGrid').onclick = function(e) {
         }
         return true;
     };
-</script>
+    </script>
+    <style>
+    @media (min-width: 900px) {
+      #variantGrid {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2em;
+      }
+      #variantGrid .variant-card {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+    </style>
 </body>
 </html>

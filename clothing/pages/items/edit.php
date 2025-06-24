@@ -83,6 +83,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>編輯商品</title>
     <link rel="stylesheet" href="../../css/style.css">
+    <style>
+    @media (min-width: 900px) {
+      #variantGrid {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2em;
+      }
+      #variantGrid .variant-card {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+    </style>
 </head>
 <body class="warm-bg">
     <h1 class="main-title">編輯商品</h1>

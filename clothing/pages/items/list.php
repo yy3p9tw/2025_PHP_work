@@ -95,7 +95,6 @@ $items = array_merge($lowStockItems, $normalItems);
         <?php foreach($items as $item):
             $variants = $itemVariantsMap[$item['id']] ?? [];
             $isLowStock = isset($lowStockItemIds[$item['id']]);
-            if (empty($variants)):
         ?>
             <div class="product-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;<?= $isLowStock ? 'background:#ffeaea;' : '' ?>">
                 <div style="text-align:center;">
@@ -105,37 +104,31 @@ $items = array_merge($lowStockItems, $normalItems);
                 </div>
                 <div style="font-weight:bold;font-size:1.1em;margin:0.5em 0;">商品：<?= htmlspecialchars($item['name']) ?></div>
                 <div>分類：<?= isset($catMap[$item['category_id']]) ? htmlspecialchars($catMap[$item['category_id']]) : '' ?></div>
-                <div>顏色：-</div>
-                <div>成本：-</div>
-                <div>售價：-</div>
-                <div>庫存：-</div>
+                <?php if (empty($variants)): ?>
+                    <div>顏色：-</div>
+                    <div>售價：-</div>
+                    <div>庫存：-</div>
+                <?php else: ?>
+                    <div style="margin:0.7em 0 0.5em 0;font-weight:bold;color:#b97a56;">規格：</div>
+                    <div style="display:flex;flex-direction:column;gap:0.5em;">
+                    <?php foreach($variants as $v):
+                        $stock = $v['stock'];
+                        $minStock = isset($v['min_stock']) && $v['min_stock'] !== '' ? $v['min_stock'] : 0;
+                    ?>
+                        <div style="background:#fff7f0;border-radius:8px;padding:0.5em 1em;display:flex;flex-wrap:wrap;align-items:center;gap:1.2em;">
+                            <span>顏色：<?= isset($colorMap[$v['color_id']]) ? htmlspecialchars($colorMap[$v['color_id']]) : '' ?></span>
+                            <span>售價：<?= number_format($v['sell_price'], 0) ?></span>
+                            <span>庫存：<?php if ($stock <= $minStock): ?><span style="color:#d11c1c;font-weight:bold;"><?= htmlspecialchars($stock) ?></span><?php else: ?><?= htmlspecialchars($stock) ?><?php endif; ?></span>
+                        </div>
+                    <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
                 <div class="card-action-bar" style="margin-top:0.7em;display:flex;gap:0.5em;flex-wrap:wrap;">
                     <a href="edit.php?id=<?= $item['id'] ?>" class="btn-back btn-sm">編輯</a>
                     <a href="delete.php?id=<?= $item['id'] ?>" class="btn-back btn-sm btn-del" onclick="return confirm('確定要刪除嗎？')">刪除</a>
                 </div>
             </div>
-        <?php else:
-            foreach($variants as $v):
-                $stock = $v['stock'];
-                $minStock = isset($v['min_stock']) && $v['min_stock'] !== '' ? $v['min_stock'] : 0;
-        ?>
-            <div class="product-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;<?= $isLowStock ? 'background:#ffeaea;' : '' ?>">
-                <div style="text-align:center;">
-                    <?php if ($item['image']): ?>
-                        <img src="../../uploads/<?= htmlspecialchars($item['image']) ?>" style="max-width:60px;max-height:60px;border-radius:8px;box-shadow:0 1px 6px #ffb34733;">
-                    <?php endif; ?>
-                </div>
-                <div style="font-weight:bold;font-size:1.1em;margin:0.5em 0;">商品：<?= htmlspecialchars($item['name']) ?></div>
-                <div>分類：<?= isset($catMap[$item['category_id']]) ? htmlspecialchars($catMap[$item['category_id']]) : '' ?></div>
-                <div>顏色：<?= isset($colorMap[$v['color_id']]) ? htmlspecialchars($colorMap[$v['color_id']]) : '' ?> <span style="color:#aaa;font-size:0.9em;">#<?= $v['id'] ?></span></div>
-                <div>售價：<?= number_format($v['sell_price'], 0) ?></div>
-                <div>庫存：<?php if ($stock <= $minStock): ?><span style="color:#d11c1c;font-weight:bold;"><?= htmlspecialchars($stock) ?></span><?php else: ?><?= htmlspecialchars($stock) ?><?php endif; ?></div>
-                <div class="card-action-bar" style="margin-top:0.7em;display:flex;gap:0.5em;flex-wrap:wrap;">
-                    <a href="edit.php?id=<?= $item['id'] ?>" class="btn-back btn-sm">編輯</a>
-                    <a href="delete.php?id=<?= $item['id'] ?>" class="btn-back btn-sm btn-del" onclick="return confirm('確定要刪除嗎？')">刪除</a>
-                </div>
-            </div>
-        <?php endforeach; endif; endforeach; ?>
+        <?php endforeach; ?>
         </div>
         </div>
     </div>
