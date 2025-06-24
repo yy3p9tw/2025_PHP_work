@@ -170,6 +170,12 @@ td.cost-price, td.sell-price {
         grid-template-columns: 1fr;
     }
 }
+/* 新增規格專用：variant-grid 讓所有卡片直式排列 */
+#variantGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
 /* 商品列表上方按鈕 RWD 優化 */
 .action-bar {
   display: flex;

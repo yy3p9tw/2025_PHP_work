@@ -13,28 +13,43 @@ foreach($colors as $c) $colorMap[$c['id']] = $c['name'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $Sale = new DB('sales');
-    $Sale->insert([
-        'customer_id' => $_POST['customer_id'] ?: null,
-        'item_id' => $_POST['spec_id'], // 送出規格id
-        'quantity' => $_POST['quantity'],
-        'unit_price' => $_POST['unit_price'],
-        'total_price' => $_POST['quantity'] * $_POST['unit_price'],
-        'sale_date' => $_POST['sale_date'],
-        'notes' => $_POST['notes'] ?? ''
-    ]);
-    // 銷售後自動扣除商品規格庫存
-    $variantId = $_POST['spec_id'] ?? $_POST['item_id'] ?? null;
-    $qty = intval($_POST['quantity'] ?? 0);
-    if ($variantId && $qty > 0) {
-        $Variant = new DB('item_variants');
-        $variant = $Variant->all('id = ' . intval($variantId));
-        if ($variant && isset($variant[0]['stock'])) {
-            $newStock = max(0, intval($variant[0]['stock']) - $qty);
-            $Variant->update($variantId, ['stock' => $newStock]);
+    $hasSale = false;
+    foreach ($_POST['items'] as $item) {
+        if (!isset($item['specs']) || !is_array($item['specs'])) continue;
+        foreach ($item['specs'] as $spec) {
+            $spec_id = $spec['spec_id'] ?? null;
+            $qty = $spec['quantity'] ?? null;
+            $unit_price = $spec['unit_price'] ?? null;
+            $use_discount = isset($spec['use_discount']) && $spec['use_discount'] ? true : false;
+            $discount_price = $use_discount && isset($spec['discount_price']) && $spec['discount_price'] !== '' ? floatval($spec['discount_price']) : null;
+            $final_price = $use_discount && $discount_price !== null ? $discount_price : $unit_price;
+            if ($spec_id && $qty && $final_price) {
+                $Sale->insert([
+                    'customer_id' => $_POST['customer_id'] ?: null,
+                    'item_id' => $spec_id,
+                    'quantity' => $qty,
+                    'unit_price' => $unit_price,
+                    'total_price' => $qty * $final_price,
+                    'sale_date' => $_POST['sale_date'],
+                    'notes' => $_POST['notes'] ?? ''
+                ]);
+                // 扣庫存
+                $Variant = new DB('item_variants');
+                $variant = $Variant->all('id = ' . intval($spec_id));
+                if ($variant && isset($variant[0]['stock'])) {
+                    $newStock = max(0, intval($variant[0]['stock']) - $qty);
+                    $Variant->update($spec_id, ['stock' => $newStock]);
+                }
+                $hasSale = true;
+            }
         }
     }
-    header('Location: list.php');
-    exit;
+    if ($hasSale) {
+        header('Location: list.php');
+        exit;
+    } else {
+        echo '<script>alert("請至少輸入一筆有效的商品規格與數量");</script>';
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -107,24 +122,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endforeach; ?>
                 </select>
             </label>
-            <!-- 商品選單 -->
-            <label>商品：
-                <select name="item_id" id="itemSelect" required>
-                    <option value="">請選擇</option>
-                    <?php foreach($items as $item): ?>
-                        <option value="<?= $item['id'] ?>"><?= htmlspecialchars($item['name']) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </label>
-            <!-- 規格選單 -->
-            <label>規格：
-                <select name="spec_id" id="specSelect" required>
-                    <option value="">請選擇商品後再選擇規格</option>
-                </select>
-            </label>
-            <!-- 單價 -->
-            <label>單價：<input type="number" name="unit_price" id="unitPrice" step="1" required readonly></label>
-            <label>數量：<input type="number" name="quantity" required></label>
+            <hr style="margin:1.2em 0;">
+            <div id="saleItems">
+                <div class="sale-item-card" style="background:#fff;border-radius:10px;box-shadow:0 2px 8px #ffb34722;padding:1em 0.5em 0.5em 0.5em;margin-bottom:1em;">
+                    <label>商品：
+                        <select name="items[0][item_id]" class="itemSelect" required>
+                            <option value="">請選擇</option>
+                            <?php foreach($items as $item): ?>
+                                <option value="<?= $item['id'] ?>"><?= htmlspecialchars($item['name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                    <div class="spec-list"></div>
+                    <button type="button" class="addSpecBtn btn-back" style="margin-bottom:0.5em;">＋新增規格</button>
+                    <button type="button" class="removeSaleItem btn-back" style="background:#fff0e0;color:#d2691e;">刪除商品</button>
+                </div>
+            </div>
+            <button type="button" id="addSaleItemBtn">＋新增商品</button>
+            <div style="margin:1em 0 0.5em 0;padding:1em;background:#fff7e0;border-radius:8px;">
+                <label style="display:flex;align-items:center;gap:0.5em;">
+                    <input type="checkbox" id="globalDiscountCheck"> 全部折扣價
+                    <input type="number" id="globalDiscountPrice" step="1" min="0" style="width:110px;" disabled placeholder="輸入折扣價">
+                    <span style="color:#b97a56;font-size:0.95em;">（勾選後所有商品規格皆套用此折扣價）</span>
+                </label>
+            </div>
             <label>日期：<input type="date" name="sale_date" required></label>
             <label>備註：<input type="text" name="notes"></label>
         </div>
@@ -134,38 +155,123 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </form>
     <script>
-    // 將所有規格資料傳給 JS
     const allVariants = <?= json_encode($allVariants) ?>;
     const colorMap = <?= json_encode($colorMap) ?>;
-    // 商品選擇時載入規格
-    document.getElementById('itemSelect').addEventListener('change', function() {
-        const itemId = this.value;
-        const specSelect = document.getElementById('specSelect');
-        specSelect.innerHTML = '';
-        if (!itemId) {
-            specSelect.innerHTML = '<option value="">請選擇商品後再選擇規格</option>';
-            document.getElementById('unitPrice').value = '';
-            return;
+    let saleItemIdx = 1;
+    // 動態新增商品卡片
+    document.getElementById('addSaleItemBtn').onclick = function() {
+        const saleItems = document.getElementById('saleItems');
+        const div = document.createElement('div');
+        div.className = 'sale-item-card';
+        div.style = 'background:#fff;border-radius:10px;box-shadow:0 2px 8px #ffb34722;padding:1em 0.5em 0.5em 0.5em;margin-bottom:1em;';
+        div.innerHTML = `
+            <label>商品：
+                <select name="items[${saleItemIdx}][item_id]" class="itemSelect" required>
+                    <option value="">請選擇</option>
+                    <?php foreach($items as $item): ?>
+                        <option value="<?= $item['id'] ?>"><?= htmlspecialchars($item['name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <div class="spec-list"></div>
+            <button type="button" class="addSpecBtn btn-back" style="margin-bottom:0.5em;">＋新增規格</button>
+            <button type="button" class="removeSaleItem btn-back" style="background:#fff0e0;color:#d2691e;">刪除商品</button>
+        `;
+        saleItems.appendChild(div);
+        saleItemIdx++;
+    };
+    // 刪除商品卡片
+    document.getElementById('saleItems').onclick = function(e) {
+        if (e.target.classList.contains('removeSaleItem')) {
+            if (document.querySelectorAll('#saleItems .sale-item-card').length > 1) {
+                e.target.closest('.sale-item-card').remove();
+            } else {
+                alert('至少要有一個商品');
+            }
         }
-        const specs = allVariants.filter(v => v.item_id == itemId);
-        if (specs.length === 0) {
-            specSelect.innerHTML = '<option value="">無規格</option>';
-            document.getElementById('unitPrice').value = '';
-            return;
+    };
+    // 新增規格卡片
+    document.getElementById('saleItems').onclick = function(e) {
+        if (e.target.classList.contains('addSpecBtn')) {
+            const saleItemCard = e.target.closest('.sale-item-card');
+            const itemSelect = saleItemCard.querySelector('.itemSelect');
+            const itemId = itemSelect.value;
+            if (!itemId) { alert('請先選擇商品'); return; }
+            const specList = saleItemCard.querySelector('.spec-list');
+            const specs = allVariants.filter(v => v.item_id == itemId);
+            if (specs.length === 0) {
+                alert('此商品無規格');
+                return;
+            }
+            // 新增一個規格輸入區
+            const idx = specList.children.length;
+            const specDiv = document.createElement('div');
+            specDiv.className = 'spec-item';
+            specDiv.style = 'margin-bottom:0.5em;padding:0.5em 0;border-bottom:1px dashed #ffb347;';
+            specDiv.innerHTML = `
+                <label>規格：
+                    <select name="items[${saleItemIdx-1}][specs][${idx}][spec_id]" class="specSelect" required>
+                        <option value="">請選擇</option>
+                        ${specs.map(v => `<option value="${v.id}" data-price="${v.sell_price}">${colorMap[v.color_id] || '無顏色'}（售價：${v.sell_price}）</option>`).join('')}
+                    </select>
+                </label>
+                <label>單價：<input type="number" name="items[${saleItemIdx-1}][specs][${idx}][unit_price]" class="unitPrice" step="1" required readonly></label>
+                <label>數量：<input type="number" name="items[${saleItemIdx-1}][specs][${idx}][quantity]" class="quantity" required></label>
+                <button type="button" class="removeSpecBtn btn-back" style="background:#fff0e0;color:#d2691e;">刪除規格</button>
+            `;
+            specList.appendChild(specDiv);
         }
-        specSelect.innerHTML = '<option value="">請選擇</option>' + specs.map(v => `<option value="${v.id}" data-price="${v.sell_price}">${colorMap[v.color_id] || '無顏色'}（售價：${v.sell_price}）</option>`).join('');
-        document.getElementById('unitPrice').value = '';
-    });
+        // 刪除規格卡片
+        if (e.target.classList.contains('removeSpecBtn')) {
+            e.target.closest('.spec-item').remove();
+        }
+        // 刪除商品卡片
+        if (e.target.classList.contains('removeSaleItem')) {
+            if (document.querySelectorAll('#saleItems .sale-item-card').length > 1) {
+                e.target.closest('.sale-item-card').remove();
+            } else {
+                alert('至少要有一個商品');
+            }
+        }
+    };
     // 規格選擇時自動帶入單價
-    document.getElementById('specSelect').addEventListener('change', function() {
-        const selected = this.options[this.selectedIndex];
-        const price = selected.getAttribute('data-price');
-        document.getElementById('unitPrice').value = price ? price : '';
+    document.getElementById('saleItems').addEventListener('change', function(e) {
+        if (e.target.classList.contains('specSelect')) {
+            const selected = e.target.options[e.target.selectedIndex];
+            const price = selected.getAttribute('data-price');
+            e.target.closest('.spec-item').querySelector('.unitPrice').value = price ? price : '';
+        }
     });
-    // 頁面載入時初始化
-    window.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('itemSelect').dispatchEvent(new Event('change'));
+    // 全部折扣價功能
+    document.getElementById('globalDiscountCheck').addEventListener('change', function() {
+        const checked = this.checked;
+        const priceInput = document.getElementById('globalDiscountPrice');
+        priceInput.disabled = !checked;
+        if (!checked) priceInput.value = '';
     });
+    document.getElementById('globalDiscountPrice').addEventListener('input', function() {
+        if (document.getElementById('globalDiscountCheck').checked) {
+            document.querySelectorAll('.discountPrice').forEach(inp => {
+                inp.value = this.value;
+            });
+        }
+    });
+    // 表單送出時將全局折扣價帶入所有規格
+    document.querySelector('form').onsubmit = function(e) {
+        if (document.getElementById('globalDiscountCheck').checked) {
+            const discount = document.getElementById('globalDiscountPrice').value;
+            if (!discount || isNaN(discount) || Number(discount) <= 0) {
+                alert('請輸入有效的折扣價');
+                document.getElementById('globalDiscountPrice').focus();
+                e.preventDefault();
+                return false;
+            }
+            document.querySelectorAll('.unitPrice').forEach(inp => {
+                inp.value = discount;
+            });
+        }
+        return true;
+    };
     </script>
 </body>
 </html>

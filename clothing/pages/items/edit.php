@@ -116,7 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </select>
                     <input type="hidden" name="variant[<?= $idx ?>][id]" value="<?= $v['id'] ?>">
                 </label>
-                <label>成本價：<input type="number" name="variant[<?= $idx ?>][cost_price]" value="<?= intval($v['cost_price']) ?>" step="1" required></label>
                 <label>售價：<input type="number" name="variant[<?= $idx ?>][sell_price]" value="<?= intval($v['sell_price']) ?>" step="1" required></label>
                 <label>庫存：<input type="number" name="variant[<?= $idx ?>][stock]" value="<?= $v['stock'] ?>" required></label>
                 <label>最低庫存：<input type="number" name="variant[<?= $idx ?>][min_stock]" value="<?= $v['min_stock'] ?>" required></label>
@@ -148,7 +147,6 @@ document.getElementById('addVariantBtn').onclick = function() {
                 <?php endforeach; ?>
             </select>
         </label>
-        <label>成本價：<input type="number" name="variant[${variantIdx}][cost_price]" step="1" required></label>
         <label>售價：<input type="number" name="variant[${variantIdx}][sell_price]" step="1" required></label>
         <label>庫存：<input type="number" name="variant[${variantIdx}][stock]" required></label>
         <label>最低庫存：<input type="number" name="variant[${variantIdx}][min_stock]" value="5" required></label>
@@ -158,7 +156,7 @@ document.getElementById('addVariantBtn').onclick = function() {
     variantIdx++;
 };
 document.getElementById('variantGrid').onclick = function(e) {
-    if e.target.classList.contains('removeVariant')) {
+    if (e.target.classList.contains('removeVariant')) {
         if (document.querySelectorAll('#variantGrid .variant-card').length > 1) {
             e.target.closest('.variant-card').remove();
         } else {

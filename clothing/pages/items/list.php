@@ -128,7 +128,6 @@ $items = array_merge($lowStockItems, $normalItems);
                 <div style="font-weight:bold;font-size:1.1em;margin:0.5em 0;">商品：<?= htmlspecialchars($item['name']) ?></div>
                 <div>分類：<?= isset($catMap[$item['category_id']]) ? htmlspecialchars($catMap[$item['category_id']]) : '' ?></div>
                 <div>顏色：<?= isset($colorMap[$v['color_id']]) ? htmlspecialchars($colorMap[$v['color_id']]) : '' ?> <span style="color:#aaa;font-size:0.9em;">#<?= $v['id'] ?></span></div>
-                <div>成本：<?= number_format($v['cost_price'], 0) ?></div>
                 <div>售價：<?= number_format($v['sell_price'], 0) ?></div>
                 <div>庫存：<?php if ($stock <= $minStock): ?><span style="color:#d11c1c;font-weight:bold;"><?= htmlspecialchars($stock) ?></span><?php else: ?><?= htmlspecialchars($stock) ?><?php endif; ?></div>
                 <div class="card-action-bar" style="margin-top:0.7em;display:flex;gap:0.5em;flex-wrap:wrap;">
