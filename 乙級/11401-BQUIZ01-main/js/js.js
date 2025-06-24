@@ -1,26 +1,32 @@
 // JavaScript Document
-$(document).ready(function (e) {
-	$(".mainmu").mouseover(
-		function () {
+$(document).ready(function(e) {
+    $(".mainmu").mouseover(
+		function()
+		{
 			$(this).children(".mw").stop().show()
 		}
 	)
 	$(".mainmu").mouseout(
-		function () {
+		function ()
+		{
 			$(this).children(".mw").hide()
 		}
 	)
 });
-function lo(x) {
+function lo(x)
+{
 	location.replace(x)
 }
-function op(x, y, url) {
+function op(x,y,url)
+{
 	$(x).fadeIn()
-	if (y)
+	if(y)
 		$(y).fadeIn()
-	if (y && url)
+
+	if(y && url)
 		$(y).load(url)
 }
-function cl(x) {
+function cl(x)
+{
 	$(x).fadeOut();
 }
