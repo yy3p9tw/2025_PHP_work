@@ -34,17 +34,29 @@ $monthSales = [];
 $allSales = $sales;
 $todayTotal = 0;
 $monthTotal = 0;
+$todayCost = 0;
+$monthCost = 0;
 foreach ($sales as $sale) {
     if (isset($sale['sale_date'])) {
+        $variant = $variantMap[$sale['item_id']] ?? null;
+        $cost = $variant ? intval($variant['cost_price']) : 0;
         if ($sale['sale_date'] == $today) {
             $todayTotal += $sale['total_price'];
             $todaySales[] = $sale;
+            $todayCost += $cost * intval($sale['quantity']);
         }
         if (strpos($sale['sale_date'], $thisMonth) === 0) {
             $monthTotal += $sale['total_price'];
             $monthSales[] = $sale;
+            $monthCost += $cost * intval($sale['quantity']);
         }
     }
+}
+$allCost = 0;
+foreach ($allSales as $sale) {
+    $variant = $variantMap[$sale['item_id']] ?? null;
+    $cost = $variant ? intval($variant['cost_price']) : 0;
+    $allCost += $cost * intval($sale['quantity']);
 }
 // 低庫存商品 id 陣列
 $lowStockItemIds = [];
@@ -94,7 +106,8 @@ foreach ($items as $item) {
         <div id="report-today" class="report-table-block">
             <div style="text-align:center; margin-bottom:1em;">
                 <span style="font-size:1.1em;color:#b97a56;">今日營業額</span><br>
-                <span style="font-size:2em;color:#d2691e;"><?= number_format($todayTotal, 0) ?> 元</span>
+                <span style="font-size:2em;color:#d2691e;"><?= number_format($todayTotal, 0) ?> 元</span><br>
+                <span style="font-size:1em;color:#888;">今日成本：<?= number_format($todayCost, 0) ?> 元</span>
             </div>
             <div class="card-action-bar" style="text-align:right;margin-bottom:1em;display:flex;gap:0.5em;flex-wrap:wrap;justify-content:flex-end;">
                 <a href="export_sales_today.php" class="btn-back btn-sm" style="background:#ffb347;color:#fff;">匯出今日銷售明細(CSV)</a>
@@ -123,7 +136,8 @@ foreach ($items as $item) {
         <div id="report-month" class="report-table-block" style="display:none;">
             <div style="text-align:center; margin-bottom:1em;">
                 <span style="font-size:1.1em;color:#b97a56;">本月營業額</span><br>
-                <span style="font-size:2em;color:#d2691e;"><?= number_format($monthTotal, 0) ?> 元</span>
+                <span style="font-size:2em;color:#d2691e;"><?= number_format($monthTotal, 0) ?> 元</span><br>
+                <span style="font-size:1em;color:#888;">本月成本：<?= number_format($monthCost, 0) ?> 元</span>
             </div>
             <div class="card-action-bar" style="text-align:right;margin-bottom:1em;display:flex;gap:0.5em;flex-wrap:wrap;justify-content:flex-end;">
                 <a href="export_sales_month.php" class="btn-back btn-sm" style="background:#ffb347;color:#fff;">匯出本月銷售明細(CSV)</a>
@@ -152,7 +166,8 @@ foreach ($items as $item) {
         <div id="report-all" class="report-table-block" style="display:none;">
             <div style="text-align:center; margin-bottom:1em;">
                 <span style="font-size:1.1em;color:#b97a56;">總營業額</span><br>
-                <span style="font-size:2em;color:#d2691e;"><?= number_format(array_sum(array_column($allSales, 'total_price')), 0) ?> 元</span>
+                <span style="font-size:2em;color:#d2691e;"><?= number_format(array_sum(array_column($allSales, 'total_price')), 0) ?> 元</span><br>
+                <span style="font-size:1em;color:#888;">總計成本：<?= number_format($allCost, 0) ?> 元</span>
             </div>
             <div class="card-action-bar" style="text-align:right;margin-bottom:1em;display:flex;gap:0.5em;flex-wrap:wrap;justify-content:flex-end;">
                 <a href="export_sales.php" class="btn-back btn-sm" style="background:#ffb347;color:#fff;">匯出全部銷售明細(CSV)</a>

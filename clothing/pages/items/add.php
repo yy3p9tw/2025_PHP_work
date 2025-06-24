@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $Variant->insert([
             'item_id' => $item_id,
             'color_id' => $v['color_id'],
-            'cost_price' => 0, // 前端已無成本價，預設填 0
+            'cost_price' => $v['cost_price'],
             'sell_price' => $v['sell_price'],
             'stock' => $v['stock'],
             'min_stock' => $v['min_stock']
@@ -68,17 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="button" id="saveCatBtn">儲存</button>
             <button type="button" id="cancelCatBtn">取消</button>
         </div>
-        <label>顏色：
-            <select name="color_id" required>
-                <option value="">請選擇</option>
-                <?php foreach($colors as $col): ?>
-                    <option value="<?= $col['id'] ?>"><?= htmlspecialchars($col['name']) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </label>
-        <label>售價：<input type="number" name="sell_price" step="0.01" min="0" required></label>
-        <label>庫存：<input type="number" name="stock" min="0" required></label>
-        <label>最低庫存：<input type="number" name="min_stock" value="5" min="0" required></label>
         <label>商品圖片：<input type="file" name="image" accept="image/*"></label>
         <label>描述：<textarea name="description"></textarea></label>
         <hr style="margin:2em 0;">
@@ -93,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                 </label>
+                <label>成本：<input type="number" name="variant[0][cost_price]" step="1" required></label>
                 <label>售價：<input type="number" name="variant[0][sell_price]" step="1" required></label>
                 <label>庫存：<input type="number" name="variant[0][stock]" required></label>
                 <label>最低庫存：<input type="number" name="variant[0][min_stock]" value="5" required></label>
@@ -147,6 +137,16 @@ removeRowAddColorBtn();
 let variantIdx = 1;
 document.getElementById('addVariantBtn').onclick = function() {
     const grid = document.getElementById('variantGrid');
+    // 取得上一個規格的成本與售價
+    let lastCost = '';
+    let lastSell = '';
+    const lastCard = grid.querySelector('.variant-card:last-of-type');
+    if (lastCard) {
+        const costInput = lastCard.querySelector('input[name*="[cost_price]"]');
+        const sellInput = lastCard.querySelector('input[name*="[sell_price]"]');
+        if (costInput) lastCost = costInput.value;
+        if (sellInput) lastSell = sellInput.value;
+    }
     const div = document.createElement('div');
     div.className = 'variant-card';
     div.style = 'background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;';
@@ -159,7 +159,8 @@ document.getElementById('addVariantBtn').onclick = function() {
                 <?php endforeach; ?>
             </select>
         </label>
-        <label>售價：<input type="number" name="variant[${variantIdx}][sell_price]" step="1" required></label>
+        <label>成本：<input type="number" name="variant[${variantIdx}][cost_price]" step="1" required value="${lastCost}"></label>
+        <label>售價：<input type="number" name="variant[${variantIdx}][sell_price]" step="1" required value="${lastSell}"></label>
         <label>庫存：<input type="number" name="variant[${variantIdx}][stock]" required></label>
         <label>最低庫存：<input type="number" name="variant[${variantIdx}][min_stock]" value="5" required></label>
         <button type="button" class="removeVariant btn-back" style="background:#fff0e0;color:#d2691e;">刪除</button>

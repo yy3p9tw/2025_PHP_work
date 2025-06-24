@@ -17,63 +17,74 @@ if (!$item) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $imageName = $item['image'];
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-        $allowExt = ['jpg', 'jpeg', 'png', 'gif'];
-        if (in_array($ext, $allowExt)) {
-            $imageName = uniqid('img_', true) . '.' . $ext;
-            move_uploaded_file($_FILES['image']['tmp_name'], '../../uploads/' . $imageName);
-        }
-    }
-    $Item->update($id, [
-        'name' => $_POST['name'],
-        'category_id' => $_POST['category_id'],
-        'description' => $_POST['description'],
-        'image' => $imageName
-    ]);
-    // --- variants ---
-    $oldVariants = $Variant->all("item_id = $id");
-    $oldIds = array_column($oldVariants, 'id');
-    $postIds = [];
-    foreach ($_POST['variant'] as $v) {
-        if (!empty($v['id'])) {
-            // update
-            $Variant->update($v['id'], [
-                'color_id' => $v['color_id'],
-                'cost_price' => $v['cost_price'],
-                'sell_price' => $v['sell_price'],
-                'stock' => $v['stock'],
-                'min_stock' => $v['min_stock']
-            ]);
-            $postIds[] = $v['id'];
-        } else {
-            // insert
-            $Variant->insert([
-                'item_id' => $id,
-                'color_id' => $v['color_id'],
-                'cost_price' => $v['cost_price'],
-                'sell_price' => $v['sell_price'],
-                'stock' => $v['stock'],
-                'min_stock' => $v['min_stock']
-            ]);
-        }
-    }
-    // 刪除被移除的規格（只刪除資料庫，畫面上的 JS 行刪除不會送 id）
-    foreach ($oldIds as $oid) {
-        $found = false;
-        foreach ($_POST['variant'] as $v) {
-            if (!empty($v['id']) && $v['id'] == $oid) {
-                $found = true;
-                break;
+    try {
+        $imageName = $item['image'];
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+            $allowExt = ['jpg', 'jpeg', 'png', 'gif'];
+            if (in_array($ext, $allowExt)) {
+                $imageName = uniqid('img_', true) . '.' . $ext;
+                move_uploaded_file($_FILES['image']['tmp_name'], '../../uploads/' . $imageName);
             }
         }
-        if (!$found) {
-            $Variant->delete($oid);
+        $Item->update($id, [
+            'name' => $_POST['name'],
+            'category_id' => $_POST['category_id'],
+            'description' => $_POST['description'],
+            'image' => $imageName
+        ]);
+        // --- variants ---
+        $oldVariants = $Variant->all("item_id = $id");
+        $oldIds = array_column($oldVariants, 'id');
+        $postIds = [];
+        foreach ($_POST['variant'] as $v) {
+            // 強制型態轉換，避免送空值
+            $color_id = intval($v['color_id']);
+            $cost_price = isset($v['cost_price']) ? intval($v['cost_price']) : 0;
+            $sell_price = intval($v['sell_price']);
+            $stock = intval($v['stock']);
+            $min_stock = intval($v['min_stock']);
+            if (!empty($v['id'])) {
+                // update
+                $Variant->update($v['id'], [
+                    'color_id' => $color_id,
+                    'cost_price' => $cost_price,
+                    'sell_price' => $sell_price,
+                    'stock' => $stock,
+                    'min_stock' => $min_stock
+                ]);
+                $postIds[] = $v['id'];
+            } else {
+                // insert
+                $Variant->insert([
+                    'item_id' => $id,
+                    'color_id' => $color_id,
+                    'cost_price' => $cost_price,
+                    'sell_price' => $sell_price,
+                    'stock' => $stock,
+                    'min_stock' => $min_stock
+                ]);
+            }
         }
+        // 刪除被移除的規格
+        foreach ($oldIds as $oid) {
+            $found = false;
+            foreach ($_POST['variant'] as $v) {
+                if (!empty($v['id']) && $v['id'] == $oid) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $Variant->delete($oid);
+            }
+        }
+        header('Location: list.php');
+        exit;
+    } catch (Throwable $e) {
+        echo '<pre style="color:red;">錯誤：' . htmlspecialchars($e->getMessage()) . "\n" . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+        exit;
     }
-    header('Location: list.php');
-    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -129,6 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </select>
                     <input type="hidden" name="variant[<?= $idx ?>][id]" value="<?= $v['id'] ?>">
                 </label>
+                <label>成本：<input type="number" name="variant[<?= $idx ?>][cost_price]" value="<?= isset($v['cost_price']) ? intval($v['cost_price']) : 0 ?>" step="1" required></label>
                 <label>售價：<input type="number" name="variant[<?= $idx ?>][sell_price]" value="<?= intval($v['sell_price']) ?>" step="1" required></label>
                 <label>庫存：<input type="number" name="variant[<?= $idx ?>][stock]" value="<?= $v['stock'] ?>" required></label>
                 <label>最低庫存：<input type="number" name="variant[<?= $idx ?>][min_stock]" value="<?= $v['min_stock'] ?>" required></label>
@@ -160,6 +172,7 @@ document.getElementById('addVariantBtn').onclick = function() {
                 <?php endforeach; ?>
             </select>
         </label>
+        <label>成本：<input type="number" name="variant[${variantIdx}][cost_price]" step="1" required></label>
         <label>售價：<input type="number" name="variant[${variantIdx}][sell_price]" step="1" required></label>
         <label>庫存：<input type="number" name="variant[${variantIdx}][stock]" required></label>
         <label>最低庫存：<input type="number" name="variant[${variantIdx}][min_stock]" value="5" required></label>
