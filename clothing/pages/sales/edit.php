@@ -16,6 +16,10 @@ $Variant = new DB('item_variants');
 $variants = $Variant->all();
 $Color = new DB('colors');
 $colors = $Color->all();
+$Category = new DB('categories');
+$categories = $Category->all();
+$catMap = [];
+foreach($categories as $c) $catMap[$c['id']] = $c['name'];
 
 // 建立查表
 $itemMap = [];
