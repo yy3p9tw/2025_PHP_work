@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $Variant = new DB('item_variants');
                 $variant = $Variant->all('id = ' . intval($spec_id));
                 if ($variant && isset($variant[0]['stock'])) {
-                    $newStock = max(0, intval($variant[0]['stock']) - $qty);
+                    $newStock = intval($variant[0]['stock']) - $qty; // 允許負數
                     $Variant->update($spec_id, ['stock' => $newStock]);
                 }
                 $hasSale = true;
@@ -139,13 +139,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
             <button type="button" id="addSaleItemBtn">＋新增商品</button>
-            <div style="margin:1em 0 0.5em 0;padding:1em;background:#fff7e0;border-radius:8px;">
-                <label style="display:flex;align-items:center;gap:0.5em;">
-                    <input type="checkbox" id="globalDiscountCheck"> 全部折扣價
-                    <input type="number" id="globalDiscountPrice" step="1" min="0" style="width:110px;" disabled placeholder="輸入折扣價">
-                    <span style="color:#b97a56;font-size:0.95em;">（勾選後所有商品規格皆套用此折扣價）</span>
-                </label>
-            </div>
             <label>日期：<input type="date" name="sale_date" required></label>
             <label>備註：<input type="text" name="notes"></label>
         </div>
@@ -243,19 +236,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     });
     // 全部折扣價功能
-    document.getElementById('globalDiscountCheck').addEventListener('change', function() {
-        const checked = this.checked;
-        const priceInput = document.getElementById('globalDiscountPrice');
-        priceInput.disabled = !checked;
-        if (!checked) priceInput.value = '';
-    });
-    document.getElementById('globalDiscountPrice').addEventListener('input', function() {
-        if (document.getElementById('globalDiscountCheck').checked) {
-            document.querySelectorAll('.discountPrice').forEach(inp => {
-                inp.value = this.value;
-            });
+    const globalDiscountCheck = document.getElementById('globalDiscountCheck');
+    const globalDiscountPrice = document.getElementById('globalDiscountPrice');
+
+    globalDiscountCheck.onchange = function() {
+        globalDiscountPrice.disabled = !this.checked;
+        if (!this.checked) {
+            // 取消時，恢復所有單價為原本值（不自動還原，僅停用欄位）
+            return;
         }
-    });
+        applyGlobalDiscount();
+    };
+    globalDiscountPrice.oninput = function() {
+        if (globalDiscountCheck.checked) applyGlobalDiscount();
+    };
+
+    function applyGlobalDiscount() {
+        const price = parseInt(globalDiscountPrice.value, 10) || 0;
+        // 編輯區現有商品
+        document.querySelectorAll('input[name^="sales"][name$="[unit_price]"]').forEach(inp => {
+            inp.value = price;
+        });
+        // 新增商品區
+        document.querySelectorAll('#newSaleItems input[name^="new_sales"][name$="[unit_price]"]').forEach(inp => {
+            inp.value = price;
+        });
+    }
     // 表單送出時將全局折扣價帶入所有規格
     document.querySelector('form').onsubmit = function(e) {
         if (document.getElementById('globalDiscountCheck').checked) {

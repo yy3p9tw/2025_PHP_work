@@ -110,7 +110,6 @@ foreach ($items as $item) {
                 <div class="report-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;<?= $isLowStock ? 'background:#ffeaea;' : '' ?>">
                     <div><b>商品：</b><?= $item ? htmlspecialchars($item['name']) : '<span style="color:#aaa;">(已刪除)</span>' ?></div>
                     <div><b>顏色：</b><?= $color ?></div>
-                    <div><b>成本：</b><?= $variant ? intval($variant['cost_price']) : '-' ?></div>
                     <div><b>售價：</b><?= $variant ? intval($variant['sell_price']) : '-' ?></div>
                     <div><b>數量：</b><?= intval($sale['quantity']) ?></div>
                     <div><b>總價：</b><?= intval($sale['total_price']) ?></div>
@@ -140,7 +139,6 @@ foreach ($items as $item) {
                 <div class="report-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;<?= $isLowStock ? 'background:#ffeaea;' : '' ?>">
                     <div><b>商品：</b><?= $item ? htmlspecialchars($item['name']) : '<span style="color:#aaa;">(已刪除)</span>' ?></div>
                     <div><b>顏色：</b><?= $color ?></div>
-                    <div><b>成本：</b><?= $variant ? intval($variant['cost_price']) : '-' ?></div>
                     <div><b>售價：</b><?= $variant ? intval($variant['sell_price']) : '-' ?></div>
                     <div><b>數量：</b><?= intval($sale['quantity']) ?></div>
                     <div><b>總價：</b><?= intval($sale['total_price']) ?></div>
@@ -170,7 +168,6 @@ foreach ($items as $item) {
                 <div class="report-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;<?= $isLowStock ? 'background:#ffeaea;' : '' ?>">
                     <div><b>商品：</b><?= $item ? htmlspecialchars($item['name']) : '<span style="color:#aaa;">(已刪除)</span>' ?></div>
                     <div><b>顏色：</b><?= $color ?></div>
-                    <div><b>成本：</b><?= $variant ? intval($variant['cost_price']) : '-' ?></div>
                     <div><b>售價：</b><?= $variant ? intval($variant['sell_price']) : '-' ?></div>
                     <div><b>數量：</b><?= intval($sale['quantity']) ?></div>
                     <div><b>總價：</b><?= intval($sale['total_price']) ?></div>
