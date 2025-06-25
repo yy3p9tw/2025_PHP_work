@@ -1,4 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+/* 主色調橘黃、咖啡、暖白 */
+:root {
+  --main-orange: #ffb347;
+  --main-brown: #b97a56;
+  --main-white: #fff7f0;
+}
 *{
   box-sizing: border-box;
   margin: 0;
@@ -6,7 +12,7 @@
 }
 body {
   font-family: 'Noto Sans TC', 'Roboto', Arial, sans-serif;
-  background: #fdf6f1;
+  background: var(--main-white);
   color: #222;
   margin: 0;
   padding: 0;
@@ -44,7 +50,7 @@ body {
 .social-logo {
   width: 32px;
   height: 32px;
-  margin-right: 8px;
+  margin-right: 0.5em;
   border-radius: 50%;
   background: #f8bbd0;
   box-shadow: 0 2px 8px #f8bbd055;
@@ -182,11 +188,11 @@ body {
 }
 .skills span {
   display: inline-flex;
-  align-items: center;  background: linear-gradient(90deg, #f7e9e1 60%, #fff3ee 100%);
-  color: #c97a4b;
-  border-radius: 18px;
-  padding: 7px 20px;
-  margin: 0;
+  align-items: center;  background: var(--main-orange);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.3em 1em;
+  margin: 0.2em 0.3em;
   font-size: 1em;
   font-weight: 500;
   box-shadow: 0 2px 8px #e0e7ff55;
@@ -199,20 +205,20 @@ body {
   transform: scale(1.08);
 }
 .timeline {
-  border-left: 3px solid #c97a4b;
-  margin: 32px 0 24px 0;
-  padding-left: 32px;
+  border-left: 3px solid var(--main-orange);
+  margin-left: 1.5em;
+  padding-left: 1.5em;
 }
 .timeline-item {
-  margin-bottom: 28px;
+  margin-bottom: 1.5em;
   position: relative;
   color: #8b4513;
 }
 .timeline-date {
   display: inline-block;
   position: static;
-  color: #a0522d;
-  font-weight: bold;
+  color: var(--main-brown);
+  font-weight: 600;
   font-size: 1em;
   background: #fff3ee;
   padding: 2px 12px 2px 0;
@@ -223,10 +229,10 @@ body {
   text-align: left;
 }
 .timeline-content {
-  background: #fff3ee;
+  background: #fff;
   border-radius: 10px;
-  padding: 14px 18px;
-  box-shadow: 0 2px 12px #e2bfae22;
+  box-shadow: 0 2px 8px #ffb34722;
+  padding: 1em 1em 0.7em 1em;
   color: #5a3c2b;
 }
 .education h3 {
@@ -234,7 +240,7 @@ body {
   color: #2d3a4b;
 }
 .education ul {
-  padding-left: 18px;
+  padding-left: 1.2em;
   margin-top: 0;
 }
 .education li {
@@ -252,12 +258,11 @@ body {
   margin-right: auto;
 }
 .portfolio-item {
-  background: #fff3ee;
+  background: #fff;
   border-radius: 14px;
-  box-shadow: 0 4px 24px #e2bfae33;
-  padding: 18px 18px 12px 18px;
-  width: 220px;
-  text-align: center;
+  box-shadow: 0 2px 16px #ffb34733;
+  padding: 1.5em 1em;
+  margin-bottom: 1.5em;
 }
 .portfolio-item img {
   width: 100%;
@@ -265,9 +270,10 @@ body {
   margin-bottom: 10px;
 }
 .portfolio-title {
-  font-weight: bold;
-  color: #c97a4b;
-  margin-bottom: 4px;
+  font-size: 1.15em;
+  font-weight: 600;
+  color: var(--main-brown);
+  margin-bottom: 0.5em;
 }
 .portfolio-item .btn {
   margin-top: 8px;
@@ -281,25 +287,25 @@ body {
   margin-bottom: 18px;
 }
 .contact-form input, .contact-form textarea {
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid #b6c7e6;
-  font-size: 1em;
-  font-family: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--main-orange);
+  margin-bottom: 1em;
 }
 .contact-form button {
-  background: linear-gradient(90deg, #c97a4b 60%, #e2bfae 100%);
+  background: linear-gradient(135deg, var(--main-orange) 0%, #ff9966 100%);
   color: #fff;
   border: none;
-  border-radius: 20px;
+  border-radius: 8px;
   padding: 10px 28px;
-  font-weight: bold;
+  font-weight: 500;
   font-size: 1.08em;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.18s;
+  width: 100%;
 }
 .contact-form button:hover {
-  background: linear-gradient(90deg, #e2bfae 60%, #c97a4b 100%);
+  background: linear-gradient(135deg, #ff9966 0%, var(--main-orange) 100%);
+  color: #fffbe6;
 }
 .contact-info {
   margin-top: 10px;
@@ -311,24 +317,22 @@ body {
 .social-logo {
   width: 32px;
   height: 32px;
-  margin-right: 10px;
+  margin-right: 0.5em;
   vertical-align: middle;
   border-radius: 50%;
   box-shadow: 0 2px 8px #e0e0e0;
 }
 .site-footer {
-  background: #2d3a4b;
-  color: #fff;
+  background: var(--main-white);
+  color: var(--main-brown);
+  padding: 1.2em 0 0.5em 0;
   text-align: center;
-  padding: 24px 0 16px 0;
-  margin-top: 48px;
+  border-top: 1px solid #ffb34733;
 }
 .footer-links a {
-  color: #fff;
-  margin: 0 8px;
+  color: var(--main-brown);
+  margin: 0 0.5em;
   text-decoration: none;
-  font-size: 1em;
-  text-shadow: 0 1px 4px #fffde7;
 }
 .footer-links a:hover {
   text-decoration: underline;
@@ -368,94 +372,166 @@ body {
 #portfolio-list-container {
   margin-top: 0;
 }
-.portfolio-pagination {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 28px 0 0 0;
+#portfolio-pagination, .portfolio-pagination {
+  width: 100%;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center;
+  gap: 6px;
+  margin: 18px 0 0 0;
   padding-bottom: 10px;
   user-select: none;
+  flex-wrap: wrap;
+}
+#portfolio-list-container + #portfolio-pagination {
+  margin-left: 0 !important;
 }
 .portfolio-pagination button {
   background: none;
-  color: #c97a4b;
-  border: none;
+  color: var(--main-brown, #b97a56);
+  border: 1px solid var(--main-orange, #ffb347);
   border-radius: 50%;
-  width: 38px;
-  height: 38px;
-  font-size: 1.08em;
+  width: 28px;
+  height: 28px;
+  font-size: 0.98em;
   font-weight: bold;
   cursor: pointer;
   box-shadow: none;
-  transition: color 0.18s, transform 0.18s;
+  transition: color 0.18s, background 0.18s, transform 0.18s;
   outline: none;
   position: relative;
+  padding: 0;
 }
 .portfolio-pagination button:hover {
   color: #fff;
-  background: #c97a4b;
+  background: var(--main-orange, #ffb347);
   transform: scale(1.13);
   z-index: 2;
 }
 .portfolio-pagination button.active {
   color: #fff;
-  background: #c97a4b;
+  background: var(--main-orange, #ffb347);
   transform: scale(1.18);
   z-index: 3;
 }
-/* Pagination styles */
-.pagination {
+.portfolio-pagination .pagination-ellipsis {
+  color: var(--main-brown, #b97a56);
+  font-size: 0.95em;
+  margin: 0 0.2em;
+}
+/* 作品集圖片為主 hover 效果（大縮圖+標題，滑過顯示描述與按鈕） */
+.portfolio-card {
+  background: #fff3ee;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px #e2bfae33;
+  position: relative;
+  overflow: hidden;
+  min-height: 220px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.portfolio-img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 1rem;
+  transition: filter 0.3s, opacity 0.3s;
+}
+.portfolio-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 0.7em 0 0.5em 0;
+  color: #b97a56;
+  text-align: center;
+  z-index: 2;
+  background: none;
+}
+.portfolio-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 179, 71, 0.92);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 3;
+  padding: 2rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  margin: 24px 0;
+  pointer-events: none;
 }
-.pagination-btn {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 4px;
-  background: #f7e9e1;
-  color: #c97a4b;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background 0.2s, color 0.2s;
+.portfolio-card:hover .portfolio-img {
+  filter: blur(2px) brightness(0.7);
+  opacity: 0.7;
 }
-.pagination-btn:hover {
-  background: #e2bfae;
-  color: #fff3ee;
+.portfolio-card:hover .portfolio-overlay {
+  opacity: 1;
+  pointer-events: auto;
 }
-.pagination-btn.active {
-  background: #c97a4b;
-  color: #f7e9e1;
+.portfolio-desc {
+  font-size: 1em;
+  margin-bottom: 1em;
+  color: #fffbe6;
 }
-.pagination-ellipsis {
-  color: #c97a4b;
+.portfolio-overlay .btn {
+  background: linear-gradient(135deg, #fff7f0 0%, #ffb347 100%);
+  color: #b97a56;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background 0.18s, color 0.18s;
+}
+.portfolio-overlay .btn:hover {
+  background: linear-gradient(135deg, #ffb347 0%, #fff7f0 100%);
+  color: #fff;
+}
+/* 學歷與證照卡片左右等分且無邊框線（縮小版） */
+#resume .row.g-4 > .col-md-6 > .card {
+  border: none !important;
+  box-shadow: 0 2px 10px #e2bfae22;
+  border-radius: 0.7rem;
+  background: #fff7f0;
+  padding: 1.2em 1.1em 1em 1.1em;
+  min-height: unset;
+}
+#resume .row.g-4 {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 18px 14px;
+  margin-bottom: 0;
+  overflow-x: auto;
+}
+#resume .col-md-6, #resume .col-md-4 {
+  flex: 0 0 33.3333%;
+  max-width: 33.3333%;
+  min-width: 260px;
+  padding-left: 0;
+  padding-right: 0;
 }
 @media (max-width: 700px) {
-  .portfolio-tabs {
-    gap: 8px;
+  #resume .row.g-4 {
+    gap: 7px 7px;
   }
-  .portfolio-tab-btn {
-    font-size: 1em;
-    padding: 8px 14px;
-  }
-  .portfolio-pagination {
-    gap: 6px;
-  }
-  .portfolio-pagination button {
-    width: 28px;
-    height: 28px;
-    font-size: 0.98em;
+  #resume .col-md-6, #resume .col-md-4 {
+    min-width: 210px;
   }
 }
-@media (max-width: 900px) {
-  .portfolio-list {
-    max-width: 98vw;
-    gap: 18px;
-  }
-  .portfolio-item {
-    width: 98vw;
-    max-width: 320px;
-  }
+#resume .card h2, #resume .card h3 {
+  font-size: 1.25em;
+  margin-bottom: 0.6em;
+}
+#resume .card {
+  font-size: 0.98em;
+  line-height: 1.5;
+}
+#resume .skills span {
+  font-size: 0.95em;
+  padding: 0.18em 0.7em;
+  margin: 0.12em 0.18em;
+  border-radius: 7px;
 }

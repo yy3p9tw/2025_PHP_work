@@ -5,51 +5,141 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FLEX JOJO 練習</title>
-    <link rel="stylesheet" href="flex_jojo.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f7f7f7;
+        }
+
+        .jojo-nav {
+            margin: 2rem 0 2.5rem 0;
+            text-align: center;
+        }
+
+        .jojo-nav .btn {
+            margin: 0 0.5em;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .jojo-box {
+            min-height: 120px;
+            border-radius: 1.2em;
+            box-shadow: 0 2px 16px #bfa04622;
+            margin-bottom: 1.5em;
+        }
+
+        .box1 {
+            background: linear-gradient(120deg, #ffe082 60%, #ffb347 100%);
+        }
+
+        .box2,
+        .box2_1 {
+            background: linear-gradient(120deg, #b2dfdb 60%, #80cbc4 100%);
+        }
+
+        .box3,
+        .box3_1,
+        .box3_2 {
+            background: linear-gradient(120deg, #b39ddb 60%, #9575cd 100%);
+        }
+
+        .box4 {
+            background: linear-gradient(120deg, #ffab91 60%, #ff7043 100%);
+        }
+
+        .back-btn {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            background: linear-gradient(120deg, #ffb6c1 60%, #ffd6e0 100%);
+            color: #ad1457;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 16px #f8bbd0;
+            border: 2px solid #ff8fab;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            z-index: 999;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(120deg, #ff8fab 60%, #ffd6e0 100%);
+            color: #fff;
+            box-shadow: 0 8px 24px #f06292;
+        }
+
+        footer {
+            background: #222;
+            color: #fff7f0;
+            text-align: center;
+            padding: 24px 0;
+            margin-top: 48px;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+    </style>
 </head>
 
 <body>
-    <a id="top"></a>
-    <div class="nav">
-        <div class="nav-link"><a href="#container-3">二欄</a></div>
-        <div class="nav-link"><a href="#container-4">三欄</a></div>
-        <div class="nav-link"><a href="#container-5">四欄</a></div>
-    </div>
-
-    <div class="container" id="container-2">
-        <div class="row">
-            <div class="box box1"></div>
+    <div class="container py-4">
+        <div class="jojo-nav mb-4">
+            <a href="#container-3" class="btn btn-warning">二欄</a>
+            <a href="#container-4" class="btn btn-info">三欄</a>
+            <a href="#container-5" class="btn btn-danger">四欄</a>
+        </div>
+        <div id="container-2" class="mb-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6">
+                    <div class="jojo-box box1"></div>
+                </div>
+            </div>
+        </div>
+        <div id="container-3" class="mb-5">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="jojo-box box2"></div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="jojo-box box2_1"></div>
+                </div>
+            </div>
+        </div>
+        <div id="container-4" class="mb-5">
+            <div class="row g-4">
+                <div class="col-12 col-md-4 col-lg-4">
+                    <div class="jojo-box box3"></div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4">
+                    <div class="jojo-box box3_1"></div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4">
+                    <div class="jojo-box box3_2"></div>
+                </div>
+            </div>
+        </div>
+        <div id="container-5" class="mb-5">
+            <div class="row g-4">
+                <div class="col-12 col-md-3 col-lg-3">
+                    <div class="jojo-box box4"></div>
+                </div>
+                <div class="col-12 col-md-3 col-lg-3">
+                    <div class="jojo-box box4"></div>
+                </div>
+                <div class="col-12 col-md-3 col-lg-3">
+                    <div class="jojo-box box4"></div>
+                </div>
+                <div class="col-12 col-md-3 col-lg-3">
+                    <div class="jojo-box box4"></div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="container" id="container-3">
-        <div class="row">
-            <div class="box box2"></div>
-            <div class="box box2_1"></div>
-        </div>
-    </div>
-
-    <div class="container" id="container-4">
-        <div class="row">
-            <div class="box box3"></div>
-            <div class="box box3_1"></div>
-            <div class="box box3_2"></div>
-        </div>
-    </div>
-
-    <div class="container" id="container-5">
-        <div class="row">
-            <div class="box box4"></div>
-            <div class="box box4"></div>
-            <div class="box box4"></div>
-            <div class="box box4"></div>
-        </div>
-    </div>
-    <footer id="footer">
-        © 2025 Footer Section
-    </footer>
-    <!-- 右下回作品集按鈕 -->
     <a href="../index.html" class="back-btn">回作品集</a>
+    <footer>© 2025 Footer Section</footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
