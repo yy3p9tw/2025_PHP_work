@@ -7,15 +7,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <style>
+    body { background: #fff7f0; }
+    .main-title { color: #b97a56; text-align: center; margin-top: 2em; letter-spacing: 0.05em; }
     .card-link.card {
-      background: #ffb347;
+      background: linear-gradient(135deg, #ffb347 0%, #ff9966 100%);
       border-radius: 16px;
       box-shadow: 0 2px 16px #ffb34733;
       color: #fff;
       font-weight: 600;
       text-decoration: none;
       transition: box-shadow 0.18s, background 0.18s, color 0.18s;
-      border: 2px solid #fff7f0;
+      border: 2px solid #fffbe6;
       min-height: 160px;
       display: flex;
       flex-direction: column;
@@ -26,7 +28,7 @@
       padding: 2.2em 1em 2em 1em;
     }
     .card-link.card:hover {
-      background: #ff9966;
+      background: linear-gradient(135deg, #ff9966 0%, #ffb347 100%);
       color: #fffbe6;
       box-shadow: 0 4px 24px #ffb34755;
       border-color: #ffb347;
@@ -45,9 +47,10 @@
       .card-link.card { font-size: 1.02em; padding: 1.5em 0.5em 1.5em 0.5em; }
       .card-icon { font-size: 1.5em; }
     }
+    footer { color: #b97a56 !important; }
     </style>
 </head>
-<body class="bg-light">
+<body class="warm-bg">
     <main class="container py-4" style="max-width:900px;">
         <h1 class="main-title text-center my-4">衣服管理系統</h1>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 justify-content-center">
@@ -77,7 +80,7 @@
             </div>
         </div>
     </main>
-    <footer class="text-center my-4 text-secondary" style="color:#b97a56;">YU &copy; 2025 管理系統</footer>
+    <footer class="text-center my-4 text-secondary">YU &copy; 2025 管理系統</footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
