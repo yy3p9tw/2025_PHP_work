@@ -85,78 +85,108 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>編輯銷售紀錄</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../css/style.css">
+    <style>
+    .main-title { font-size: 2rem; font-weight: bold; color: #b97a56; }
+    .sale-variant-card { border: 1px solid #ffe0b2; border-radius: 10px; background: #fffdf7; }
+    .sale-variant-card .form-label { font-weight: 500; }
+    .discount-card { background: #fff7e0; border-radius: 10px; }
+    </style>
 </head>
 <body class="warm-bg">
-    <h1 class="main-title">編輯銷售紀錄</h1>
-    <form method="post" class="form-container card" style="max-width:600px;margin:auto;">
-        <input type="hidden" name="customer_id" value="<?= htmlspecialchars($customer_id) ?>">
-        <label>備註：<input type="text" name="notes" value="<?= htmlspecialchars($sales[0]['notes'] ?? '') ?>"></label>
-        <hr>
-        <div>
-            <strong>商品與規格：</strong>
-            <?php foreach($sales as $sale): 
-                $variant = $variantMap[$sale['item_id']] ?? null;
-                $item = ($variant && isset($itemFullMap[$variant['item_id']])) ? $itemFullMap[$variant['item_id']] : null;
-            ?>
-            <div style="border:1px solid #ffe0b2;padding:1em;margin-bottom:1em;border-radius:8px;">
-                <label>商品：
-                    <select name="sales[<?= $sale['id'] ?>][item_id]" disabled>
-                        <?php foreach($items as $it): ?>
-                            <option value="<?= $it['id'] ?>" <?= ($variant && $it['id']==$variant['item_id'])?'selected':'' ?>>
-                                <?= htmlspecialchars($it['name']) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </label>
-                <label>規格：
-                    <select name="sales[<?= $sale['id'] ?>][variant_id]">
-                        <?php foreach($variants as $v): 
-                            if ($variant && $v['item_id'] != $variant['item_id']) continue;
-                        ?>
-                            <option value="<?= $v['id'] ?>" <?= ($sale['item_id']==$v['id'])?'selected':'' ?>>
-                                <?= htmlspecialchars($colorMap[$v['color_id']] ?? '無顏色') ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </label>
-                <label>分類：<?= $item ? htmlspecialchars($catMap[$item['category_id']] ?? '') : '' ?></label>
-                <label>數量：<input type="number" name="sales[<?= $sale['id'] ?>][quantity]" value="<?= $sale['quantity'] ?>" required></label>
-                <label>單價：<input type="number" name="sales[<?= $sale['id'] ?>][unit_price]" value="<?= $sale['unit_price'] ?>" required></label>
-                <label style="color:#d2691e;margin-left:1em;">
-                    <input type="checkbox" name="delete_sales[]" value="<?= $sale['id'] ?>"> 刪除此規格
-                </label>
+    <div class="container py-4">
+        <h1 class="main-title mb-4">編輯銷售紀錄</h1>
+        <form method="post" class="card shadow-sm mx-auto p-4" style="max-width:700px;">
+            <input type="hidden" name="customer_id" value="<?= htmlspecialchars($customer_id) ?>">
+            <div class="mb-3">
+                <label class="form-label">備註：</label>
+                <input type="text" name="notes" value="<?= htmlspecialchars($sales[0]['notes'] ?? '') ?>" class="form-control">
             </div>
-            <?php endforeach; ?>
-        </div>
-        <!-- 全部折扣價區塊 -->
-        <div style="margin:1em 0 0.5em 0;padding:1em;background:#fff7e0;border-radius:8px;">
-            <label style="display:flex;align-items:center;gap:0.5em;">
-                <input type="checkbox" id="globalDiscountCheck"> 全部折扣價
-                <input type="number" id="globalDiscountPrice" step="1" min="0" style="width:110px;" disabled placeholder="輸入折扣後總價">
-                <span style="color:#b97a56;font-size:0.95em;">（勾選後所有商品規格總合為此價）</span>
-            </label>
-        </div>
-        <div class="card-action-bar" style="margin-top:1.2em;display:flex;gap:0.5em;">
-            <button type="submit" class="btn-back btn-sm" style="background:#ffb347;color:#fff;">儲存</button>
-            <a href="list.php" class="btn-back btn-sm">返回列表</a>
-        </div>
-    </form>
+            <hr>
+            <div class="mb-3">
+                <strong class="mb-2 d-block">商品與規格：</strong>
+                <?php foreach($sales as $sale): 
+                    $variant = $variantMap[$sale['item_id']] ?? null;
+                    $item = ($variant && isset($itemFullMap[$variant['item_id']])) ? $itemFullMap[$variant['item_id']] : null;
+                ?>
+                <div class="sale-variant-card card mb-3 p-3">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-md-4">
+                            <label class="form-label">商品：</label>
+                            <select name="sales[<?= $sale['id'] ?>][item_id]" class="form-select" disabled>
+                                <?php foreach($items as $it): ?>
+                                    <option value="<?= $it['id'] ?>" <?= ($variant && $it['id']==$variant['item_id'])?'selected':'' ?>>
+                                        <?= htmlspecialchars($it['name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">規格：</label>
+                            <select name="sales[<?= $sale['id'] ?>][variant_id]" class="form-select">
+                                <?php foreach($variants as $v): 
+                                    if ($variant && $v['item_id'] != $variant['item_id']) continue;
+                                ?>
+                                    <option value="<?= $v['id'] ?>" <?= ($sale['item_id']==$v['id'])?'selected':'' ?>>
+                                        <?= htmlspecialchars($colorMap[$v['color_id']] ?? '無顏色') ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">分類：</label>
+                            <div><?= $item ? htmlspecialchars($catMap[$item['category_id']] ?? '') : '' ?></div>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-label">數量：</label>
+                            <input type="number" name="sales[<?= $sale['id'] ?>][quantity]" value="<?= $sale['quantity'] ?>" class="form-control" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">單價：</label>
+                            <input type="number" name="sales[<?= $sale['id'] ?>][unit_price]" value="<?= $sale['unit_price'] ?>" class="form-control" required>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="delete_sales[]" value="<?= $sale['id'] ?>" id="del<?= $sale['id'] ?>">
+                                <label class="form-check-label text-danger" for="del<?= $sale['id'] ?>">刪除此規格</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <!-- 全部折扣價區塊 -->
+            <div class="discount-card card p-3 mb-3">
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="globalDiscountCheck">
+                    <label class="form-check-label" for="globalDiscountCheck">全部折扣價</label>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="globalDiscountPrice" step="1" min="0" class="form-control" style="max-width:150px;" disabled placeholder="輸入折扣後總價">
+                    <span class="input-group-text text-secondary">（勾選後所有商品規格總合為此價）</span>
+                </div>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+                <button type="submit" class="btn btn-primary">儲存</button>
+                <a href="list.php" class="btn btn-outline-secondary">返回列表</a>
+            </div>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
 // 全部折扣價功能
 const globalDiscountCheck = document.getElementById('globalDiscountCheck');
 const globalDiscountPrice = document.getElementById('globalDiscountPrice');
-
 globalDiscountCheck.onchange = function() {
     globalDiscountPrice.disabled = !this.checked;
 };
-
 document.querySelector('form').onsubmit = function(e) {
     if (globalDiscountCheck.checked && globalDiscountPrice.value) {
         // 取得所有商品小計
         let rows = [];
         let total = 0;
-        document.querySelectorAll('input[name^="sales"][name$="[quantity]"]').forEach(inp => {
+        document.querySelectorAll('input[name^="sales"][name$="[quantity]"]')?.forEach(inp => {
             const prefix = inp.name.replace(/\[quantity\].*$/, '');
             const qty = parseFloat(inp.value) || 0;
             const priceInp = document.querySelector(`input[name="${prefix}[unit_price]"]`);

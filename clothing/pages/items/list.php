@@ -54,103 +54,83 @@ $items = array_merge($lowStockItems, $normalItems);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品列表</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../css/style.css">
     <style>
-    @media (max-width: 768px) {
-        .main-title { font-size: 1.2em; }
-        table, thead, tbody, th, td, tr { display: block; width: 100%; }
-        thead { display: none; }
-        tr { margin-bottom: 1.2em; background: #fff; border-radius: 10px; box-shadow: 0 1px 6px #ffb34722; }
-        td { padding: 0.7em 1em; border: none; border-bottom: 1px solid #ffe0e0; position: relative; }
-        td:before { content: attr(data-label); font-weight: bold; color: #b97a56; display: block; margin-bottom: 0.3em; }
-        .btn-back { width: 100%; margin-bottom: 0.5em; }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5em;
-        }
-    }
-
-    /* 搜尋按鈕往上 15px */
-    .search-form button { margin-top: -15px; }
+    .main-title { font-size: 2rem; font-weight: bold; color: #b97a56; }
+    .product-card.low-stock { background: #ffeaea !important; }
+    .product-card .variant-row.low-stock { color: #d11c1c; font-weight: bold; }
+    .search-form .form-control { max-width: 220px; }
     </style>
 </head>
 <body class="warm-bg">
-    <div style="max-width:950px;margin:40px auto 0;">
-        <h1 class="main-title">商品列表</h1>
-        <div class="action-bar" style="margin-bottom:1.5em;">
-            <a href="../../index.php" class="btn-back">返回首頁</a>
-            <a href="add.php" class="btn-back">＋ 新增商品</a>
-            <a href="../colors/add.php" class="btn-back">＋ 新增顏色</a>
-            <a href="../categories/list.php" class="btn-back">＋ 新增分類</a>
+    <div class="container py-4">
+        <h1 class="main-title mb-4">商品列表</h1>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <a href="../../index.php" class="btn btn-outline-secondary">返回首頁</a>
+            <a href="add.php" class="btn btn-primary">＋ 新增商品</a>
+            <a href="../colors/add.php" class="btn btn-warning">＋ 新增顏色</a>
+            <a href="../categories/list.php" class="btn btn-success">＋ 新增分類</a>
         </div>
-        <div style="background:#fff;border-radius:14px;box-shadow:0 2px 16px #ffb34733;padding:2em 1em 1em 1em;">
-        <div style="margin-bottom:1.5em;">
-            <form method="get" class="search-form" style="margin-bottom:1.5em;display:flex;gap:1em;align-items:center;">
-                <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" placeholder="搜尋商品名稱..." style="padding:0.5em 1em;border:1px solid #ffb347;border-radius:6px;font-size:1em;width:220px;">
-                <button type="submit">搜尋</button>
-            </form>
-        </div>
-        <div class="grid">
-        <?php foreach($items as $item):
-            $variants = $itemVariantsMap[$item['id']] ?? [];
-            $isLowStock = isset($lowStockItemIds[$item['id']]);
-        ?>
-            <div class="product-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;<?= $isLowStock ? 'background:#ffeaea;' : '' ?>">
-                <div style="text-align:center;">
-                    <?php if ($item['image']): ?>
-                        <img src="../../uploads/<?= htmlspecialchars($item['image']) ?>" style="max-width:60px;max-height:60px;border-radius:8px;box-shadow:0 1px 6px #ffb34733;">
-                    <?php endif; ?>
-                </div>
-                <div style="font-weight:bold;font-size:1.1em;margin:0.5em 0;">商品：<?= htmlspecialchars($item['name']) ?></div>
-                <div>分類：<?= isset($catMap[$item['category_id']]) ? htmlspecialchars($catMap[$item['category_id']]) : '' ?></div>
-                <?php if (empty($variants)): ?>
-                    <div>顏色：-</div>
-                    <div>售價：-</div>
-                    <div>庫存：-</div>
-                <?php else: ?>
-                    <div style="margin:0.7em 0 0.5em 0;font-weight:bold;color:#b97a56;">規格：</div>
-                    <div style="display:flex;flex-direction:column;gap:0.5em;">
-                    <?php foreach($variants as $v):
-                        $stock = $v['stock'];
-                        $minStock = isset($v['min_stock']) && $v['min_stock'] !== '' ? $v['min_stock'] : 0;
-                    ?>
-                        <div style="background:#fff7f0;border-radius:8px;padding:0.5em 1em;display:flex;flex-wrap:wrap;align-items:center;gap:1.2em;">
-                            <span>顏色：<?= isset($colorMap[$v['color_id']]) ? htmlspecialchars($colorMap[$v['color_id']]) : '' ?></span>
-                            <span>成本：<?= isset($v['cost_price']) ? number_format($v['cost_price'], 0) : '-' ?></span>
-                            <span>售價：<?= number_format($v['sell_price'], 0) ?></span>
-                            <span>庫存：<?php if ($stock <= $minStock): ?><span style="color:#d11c1c;font-weight:bold;"><?= htmlspecialchars($stock) ?></span><?php else: ?><?= htmlspecialchars($stock) ?><?php endif; ?></span>
-                        </div>
-                    <?php endforeach; ?>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <form method="get" class="row g-2 align-items-center mb-3 search-form">
+                    <div class="col-auto">
+                        <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" placeholder="搜尋商品名稱..." class="form-control" autocomplete="off">
                     </div>
-                <?php endif; ?>
-                <div class="card-action-bar" style="margin-top:0.7em;display:flex;gap:0.5em;flex-wrap:wrap;">
-                    <a href="edit.php?id=<?= $item['id'] ?>" class="btn-back btn-sm">編輯</a>
-                    <a href="delete.php?id=<?= $item['id'] ?>" class="btn-back btn-sm btn-del" onclick="return confirm('確定要刪除嗎？')">刪除</a>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-outline-primary">搜尋</button>
+                    </div>
+                </form>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <?php foreach($items as $item):
+                    $variants = $itemVariantsMap[$item['id']] ?? [];
+                    $isLowStock = isset($lowStockItemIds[$item['id']]);
+                ?>
+                    <div class="col">
+                        <div class="card product-card shadow-sm h-100<?= $isLowStock ? ' low-stock' : '' ?>">
+                            <div class="card-body">
+                                <div class="text-center mb-2">
+                                    <?php if ($item['image']): ?>
+                                        <img src="../../uploads/<?= htmlspecialchars($item['image']) ?>" class="rounded mb-2" style="max-width:60px;max-height:60px;box-shadow:0 1px 6px #ffb34733;">
+                                    <?php endif; ?>
+                                </div>
+                                <h5 class="card-title mb-1">商品：<?= htmlspecialchars($item['name']) ?></h5>
+                                <div class="mb-1">分類：<?= isset($catMap[$item['category_id']]) ? htmlspecialchars($catMap[$item['category_id']]) : '' ?></div>
+                                <?php if (empty($variants)): ?>
+                                    <div>顏色：-</div>
+                                    <div>售價：-</div>
+                                    <div>庫存：-</div>
+                                <?php else: ?>
+                                    <div class="fw-bold text-secondary small mb-1">規格：</div>
+                                    <div class="d-flex flex-column gap-2">
+                                    <?php foreach($variants as $v):
+                                        $stock = $v['stock'];
+                                        $minStock = isset($v['min_stock']) && $v['min_stock'] !== '' ? $v['min_stock'] : 0;
+                                        $isVarLow = $stock <= $minStock;
+                                    ?>
+                                        <div class="variant-row rounded px-2 py-1 bg-light d-flex flex-wrap align-items-center gap-3<?= $isVarLow ? ' low-stock' : '' ?>">
+                                            <span>顏色：<?= isset($colorMap[$v['color_id']]) ? htmlspecialchars($colorMap[$v['color_id']]) : '' ?></span>
+                                            <span>成本：<?= isset($v['cost_price']) ? number_format($v['cost_price'], 0) : '-' ?></span>
+                                            <span>售價：<?= number_format($v['sell_price'], 0) ?></span>
+                                            <span>庫存：<?= $isVarLow ? '<span class=\'text-danger fw-bold\'>' . htmlspecialchars($stock) . '</span>' : htmlspecialchars($stock) ?></span>
+                                        </div>
+                                    <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="card-footer bg-white border-0 d-flex gap-2 flex-wrap">
+                                <a href="edit.php?id=<?= $item['id'] ?>" class="btn btn-sm btn-outline-primary">編輯</a>
+                                <a href="delete.php?id=<?= $item['id'] ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('確定要刪除嗎？')">刪除</a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
                 </div>
             </div>
-        <?php endforeach; ?>
-        </div>
         </div>
     </div>
-    <script>
-    document.getElementById('addColorMainBtn').onclick = function() {
-        let colorName = prompt('請輸入新顏色名稱');
-        if (!colorName) return;
-        fetch('../colors/ajax_add.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'name=' + encodeURIComponent(colorName)
-        })
-        .then(r => r.json())
-        .then(data => {
-            if (data.id && !isNaN(data.id)) {
-                alert('新增顏色成功！\n請到新增/編輯商品頁選用新顏色。');
-            } else {
-                alert('新增失敗');
-            }
-        });
-    };
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

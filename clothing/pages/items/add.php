@@ -203,6 +203,13 @@ document.getElementById('variantGrid').onclick = function(e) {
         max-width: 100%;
       }
     }
+    /* 讓「＋新增規格」按鈕與「刪除」按鈕間距 5px */
+    #addVariantBtn {
+      margin-top: 10px;
+    }
+    #variantGrid .removeVariant {
+      margin-left: 10px;
+    }
     </style>
 </body>
 </html>
