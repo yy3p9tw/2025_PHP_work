@@ -4,6 +4,8 @@ $Category = new DB('categories');
 $categories = $Category->all();
 $Color = new DB('colors');
 $colors = $Color->all();
+$Size = new DB('sizes');
+$sizes = $Size->all();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $Item = new DB('items');
@@ -26,12 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
     // 取得新商品id（用 PDO lastInsertId）
     $item_id = $Item->getLastInsertId();
-    // 新增多個顏色規格
+    // 新增多個顏色/尺寸規格
     $Variant = new DB('item_variants');
     foreach ($_POST['variant'] as $v) {
         $Variant->insert([
             'item_id' => $item_id,
             'color_id' => $v['color_id'],
+            'size_id' => $v['size_id'],
             'cost_price' => $v['cost_price'],
             'sell_price' => $v['sell_price'],
             'stock' => $v['stock'],
@@ -48,141 +51,211 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新增商品</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body class="warm-bg">
     <h1 class="main-title">新增商品</h1>
     <form method="post" class="form-container card" style="max-width:420px;margin:auto;" enctype="multipart/form-data">
-        <label>商品名稱：<input type="text" name="name" required></label>
-        <label>分類：
-            <select name="category_id" id="category_id" required>
+        <div class="mb-3">
+            <label class="form-label">商品名稱：</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">分類：</label>
+            <select name="category_id" id="category_id" class="form-select" required>
                 <option value="">請選擇</option>
                 <?php foreach($categories as $cat): ?>
                     <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
                 <?php endforeach; ?>
             </select>
-            <button type="button" id="addCatBtn" class="btn-back" style="margin-left:8px;">＋新增分類</button>
-        </label>
-        <div id="addCatBox" style="display:none;margin:8px 0;">
-            <input type="text" id="newCatName" placeholder="輸入新分類名稱">
-            <button type="button" id="saveCatBtn">儲存</button>
-            <button type="button" id="cancelCatBtn">取消</button>
+            <button type="button" id="addCatBtn" class="btn btn-outline-secondary btn-sm ms-2">＋新增分類</button>
         </div>
-        <label>商品圖片：<input type="file" name="image" accept="image/*"></label>
-        <label>描述：<textarea name="description"></textarea></label>
-        <hr style="margin:2em 0;">
-        <h3 style="color:#d2691e;">顏色/規格與庫存</h3>
+        <div id="addCatBox" class="mb-3" style="display:none;">
+            <div class="input-group">
+                <input type="text" id="newCatName" class="form-control" placeholder="輸入新分類名稱">
+                <button type="button" id="saveCatBtn" class="btn btn-primary">儲存</button>
+                <button type="button" id="cancelCatBtn" class="btn btn-secondary">取消</button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">商品圖片：</label>
+            <input type="file" name="image" class="form-control" accept="image/*">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">描述：</label>
+            <textarea name="description" class="form-control"></textarea>
+        </div>
+        <hr class="my-4">
+        <h3 class="text-center mb-3" style="color:#d2691e;">顏色/尺寸/規格與庫存</h3>
         <div class="grid" id="variantGrid">
-            <div class="variant-card">
-                <label>顏色：
-                    <select name="variant[0][color_id]" required>
+            <div class="variant-card p-3 mb-3">
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <label class="form-label">顏色：</label>
+                        <select name="variant[0][color_id]" class="form-select" required>
+                            <option value="">請選擇</option>
+                            <?php foreach($colors as $col): ?>
+                                <option value="<?= $col['id'] ?>"><?= htmlspecialchars($col['name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">尺寸：</label>
+                        <select name="variant[0][size_id]" class="form-select" required>
+                            <option value="">請選擇</option>
+                            <?php foreach($sizes as $s): ?>
+                                <option value="<?= $s['id'] ?>"><?= htmlspecialchars($s['name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">成本：</label>
+                        <input type="number" name="variant[0][cost_price]" class="form-control" step="1" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">售價：</label>
+                        <input type="number" name="variant[0][sell_price]" class="form-control" step="1" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">庫存：</label>
+                        <input type="number" name="variant[0][stock]" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">最低庫存：</label>
+                        <input type="number" name="variant[0][min_stock]" class="form-control" value="5" required>
+                    </div>
+                    <div class="col-12 text-end">
+                        <button type="button" class="removeVariant btn btn-outline-danger btn-sm">刪除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" id="addVariantBtn" class="btn btn-secondary btn-sm mb-3">＋新增規格</button>
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-primary">新增</button>
+            <a href="list.php" class="btn btn-outline-secondary">返回列表</a>
+        </div>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.getElementById('addCatBtn').onclick = function() {
+        document.getElementById('addCatBox').style.display = 'block';
+        document.getElementById('newCatName').focus();
+    };
+    document.getElementById('cancelCatBtn').onclick = function() {
+        document.getElementById('addCatBox').style.display = 'none';
+        document.getElementById('newCatName').value = '';
+    };
+    document.getElementById('saveCatBtn').onclick = function() {
+        var name = document.getElementById('newCatName').value.trim();
+        if (!name) { alert('請輸入分類名稱'); return; }
+        fetch('../categories/ajax_add.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'name=' + encodeURIComponent(name)
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.id) {
+                var sel = document.getElementById('category_id');
+                var opt = document.createElement('option');
+                opt.value = data.id;
+                opt.textContent = data.name;
+                opt.selected = true;
+                sel.appendChild(opt);
+                document.getElementById('addCatBox').style.display = 'none';
+                document.getElementById('newCatName').value = '';
+            } else {
+                alert('新增失敗');
+            }
+        });
+    };
+    // 動態新增/刪除顏色/尺寸規格（卡片式）
+    let variantIdx = 1;
+    document.getElementById('addVariantBtn').onclick = function() {
+        const grid = document.getElementById('variantGrid');
+        // 取得上一個規格的成本與售價
+        let lastCost = '';
+        let lastSell = '';
+        const lastCard = grid.querySelector('.variant-card:last-of-type');
+        if (lastCard) {
+            const costInput = lastCard.querySelector('input[name*="[cost_price]"]');
+            const sellInput = lastCard.querySelector('input[name*="[sell_price]"]');
+            if (costInput) lastCost = costInput.value;
+            if (sellInput) lastSell = sellInput.value;
+        }
+        const div = document.createElement('div');
+        div.className = 'variant-card p-3 mb-3';
+        div.innerHTML = `
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <label class="form-label">顏色：</label>
+                    <select name="variant[${variantIdx}][color_id]" class="form-select" required>
                         <option value="">請選擇</option>
                         <?php foreach($colors as $col): ?>
                             <option value="<?= $col['id'] ?>"><?= htmlspecialchars($col['name']) ?></option>
                         <?php endforeach; ?>
                     </select>
-                </label>
-                <label>成本：<input type="number" name="variant[0][cost_price]" step="1" required></label>
-                <label>售價：<input type="number" name="variant[0][sell_price]" step="1" required></label>
-                <label>庫存：<input type="number" name="variant[0][stock]" required></label>
-                <label>最低庫存：<input type="number" name="variant[0][min_stock]" value="5" required></label>
-                <button type="button" class="removeVariant btn-back" style="background:#fff0e0;color:#d2691e;">刪除</button>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">尺寸：</label>
+                    <select name="variant[${variantIdx}][size_id]" class="form-select" required>
+                        <option value="">請選擇</option>
+                        <?php foreach($sizes as $s): ?>
+                            <option value="<?= $s['id'] ?>"><?= htmlspecialchars($s['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">成本：</label>
+                    <input type="number" name="variant[${variantIdx}][cost_price]" class="form-control" step="1" required value="${lastCost}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">售價：</label>
+                    <input type="number" name="variant[${variantIdx}][sell_price]" class="form-control" step="1" required value="${lastSell}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">庫存：</label>
+                    <input type="number" name="variant[${variantIdx}][stock]" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">最低庫存：</label>
+                    <input type="number" name="variant[${variantIdx}][min_stock]" class="form-control" value="5" required>
+                </div>
+                <div class="col-12 text-end">
+                    <button type="button" class="removeVariant btn btn-outline-danger btn-sm">刪除</button>
+                </div>
             </div>
-        </div>
-        <button type="button" id="addVariantBtn">＋新增規格</button>
-        <div class="card-action-bar" style="margin-top:1.2em;display:flex;gap:0.5em;flex-wrap:wrap;">
-            <button type="submit" class="btn-back btn-sm" style="background:#ffb347;color:#fff;">新增</button>
-            <a href="list.php" class="btn-back btn-sm">返回列表</a>
-        </div>
-    </form>
-    <script>
-document.getElementById('addCatBtn').onclick = function() {
-    document.getElementById('addCatBox').style.display = 'block';
-    document.getElementById('newCatName').focus();
-};
-document.getElementById('cancelCatBtn').onclick = function() {
-    document.getElementById('addCatBox').style.display = 'none';
-    document.getElementById('newCatName').value = '';
-};
-document.getElementById('saveCatBtn').onclick = function() {
-    var name = document.getElementById('newCatName').value.trim();
-    if (!name) { alert('請輸入分類名稱'); return; }
-    fetch('../categories/ajax_add.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'name=' + encodeURIComponent(name)
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (data.id) {
-            var sel = document.getElementById('category_id');
-            var opt = document.createElement('option');
-            opt.value = data.id;
-            opt.textContent = data.name;
-            opt.selected = true;
-            sel.appendChild(opt);
-            document.getElementById('addCatBox').style.display = 'none';
-            document.getElementById('newCatName').value = '';
-        } else {
-            alert('新增失敗');
+        `;
+        grid.appendChild(div);
+        variantIdx++;
+    };
+    document.getElementById('variantGrid').onclick = function(e) {
+        if (e.target.classList.contains('removeVariant')) {
+            if (document.querySelectorAll('#variantGrid .variant-card').length > 1) {
+                e.target.closest('.variant-card').remove();
+            } else {
+                alert('至少要有一個顏色/尺寸規格');
+            }
         }
-    });
-};
-// 移除每一行的＋按鈕與新增顏色輸入框
-function removeRowAddColorBtn() {
-    document.querySelectorAll('.addColorBtn, .addColorBox').forEach(el => el.remove());
-}
-removeRowAddColorBtn();
-// 動態新增/刪除顏色規格（卡片式）
-let variantIdx = 1;
-document.getElementById('addVariantBtn').onclick = function() {
-    const grid = document.getElementById('variantGrid');
-    // 取得上一個規格的成本與售價
-    let lastCost = '';
-    let lastSell = '';
-    const lastCard = grid.querySelector('.variant-card:last-of-type');
-    if (lastCard) {
-        const costInput = lastCard.querySelector('input[name*="[cost_price]"]');
-        const sellInput = lastCard.querySelector('input[name*="[sell_price]"]');
-        if (costInput) lastCost = costInput.value;
-        if (sellInput) lastSell = sellInput.value;
-    }
-    const div = document.createElement('div');
-    div.className = 'variant-card';
-    div.style = 'background:#fff;border-radius:12px;box-shadow:0 2px 8px #ffb34722;padding:1.2em 1em 1em 1em;margin-bottom:1.2em;';
-    div.innerHTML = `
-        <label>顏色：
-            <select name="variant[${variantIdx}][color_id]" required>
-                <option value="">請選擇</option>
-                <?php foreach($colors as $col): ?>
-                    <option value="<?= $col['id'] ?>"><?= htmlspecialchars($col['name']) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </label>
-        <label>成本：<input type="number" name="variant[${variantIdx}][cost_price]" step="1" required value="${lastCost}"></label>
-        <label>售價：<input type="number" name="variant[${variantIdx}][sell_price]" step="1" required value="${lastSell}"></label>
-        <label>庫存：<input type="number" name="variant[${variantIdx}][stock]" required></label>
-        <label>最低庫存：<input type="number" name="variant[${variantIdx}][min_stock]" value="5" required></label>
-        <button type="button" class="removeVariant btn-back" style="background:#fff0e0;color:#d2691e;">刪除</button>
-    `;
-    grid.appendChild(div);
-    variantIdx++;
-};
-document.getElementById('variantGrid').onclick = function(e) {
-    if (e.target.classList.contains('removeVariant')) {
-        if (document.querySelectorAll('#variantGrid .variant-card').length > 1) {
-            e.target.closest('.variant-card').remove();
-        } else {
-            alert('至少要有一個顏色/規格');
-        }
-    }
-};
-// 表單送出前檢查所有顏色必選
+    };
+    // 表單送出前檢查所有顏色和尺寸必選
     document.querySelector('form').onsubmit = function(e) {
-        let selects = document.querySelectorAll("select[name*='color_id']");
-        for(let sel of selects) {
+        let colorSelects = document.querySelectorAll("select[name*='color_id']");
+        let sizeSelects = document.querySelectorAll("select[name*='size_id']");
+
+        for(let sel of colorSelects) {
             if(!sel.value || isNaN(sel.value) || parseInt(sel.value) <= 0) {
                 alert('請為每一行選擇有效顏色！');
+                sel.focus();
+                e.preventDefault();
+                return false;
+            }
+        }
+        for(let sel of sizeSelects) {
+            if(!sel.value || isNaN(sel.value) || parseInt(sel.value) <= 0) {
+                alert('請為每一行選擇有效尺寸！');
                 sel.focus();
                 e.preventDefault();
                 return false;
@@ -191,25 +264,5 @@ document.getElementById('variantGrid').onclick = function(e) {
         return true;
     };
     </script>
-    <style>
-    @media (min-width: 900px) {
-      #variantGrid {
-        display: flex;
-        flex-direction: column;
-        gap: 1.2em;
-      }
-      #variantGrid .variant-card {
-        width: 100%;
-        max-width: 100%;
-      }
-    }
-    /* 讓「＋新增規格」按鈕與「刪除」按鈕間距 5px */
-    #addVariantBtn {
-      margin-top: 10px;
-    }
-    #variantGrid .removeVariant {
-      margin-left: 10px;
-    }
-    </style>
 </body>
 </html>

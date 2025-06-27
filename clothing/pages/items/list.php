@@ -5,26 +5,34 @@ $Category = new DB('categories');
 $categories = $Category->all();
 $Color = new DB('colors');
 $colors = $Color->all();
+$Size = new DB('sizes');
+$sizes = $Size->all();
 $Variant = new DB('item_variants');
 $allVariants = $Variant->all();
+
 // 商品名稱搜尋
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$itemWhere = [];
 if ($search !== '') {
-    $items = $Item->all("name LIKE '%" . addslashes($search) . "%'");
-} else {
-    $items = $Item->all();
+    $itemWhere['name LIKE'] = '%' . $search . '%';
 }
-// 建立分類與顏色的 id=>name 對照表
+$items = $Item->all($itemWhere);
+
+// 建立分類、顏色與尺寸的 id=>name 對照表
 $catMap = [];
 foreach($categories as $c) $catMap[$c['id']] = $c['name'];
 $colorMap = [];
 foreach($colors as $c) $colorMap[$c['id']] = $c['name'];
+$sizeMap = [];
+foreach($sizes as $s) $sizeMap[$s['id']] = $s['name'];
+
 // 將 item_id 對應到所有 variants
 $itemVariantsMap = [];
 foreach($allVariants as $v) {
     $itemVariantsMap[$v['item_id']][] = $v;
 }
-// === 新增：找出有任一規格低庫存的商品 id ===
+
+// === 找出有任一規格低庫存的商品 id ===
 $lowStockItemIds = [];
 foreach ($itemVariantsMap as $itemId => $variants) {
     foreach ($variants as $v) {
@@ -36,7 +44,8 @@ foreach ($itemVariantsMap as $itemId => $variants) {
         }
     }
 }
-// === 新增：商品依低庫存置頂排序 ===
+
+// === 商品依低庫存置頂排序 ===
 $lowStockItems = [];
 $normalItems = [];
 foreach ($items as $item) {
@@ -57,12 +66,6 @@ $items = array_merge($lowStockItems, $normalItems);
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../css/style.css">
-    <style>
-    .main-title { font-size: 2rem; font-weight: bold; color: #b97a56; }
-    .product-card.low-stock { background: #ffeaea !important; }
-    .product-card .variant-row.low-stock { color: #d11c1c; font-weight: bold; }
-    .search-form .form-control { max-width: 220px; }
-    </style>
 </head>
 <body class="warm-bg">
     <div class="container py-4">
@@ -72,6 +75,7 @@ $items = array_merge($lowStockItems, $normalItems);
             <a href="add.php" class="btn btn-primary">＋ 新增商品</a>
             <a href="../colors/add.php" class="btn btn-warning">＋ 新增顏色</a>
             <a href="../categories/list.php" class="btn btn-success">＋ 新增分類</a>
+            <a href="../sizes/list.php" class="btn btn-info">＋ 新增尺寸</a>
         </div>
         <div class="card shadow-sm mb-4">
             <div class="card-body">
@@ -100,6 +104,7 @@ $items = array_merge($lowStockItems, $normalItems);
                                 <div class="mb-1">分類：<?= isset($catMap[$item['category_id']]) ? htmlspecialchars($catMap[$item['category_id']]) : '' ?></div>
                                 <?php if (empty($variants)): ?>
                                     <div>顏色：-</div>
+                                    <div>尺寸：-</div>
                                     <div>售價：-</div>
                                     <div>庫存：-</div>
                                 <?php else: ?>
@@ -112,6 +117,7 @@ $items = array_merge($lowStockItems, $normalItems);
                                     ?>
                                         <div class="variant-row rounded px-2 py-1 bg-light d-flex flex-wrap align-items-center gap-3<?= $isVarLow ? ' low-stock' : '' ?>">
                                             <span>顏色：<?= isset($colorMap[$v['color_id']]) ? htmlspecialchars($colorMap[$v['color_id']]) : '' ?></span>
+                                            <span>尺寸：<?= isset($sizeMap[$v['size_id']]) ? htmlspecialchars($sizeMap[$v['size_id']]) : '' ?></span>
                                             <span>成本：<?= isset($v['cost_price']) ? number_format($v['cost_price'], 0) : '-' ?></span>
                                             <span>售價：<?= number_format($v['sell_price'], 0) ?></span>
                                             <span>庫存：<?= $isVarLow ? '<span class=\'text-danger fw-bold\'>' . htmlspecialchars($stock) . '</span>' : htmlspecialchars($stock) ?></span>

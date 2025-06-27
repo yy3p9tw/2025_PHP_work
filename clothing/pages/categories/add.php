@@ -1,11 +1,26 @@
 <?php
 require_once '../../includes/db.php';
 
+$error_message = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $Category = new DB('categories');
-    $Category->insert(['name' => $_POST['name']]);
-    header('Location: list.php');
-    exit;
+    $name = trim($_POST['name']);
+    if (!empty($name)) {
+        try {
+            $Category->insert(['name' => $name]);
+            header('Location: list.php');
+            exit;
+        } catch (PDOException $e) {
+            if ($e->getCode() == '23000') { // Duplicate entry
+                $error_message = '分類名稱已存在。';
+            } else {
+                $error_message = '新增失敗: ' . $e->getMessage();
+            }
+        }
+    } else {
+        $error_message = "分類名稱不能為空。";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -31,6 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="warm-bg">
     <h1 class="main-title">新增分類</h1>
     <form method="post" class="card p-4 mx-auto mt-4" style="max-width:420px;" autocomplete="off">
+        <?php if (!empty($error_message)): ?>
+            <div class="alert alert-danger" role="alert">
+                <?= htmlspecialchars($error_message) ?>
+            </div>
+        <?php endif; ?>
         <div class="mb-3">
             <label class="form-label">分類名稱：</label>
             <input type="text" name="name" class="form-control" required>

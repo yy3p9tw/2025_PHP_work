@@ -7,12 +7,12 @@ if (!isset($_GET['id'])) {
     exit;
 }
 $id = intval($_GET['id']);
-$customer = $Customer->all("id = $id");
+$customer = $Customer->find(['id' => $id]); // 使用 find() 方法
+
 if (!$customer) {
     echo '查無此客戶';
     exit;
 }
-$customer = $customer[0];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [
@@ -35,21 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>編輯客戶</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/style.css">
-    <style>
-        .main-title { color: #d2691e; text-align: center; margin-top: 2em; }
-        .card { box-shadow: 0 2px 16px #ffb34733; }
-        .form-label { font-weight: bold; color: #b97a56; }
-        .btn-back { background: #ffb347; color: #fff; border: 1px solid #ffb347; }
-        .btn-back:hover { background: #ffa500; color: #fff; }
-        .card-action-bar { margin-top:1.2em; display:flex; gap:0.5em; flex-wrap:wrap; }
-        @media (max-width: 600px) {
-            .main-title { font-size: 1.1em; }
-        }
-    </style>
 </head>
 <body class="warm-bg">
     <h1 class="main-title">編輯客戶</h1>
-    <form method="post" class="card p-4 mx-auto mt-4" style="max-width:420px;" autocomplete="off">
+    <form method="post" class="form-container card mx-auto mt-4" style="max-width:420px;" autocomplete="off">
         <div class="mb-3">
             <label class="form-label">姓名：</label>
             <input type="text" name="name" class="form-control" required value="<?= htmlspecialchars($customer['name']) ?>">
@@ -70,9 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label class="form-label">備註：</label>
             <textarea name="notes" class="form-control"><?= htmlspecialchars($customer['notes']) ?></textarea>
         </div>
-        <div class="card-action-bar">
-            <button type="submit" class="btn btn-back btn-sm">儲存</button>
-            <a href="list.php" class="btn btn-back btn-sm">返回列表</a>
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-primary">儲存</button>
+            <a href="list.php" class="btn btn-outline-secondary">返回列表</a>
         </div>
     </form>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

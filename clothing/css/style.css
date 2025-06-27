@@ -1,8 +1,4 @@
-*{
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+/* General Styles */
 body {
     font-family: 'Microsoft JhengHei', Arial, sans-serif;
     background: #f7f7f7;
@@ -10,61 +6,102 @@ body {
     margin: 0;
     padding: 0;
 }
-header {
-    background: #2a5d84;
-    color: #fff;
-    padding: 1em 0.5em;
-    margin-bottom: 2em;
-    box-shadow: 0 2px 8px #0002;
-}
-nav {
-    margin: 0 auto;
-    max-width: 900px;
-}
-.nav-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1em;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.nav-list li {
-    margin: 0;
-}
-.nav-list a {
-    color: #fff;
-    background: #2a5d84;
-    border-radius: 3px;
-    padding: 6px 16px;
-    font-size: 1em;
-    text-decoration: none;
-    transition: background 0.2s;
-}
-.nav-list a:hover {
-    background: #17405e;
-}
-h1, h2, h3 {
-    color: #2a5d84;
-}
-table {
-    background: #fff;
-    border-collapse: collapse;
-    margin-bottom: 2em;
-    box-shadow: 0 2px 8px #0001;
-    width: 100%;
-    max-width: 900px;
-}
-th, td {
-    padding: 8px 16px;
-    border: 1px solid #ccc;
-}
-th, td {
-    /* 移除小數點 */
-    font-variant-numeric: tabular-nums;
-}
-/* 表格內數字欄位不顯示小數點 */
 
+/* Main Title */
+.main-title {
+    color: #b97a56;
+    text-align: center;
+    margin-top: 2em;
+    letter-spacing: 0.05em;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Card Link for Homepage Navigation */
+.card-link.card {
+    background: linear-gradient(135deg, #ffb347 0%, #ff9966 100%);
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(255, 179, 71, 0.2);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: box-shadow 0.18s, background 0.18s, color 0.18s;
+    border: 2px solid #fffbe6;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.18em;
+    padding: 2.2em 1em 2em 1em;
+}
+
+.card-link.card:hover {
+    background: linear-gradient(135deg, #ff9966 0%, #ffb347 100%);
+    color: #fffbe6;
+    box-shadow: 0 4px 24px rgba(255, 179, 71, 0.33);
+    border-color: #ffb347;
+}
+
+.card-icon {
+    font-size: 2.2em;
+    margin-bottom: 0.6em;
+}
+
+.card-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* Responsive Adjustments for Homepage */
+@media (max-width: 700px) {
+    .main-title { font-size: 1.2em; }
+    .card-link.card { font-size: 1.02em; padding: 1.5em 0.5em 1.5em 0.5em; }
+    .card-icon { font-size: 1.5em; }
+}
+
+/* Footer */
+footer {
+    color: #b97a56 !important;
+}
+
+/* Form Container */
+.form-container {
+    background: #fff;
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 2em 2em 1em 2em;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(255, 179, 71, 0.2);
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 0.5em;
+    color: #b97a56;
+    font-weight: 500;
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.5em;
+    border: 1px solid #ffb347;
+    border-radius: 6px;
+    margin-bottom: 1.2em;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+/* Number Input Spin Buttons */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -74,56 +111,10 @@ input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
 }
-a {
-    color: #2a5d84;
-    text-decoration: none;
-}
-a:hover {
-    text-decoration: underline;
-}
-button, input[type="submit"] {
-    background: #2a5d84;
-    color: #fff;
-    border: none;
-    padding: 6px 16px;
-    border-radius: 3px;
-    cursor: pointer;
-}
-button:hover, input[type="submit"]:hover {
-    background: #17405e;
-}
-/* 請加到 c:\2025-PHP\clothing\css\style.css 最後 */
-.warm-bg {
-    background: #fff7f0;
-}
-.main-title {
-    color: #d2691e;
-    text-align: center;
-    margin-top: 2em;
-}
-.form-container {
-    background: #fff;
-    max-width: 400px;
-    margin: 40px auto;
-    padding: 2em 2em 1em 2em;
-    border-radius: 14px;
-    box-shadow: 0 2px 16px #ffb34733;
-}
-label {
-    display: block;
-    margin-bottom: 0.5em;
-    color: #b97a56;
-    font-weight: 500;
-}
-input[type="text"] {
-    width: 100%;
-    padding: 0.5em;
-    border: 1px solid #ffb347;
-    border-radius: 6px;
-    margin-bottom: 1.2em;
-    font-size: 1em;
-}
-button, .btn-back {
+
+/* Buttons */
+.btn-back,
+button[type="submit"] {
     background: linear-gradient(135deg, #ffb347 0%, #ff9966 100%);
     color: #fff;
     border: none;
@@ -135,134 +126,198 @@ button, .btn-back {
     text-decoration: none;
     cursor: pointer;
     transition: background 0.18s, box-shadow 0.18s;
-    box-shadow: 0 2px 8px #ffb34744;
+    box-shadow: 0 2px 8px rgba(255, 179, 71, 0.27);
     display: inline-block;
 }
-button:hover, .btn-back:hover {
+
+.btn-back:hover,
+button[type="submit"]:hover {
     background: linear-gradient(135deg, #ff9966 0%, #ffb347 100%);
 }
-/* 商品列表表格內 input、select 欄位高度統一 */
-table input[type="text"],
-table input[type="number"],
-table select {
-    height: 38px;           /* 與 input 欄位一致 */
-    border-radius: 6px;
-    font-size: 1em;
-    padding: 0 10px;
-    box-sizing: border-box;
-    vertical-align: middle;
-    background: #fff7f0;
-    border: 1px solid #ffb347;
-    margin: 0;
+
+.btn-danger {
+    background: #dc3545;
+    border-color: #dc3545;
 }
-/* 商品成本、售價欄位不顯示小數點 */
-td.cost-price, td.sell-price {
+
+.btn-danger:hover {
+    background: #c82333;
+    border-color: #c82333;
+}
+
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Table Styles */
+table {
+    background: #fff;
+    border-collapse: collapse;
+    margin-bottom: 2em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    max-width: 900px;
+}
+
+th, td {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+}
+
+th, td {
     font-variant-numeric: tabular-nums;
 }
-/* 卡片式列表自動排版 grid 容器 */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5em;
+
+/* Product Card Specific Styles */
+.product-card.low-stock {
+    background: #ffeaea !important;
 }
-@media (max-width: 900px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
+
+.product-card .variant-row.low-stock {
+    color: #d11c1c;
+    font-weight: bold;
 }
-/* 新增規格專用：variant-grid 讓所有卡片直式排列 */
+
+.search-form .form-control {
+    max-width: 220px;
+}
+
+/* Variant Grid for Add/Edit Item */
 #variantGrid {
     display: flex;
     flex-direction: column;
     gap: 1.5em;
 }
-/* 商品列表上方按鈕 RWD 優化 */
-.action-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5em;
-  justify-content: flex-end;
+
+#variantGrid .variant-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(255, 179, 71, 0.13);
+    padding: 1.2em 1em 1em 1em;
+    margin-bottom: 1.2em;
 }
-.action-bar .btn-back {
-  font-size: 1em;
-  padding: 0.45em 1.1em;
-  min-width: 90px;
-  margin: 0 !important;
-}
-@media (max-width: 900px) {
-  .action-bar .btn-back {
-    font-size: 0.98em;
-    padding: 0.35em 0.9em;
-    min-width: 80px;
-  }
-}
-/* 商品卡片內操作按鈕 RWD 小型化 */
+
+/* Action Bars */
 .card-action-bar {
-  display: flex;
-  gap: 0.5em;
-  flex-wrap: wrap;
+    margin-top: 1.2em;
+    display: flex;
+    gap: 0.5em;
+    flex-wrap: wrap;
 }
+
+.action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    justify-content: flex-end;
+}
+
+.action-bar .btn-back {
+    font-size: 1em;
+    padding: 0.45em 1.1em;
+    min-width: 90px;
+    margin: 0 !important;
+}
+
+/* Small Button Adjustments */
 .btn-sm {
-  font-size: 0.95em;
-  padding: 0.28em 0.8em;
-  min-width: 60px;
+    font-size: 0.95em;
+    padding: 0.28em 0.8em;
+    min-width: 60px;
 }
+
+/* Responsive Adjustments for Buttons */
 @media (max-width: 900px) {
-  .btn-sm {
-    font-size: 0.92em;
-    padding: 0.22em 0.7em;
-    min-width: 48px;
-  }
+    .action-bar .btn-back {
+        font-size: 0.98em;
+        padding: 0.35em 0.9em;
+        min-width: 80px;
+    }
+    .btn-sm {
+        font-size: 0.92em;
+        padding: 0.22em 0.7em;
+        min-width: 48px;
+    }
 }
-.btn-del {
-  background: #fff0e0;
-  color: #d2691e;
-  border: 1px solid #ffb347;
+
+/* Specific Styles for Sales Report */
+.report-btns {
+    text-align: center;
+    margin-bottom: 2em;
 }
-/* 首頁選單卡片化與現代化美化 */
-.card-nav {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2em 2em;
-  list-style: none;
-  padding: 0;
-  margin: 2.5em 0 2em 0;
-  justify-items: center;
+
+.report-btns button {
+    margin: 0 0.5em 0.5em 0.5em;
+    font-size: 1em;
+    padding: 0.5em 1.5em;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(135deg, #ffb347 0%, #ff9966 100%);
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(255, 179, 71, 0.27);
+    transition: background 0.18s;
 }
-.card-link.card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #ffb347;
-  border-radius: 16px;
-  box-shadow: 0 2px 16px #ffb34733;
-  padding: 2.2em 1em 2em 1em;
-  text-align: center;
-  font-size: 1.18em;
-  color: #fff;
-  font-weight: 600;
-  text-decoration: none;
-  transition: box-shadow 0.18s, background 0.18s, color 0.18s;
-  border: 2px solid #fff7f0;
+
+.report-btns button.active,
+.report-btns button:focus {
+    background: linear-gradient(135deg, #ff9966 0%, #ffb347 100%);
+    outline: none;
 }
-.card-link.card:hover {
-  background: #ff9966;
-  color: #fffbe6;
-  box-shadow: 0 4px 24px #ffb34755;
-  border-color: #ffb347;
+
+.low-stock-row {
+    background: #ffe0e0 !important;
 }
-.card-icon {
-  font-size: 2.2em;
-  margin-bottom: 0.6em;
+
+/* Form Container for Add/Edit Pages */
+.form-container.card {
+    padding: 2em 1.5em 1.5em 1.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
 }
-.card-title {
-  font-size: 1.1em;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+
+.form-container.card input,
+.form-container.card select,
+.form-container.card textarea {
+    padding: 0.6em 1em;
+    border: 1px solid #ffb347;
+    border-radius: 6px;
+    font-size: 1em;
+    margin-bottom: 0.5em;
 }
-@media (max-width: 700px) {
-  .main-title { font-size: 1.2em; }
-  .card-link.card { font-size: 1.02em; padding: 1.5em 0.5em 1.5em 0.5em; }
-  .card-icon { font-size: 1.5em; }
+
+.form-container.card button,
+.form-container.card .btn-back {
+    padding: 0.5em 1.2em;
+    border-radius: 6px;
+    border: 1px solid #ffb347;
+    background: #ffb347;
+    color: #fff;
+    font-size: 1em;
+    margin-top: 0.5em;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.form-container.card button:hover,
+.form-container.card .btn-back:hover {
+    background: #ffa500;
+}
+
+/* Responsive Adjustments for Forms */
+@media (max-width: 600px) {
+    .form-container.card {
+        max-width: 98vw;
+        padding: 1.2em 0.5em 1em 0.5em;
+    }
 }
