@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最新消息 - 教會網站</title>
+    <!-- Bootstrap CSS -->
+    <link href="lib/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- 導覽列 (Navbar) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">教會名稱</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">關於我們</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sermons.html">講道專區</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="events.html">活動日曆</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="news.html">最新消息</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">聯絡我們</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容區塊 -->
+    <main class="container mt-4">
+        <h1>最新消息/公告</h1>
+        <p>在這裡您可以找到教會的最新消息和重要公告。</p>
+
+        <div class="list-group" id="news-list">
+            <!-- 新聞/公告列表將由 JavaScript 從 API 載入 -->
+        </div>
+    </main>
+
+    <!-- 頁腳 (Footer) -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <div class="container">
+            <p>&copy; 2025 教會名稱. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="lib/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="lib/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '../backend/api/news.php', // 指向後端 API 路徑
+                method: 'GET',
+                dataType: 'json', // 預期回傳 JSON 格式
+                success: function(data) {
+                    if (data && data.length > 0) {
+                        let newsHtml = '';
+                        data.forEach(function(newsItem) {
+                            newsHtml += `
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start mb-3">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">${newsItem.title}</h5>
+                                        <small class="text-muted">${newsItem.published_at}</small>
+                                    </div>
+                                    <p class="mb-1">${newsItem.content ? newsItem.content.substring(0, 150) + '...' : ''}</p>
+                                </a>
+                            `;
+                        });
+                        $('#news-list').html(newsHtml);
+                    } else {
+                        $('#news-list').html('<div class="col-12"><p>目前沒有新聞/公告紀錄。</p></div>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching news:', status, error);
+                    $('#news-list').html('<div class="col-12"><p>載入新聞/公告時發生錯誤。</p></div>');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -9,7 +9,7 @@ function dd($array){
 }
 
 function q($sql){
-    $dsn='mysql:host=localhost;dbname=db09;charset=utf8';
+    $dsn='mysql:host=localhost;dbname=church_website_db;charset=utf8';
     $pdo=new PDO($dsn,'root','');
     return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -19,7 +19,7 @@ function to($url){
 }
 
 class DB{
-private $dsn="mysql:host=localhost;dbname=db09;charset=utf8";
+private $dsn="mysql:host=localhost;dbname=church_website_db;charset=utf8";
 private $pdo;   
 private $table;
 
@@ -104,15 +104,12 @@ private function arraytosql($array){
 }
 
 
-$Title=new DB('title');
-$Ad=new DB('ad');
-$Mvim=new DB('mvim');
-$Image=new DB('image');
+$Users=new DB('users');
+$Sermons=new DB('sermons');
+$Events=new DB('events');
 $News=new DB('news');
-$Admin=new DB('admin');
-$Menu=new DB('menu');
-$Total=new DB('total');
-$Bottom=new DB('bottom');
+$Pages=new DB('pages');
+$Settings=new DB('settings');
 
 
 

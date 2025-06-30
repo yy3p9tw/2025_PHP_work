@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首頁 - 教會網站</title>
+    <!-- Bootstrap CSS -->
+    <link href="lib/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- 導覽列 (Navbar) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">教會名稱</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">關於我們</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sermons.html">講道專區</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="events.html">活動日曆</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="news.html">最新消息</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">聯絡我們</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容區塊 -->
+    <main class="container mt-4">
+        <div class="jumbotron bg-light p-5 rounded-3">
+            <h1 class="display-4">歡迎來到教會網站！</h1>
+            <p class="lead">在這裡，您可以找到最新的消息、活動、講道和更多資訊。</p>
+            <hr class="my-4">
+            <p>探索我們的網站，了解更多關於我們的信仰和社區。</p>
+            <a class="btn btn-primary btn-lg" href="about.html" role="button">了解更多</a>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <h2>最新消息</h2>
+                <div id="latest-news">
+                    <!-- 最新消息將由 JavaScript 從 API 載入 -->
+                    <p>載入中...</p>
+                </div>
+                <p><a class="btn btn-secondary" href="news.html" role="button">查看更多 &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2>講道精選</h2>
+                <div id="featured-sermons">
+                    <!-- 講道精選將由 JavaScript 從 API 載入 -->
+                    <p>載入中...</p>
+                </div>
+                <p><a class="btn btn-secondary" href="sermons.html" role="button">查看更多 &raquo;</a></p>
+            </div>
+            <div class="col-md-4">
+                <h2>活動預告</h2>
+                <div id="upcoming-events">
+                    <!-- 活動預告將由 JavaScript 從 API 載入 -->
+                    <p>載入中...</p>
+                </div>
+                <p><a class="btn btn-secondary" href="events.html" role="button">查看更多 &raquo;</a></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 頁腳 (Footer) -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <div class="container">
+            <p>&copy; 2025 教會名稱. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="lib/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="lib/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 載入最新消息
+            $.ajax({
+                url: '../backend/api/news.php',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    const newsContainer = $('#latest-news');
+                    newsContainer.empty();
+                    if (data && data.length > 0) {
+                        data.slice(0, 3).forEach(function(newsItem) { // 顯示最新3條
+                            newsContainer.append(`
+                                <p><strong>${newsItem.title}</strong><br><small class="text-muted">${newsItem.published_at}</small></p>
+                            `);
+                        });
+                    } else {
+                        newsContainer.append('<p>目前沒有最新消息。</p>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching latest news:', status, error);
+                    $('#latest-news').html('<p>載入最新消息時發生錯誤。</p>');
+                }
+            });
+
+            // 載入講道精選
+            $.ajax({
+                url: '../backend/api/sermons.php',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    const sermonsContainer = $('#featured-sermons');
+                    sermonsContainer.empty();
+                    if (data && data.length > 0) {
+                        data.slice(0, 3).forEach(function(sermon) { // 顯示最新3條
+                            sermonsContainer.append(`
+                                <p><strong>${sermon.title}</strong><br><small class="text-muted">${sermon.speaker} | ${sermon.date}</small></p>
+                            `);
+                        });
+                    } else {
+                        sermonsContainer.append('<p>目前沒有講道精選。</p>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching featured sermons:', status, error);
+                    $('#featured-sermons').html('<p>載入講道精選時發生錯誤。</p>');
+                }
+            });
+
+            // 載入活動預告
+            $.ajax({
+                url: '../backend/api/events.php',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    const eventsContainer = $('#upcoming-events');
+                    eventsContainer.empty();
+                    if (data && data.length > 0) {
+                        data.slice(0, 3).forEach(function(event) { // 顯示最新3條
+                            eventsContainer.append(`
+                                <p><strong>${event.title}</strong><br><small class="text-muted">${event.date} | ${event.location}</small></p>
+                            `);
+                        });
+                    } else {
+                        eventsContainer.append('<p>目前沒有活動預告。</p>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching upcoming events:', status, error);
+                    $('#upcoming-events').html('<p>載入活動預告時發生錯誤。</p>');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

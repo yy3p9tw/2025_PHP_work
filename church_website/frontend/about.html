@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>關於我們 - 教會網站</title>
+    <!-- Bootstrap CSS -->
+    <link href="lib/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- 導覽列 (Navbar) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">教會名稱</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="about.html">關於我們</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sermons.html">講道專區</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="events.html">活動日曆</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="news.html">最新消息</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">聯絡我們</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容區塊 -->
+    <main class="container mt-4">
+        <div id="page-content">
+            <!-- 頁面內容將由 JavaScript 從 API 載入 -->
+        </div>
+    </main>
+
+    <!-- 頁腳 (Footer) -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <div class="container">
+            <p>&copy; 2025 教會名稱. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="lib/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="lib/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '../backend/api/pages.php?slug=about-us', // 假設 'about-us' 是關於我們的 slug
+                method: 'GET',
+                dataType: 'json', // 預期回傳 JSON 格式
+                success: function(data) {
+                    if (data && data.content) {
+                        $('#page-content').html(`
+                            <h1>${data.title}</h1>
+                            ${data.content}
+                        `);
+                    } else {
+                        $('#page-content').html('<p>無法載入關於我們頁面內容。</p>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching about page:', status, error);
+                    $('#page-content').html('<p>載入關於我們頁面時發生錯誤。</p>');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

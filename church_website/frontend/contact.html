@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聯絡我們 - 教會網站</title>
+    <!-- Bootstrap CSS -->
+    <link href="lib/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- 導覽列 (Navbar) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">教會名稱</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">關於我們</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sermons.html">講道專區</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="events.html">活動日曆</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="news.html">最新消息</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="contact.html">聯絡我們</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容區塊 -->
+    <main class="container mt-4">
+        <h1>聯絡我們</h1>
+        <p>如果您有任何問題或需要協助，請透過以下方式聯絡我們，或填寫聯絡表單。</p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h2>聯絡資訊</h2>
+                <p><strong>地址:</strong> [教會地址]</p>
+                <p><strong>電話:</strong> [教會電話]</p>
+                <p><strong>Email:</strong> [教會Email]</p>
+                <p><strong>開放時間:</strong> [開放時間]</p>
+
+                <h2 class="mt-4">地圖</h2>
+                <!-- 這裡可以嵌入 Google Maps 或其他地圖服務 -->
+                <div class="map-placeholder" style="height: 300px; background-color: #e9ecef; display: flex; justify-content: center; align-items: center; color: #6c757d;">
+                    地圖嵌入區塊
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2>聯絡表單</h2>
+                <div id="contact-form-message" class="alert d-none" role="alert"></div>
+                <form id="contactForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">姓名</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">主旨</label>
+                        <input type="text" class="form-control" id="subject" name="subject">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">訊息</label>
+                        <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">送出訊息</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- 頁腳 (Footer) -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <div class="container">
+            <p>&copy; 2025 教會名稱. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="lib/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="lib/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#contactForm').on('submit', function(e) {
+                e.preventDefault(); // 阻止表單預設提交行為
+
+                const formData = {
+                    name: $('#name').val(),
+                    email: $('#email').val(),
+                    subject: $('#subject').val(),
+                    message: $('#message').val()
+                };
+
+                $.ajax({
+                    url: '../backend/api/contact.php',
+                    method: 'POST',
+                    contentType: 'application/json', // 設定內容類型為 JSON
+                    data: JSON.stringify(formData), // 將資料轉換為 JSON 字串
+                    dataType: 'json', // 預期回傳 JSON 格式
+                    success: function(response) {
+                        const messageDiv = $('#contact-form-message');
+                        messageDiv.removeClass('d-none alert-danger alert-success');
+                        if (response.success) {
+                            messageDiv.addClass('alert-success').text(response.message);
+                            $('#contactForm')[0].reset(); // 清空表單
+                        } else {
+                            messageDiv.addClass('alert-danger').text(response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error submitting form:', status, error);
+                        const messageDiv = $('#contact-form-message');
+                        messageDiv.removeClass('d-none alert-success').addClass('alert-danger').text('送出訊息時發生錯誤，請稍後再試。');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
