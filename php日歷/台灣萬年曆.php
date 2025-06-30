@@ -54,14 +54,15 @@ for ($i = 0; $i < 7; $i++) {
 $holidays = [
     '01-01' => '元旦',
     '02-28' => '和平紀念日',
-    '04-04' => '清明節',
+    '04-04' => '清明節、兒童節',
     '05-01' => '勞動節',
     '10-10' => '國慶日'
 ];
 
 // 動態計算農曆節日（簡化處理）
 function getLunarHolidays($year) {
-    // 簡化假設的農曆節日日期，實際需農曆轉換
+    // 注意：此處為簡化處理，實際農曆轉換需更複雜的演算法或外部函式庫。
+    // 實際的農曆節日日期會因每年農曆與國曆的對應關係而變動。
     $lunarHolidays = [
         sprintf("%04d-02-01", $year) => '春節',
         sprintf("%04d-05-05", $year) => '端午節',
@@ -328,7 +329,7 @@ $holidays = array_merge($holidays, getLunarHolidays($year));
         <div class="header">
             <div class="header-left">
                 <button class="nav-btn" data-nav="prev">◄</button>
-                <h2 id="calendar-title"><?php echo $view === 'month' ? ($year . '年 ' . $monthNames[$month]) : ($weekStartDate->format('Y年n月j日') . ' - ' . $weekEndDate->format('n月j日')); ?></h2>
+                <h2 id="calendar-title"><?php echo $view === 'month' ? ($year . '年 ' . (isset($monthNames[(int)$month]) ? $monthNames[(int)$month] : '')) : ($weekStartDate->format('Y年n月j日') . ' - ' . $weekEndDate->format('n月j日')); ?></h2>
                 <button class="nav-btn" data-nav="next">►</button>
             </div>
             <div class="view-selector">
@@ -477,7 +478,7 @@ $holidays = array_merge($holidays, getLunarHolidays($year));
                 if (currentView === 'month') {
                     url += `year=${nav === 'prev' ? <?php echo $prevYear; ?> : <?php echo $nextYear; ?>}&month=${nav === 'prev' ? <?php echo $prevMonth; ?> : <?php echo $nextMonth; ?>}&view=month`;
                 } else {
-                    const weekStart = new Date('<?php echo $weekStart; ?>');
+                    const weekStart = new Date('<?php echo htmlspecialchars($weekStart, ENT_QUOTES, 'UTF-8'); ?>');
                     weekStart.setDate(weekStart.getDate() + (nav === 'prev' ? -7 : 7));
                     url += `weekStart=${weekStart.toISOString().split('T')[0]}&view=week`;
                 }
@@ -486,7 +487,7 @@ $holidays = array_merge($holidays, getLunarHolidays($year));
 
             // 更新標題
             function updateTitle(view) {
-                const title = view === 'month' ? '<?php echo $year . '年 ' . $monthNames[$month]; ?>' : '<?php echo $weekStartDate->format('Y年n月j日') . ' - ' . $weekEndDate->format('n月j日'); ?>';
+                const title = view === 'month' ? '<?php echo $year . '年 ' . (isset($monthNames[(int)$month]) ? $monthNames[(int)$month] : ''); ?>' : '<?php echo $weekStartDate->format('Y年n月j日') . ' - ' . $weekEndDate->format('n月j日'); ?>';
                 $('#calendar-title').text(title);
             }
 

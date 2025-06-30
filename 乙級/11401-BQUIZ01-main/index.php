@@ -1,3 +1,16 @@
+<?php
+include_once "api/db.php"; // 確保 db.php 已經被引入
+
+// 讀取目前的進站總人數
+$total_data = $Total->find(1);
+$current_total = $total_data['total'];
+
+// 將進站總人數加 1
+$new_total = $current_total + 1;
+
+// 更新資料庫中的進站總人數
+$Total->save(['id' => 1, 'total' => $new_total]);
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0040)http://127.0.0.1/test/exercise/collage/? -->
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -25,7 +38,7 @@
                                                 </div>
                     <div class="dbor" style="margin:3px; width:95%; height:20%; line-height:100px;">
                     	<span class="t">進站總人數 : 
-                        	1                        </span>
+                        	<?php echo $Total->find(1)['total'];?>                        </span>
                     </div>
         		</div>
                 <div class="di" style="height:540px; border:#999 1px solid; width:53.2%; margin:2px 0px 0px 0px; float:left; position:relative; left:20px;">

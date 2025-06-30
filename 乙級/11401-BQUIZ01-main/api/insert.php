@@ -10,10 +10,15 @@ if(!empty($_FILES['img']['tmp_name'])){
 $table=$_POST['table'];
 $db=${ucfirst($table)};
 
-if($_POST['table']=='title'){
-    $_POST['sh']=0;
-}else{
-    $_POST['sh']=1;
+switch($table){
+    case "title":
+        $_POST['sh']=0;
+    break;
+    case "admin":
+    break;
+    default:
+        $_POST['sh']=1;
+
 }
 
 unset($_POST['table']);

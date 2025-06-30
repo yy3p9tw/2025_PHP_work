@@ -24,7 +24,7 @@
                         <input type="checkbox" name="del[]" value="<?=$row['id'];?>">
                     </td>
                     <td>
-                        <input type="button" value="更換動畫" onclick="op('#cover','#cvr','./modal/update_mvim.php?id=<?=$row['id'];?>')">
+                        <input type="button" value="更換動畫" onclick="op('#cover','#cvr','./modal/update.php?id=<?=$row['id'];?>&table=<?=$do;?>')">
                     </td>
                 </tr>
                     <input type="hidden" name="id[]" value="<?=$row['id'];?>">
