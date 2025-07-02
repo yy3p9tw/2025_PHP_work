@@ -6,9 +6,8 @@ require_once '../includes/db.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 $input = json_decode(file_get_contents('php://input'), true);
-
 switch ($method) {
-    case 'GET':
+    case 'GET': {
         $id = $_GET['id'] ?? null;
         if ($id) {
             // 取得單一講道
@@ -26,7 +25,7 @@ switch ($method) {
             echo json_encode($sermons);
         }
         break;
-
+    }
     case 'POST':
         // 新增講道 (通常由後台管理介面處理，這裡僅為 API 範例)
         $title = $input['title'] ?? '';

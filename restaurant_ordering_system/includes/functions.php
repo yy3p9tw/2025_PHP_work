@@ -34,6 +34,10 @@ function getPaymentStatusText($status) {
     }
 }
 
+function getAvailabilityText($is_available) {
+    return $is_available ? '<span class="badge bg-success">上架</span>' : '<span class="badge bg-danger">下架</span>';
+}
+
 // 其他通用函數可以在這裡添加
 
 ?>

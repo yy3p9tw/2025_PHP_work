@@ -1,1 +1,143 @@
-  
+/* --- Google Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Open+Sans:wght@400;600&display=swap');
+
+/* --- 全域變數 & 基礎設定 --- */
+:root {
+    --primary-color: #3a7bd5; /* 主色 - 沉穩藍 */
+    --secondary-color: #f5a623; /* 輔色 - 溫暖橘 */
+    --dark-color: #343a40; /* 深色 - 用於導覽列和頁腳 */
+    --light-color: #f8f9fa; /* 淺色 - 背景 */
+    --text-color: #333;
+    --font-family-base: 'Open Sans', 'Noto Sans TC', sans-serif;
+    --border-radius: .3rem;
+    --box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+body {
+    font-family: var(--font-family-base);
+    color: var(--text-color);
+    background-color: var(--light-color);
+    line-height: 1.7;
+}
+
+/* --- 動畫 --- */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- 導覽列 --- */
+.navbar-dark .navbar-nav .nav-link.active,
+.navbar-dark .navbar-nav .show > .nav-link {
+    color: #fff;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #eee;
+}
+
+/* --- 標題 & 連結 --- */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700; /* Noto Sans TC Bold */
+    color: var(--primary-color);
+}
+
+a {
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+/* --- 按鈕 --- */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #2e64b1; /* 加深的主色 */
+    border-color: #2e64b1;
+    transform: translateY(-2px);
+}
+
+/* --- 卡片 (Card) --- */
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.card-title {
+    color: var(--primary-color);
+}
+
+/* --- 列表群組 (List Group) --- */
+.list-group-item {
+    border-radius: var(--border-radius) !important; /* 覆蓋 Bootstrap 預設 */
+    box-shadow: var(--box-shadow);
+    margin-bottom: 1rem !important;
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.list-group-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* --- 表單 --- */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 .2rem rgba(58, 123, 213, 0.25);
+}
+
+/* --- 頁腳 --- */
+footer.bg-dark {
+    background-color: var(--dark-color) !important;
+}
+
+/* --- 媒體嵌入 (影片/音檔) --- */
+.ratio {
+    border-radius: var(--border-radius);
+    overflow: hidden; /* 確保圓角生效 */
+    box-shadow: var(--box-shadow);
+}
+
+audio {
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* --- 同工群介紹樣式 --- */
+.card.text-center .card-img-top {
+    border: 3px solid var(--primary-color);
+    padding: 5px;
+}
+
+.card.text-center .card-title {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.card.text-center .card-text.text-muted {
+    font-size: 0.9rem;
+}

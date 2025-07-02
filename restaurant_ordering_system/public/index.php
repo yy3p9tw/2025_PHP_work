@@ -1,10 +1,17 @@
 <?php
-require_once '../includes/db.php';
-$database = new Database();
-$conn = $database->getConnection();
+require_once '../includes/db.php'; // This now provides the $pdo object
 
-// 這裡可以加入一些邏輯來處理桌號輸入
-// 例如：檢查桌號是否存在於資料庫中
+// You can now use $pdo directly for any database operations if needed
+// For example, to check if a table number exists:
+// if (isset($_GET['table_number'])) {
+//     $table_number = $_GET['table_number'];
+//     $stmt = $pdo->prepare("SELECT id FROM tables WHERE table_number = ?");
+//     $stmt->execute([$table_number]);
+//     $table_exists = $stmt->fetch();
+//     if (!$table_exists) {
+//         // Handle invalid table number
+//     }
+// }
 
 ?>
 <!DOCTYPE html>

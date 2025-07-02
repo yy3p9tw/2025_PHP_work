@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜尋結果 - 大喜樂教會</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="lib/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- 導覽列 (Navbar) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand mx-auto fw-bold fs-3" href="index.html">大喜樂教會</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">關於我們</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sermons.html">講道專區</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="events.html">活動日曆</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="news.html">最新消息</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">聯絡我們</a>
+                    </li>
+                </ul>
+                <form class="d-flex" action="search_results.html" method="GET">
+                    <input class="form-control me-2" type="search" placeholder="搜尋..." aria-label="Search" name="query">
+                    <button class="btn btn-outline-success" type="submit">搜尋</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容區塊 -->
+    <main class="container mt-4">
+        <h1>搜尋結果</h1>
+        <p id="search-query-display"></p>
+
+        <div id="search-results-container">
+            <div id="sermon-results" class="mb-4">
+                <h2>講道</h2>
+                <div class="list-group"></div>
+                <p class="no-results d-none">沒有找到相關講道。</p>
+            </div>
+
+            <div id="event-results" class="mb-4">
+                <h2>活動</h2>
+                <div class="list-group"></div>
+                <p class="no-results d-none">沒有找到相關活動。</p>
+            </div>
+
+            <div id="news-results" class="mb-4">
+                <h2>最新消息</h2>
+                <div class="list-group"></div>
+                <p class="no-results d-none">沒有找到相關最新消息。</p>
+            </div>
+
+            <p id="no-overall-results" class="d-none">沒有找到任何符合條件的結果。</p>
+        </div>
+    </main>
+
+    <!-- 頁腳 (Footer) -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <div class="container">
+            <p>&copy; 2025 大喜樂教會. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="lib/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="lib/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('query');
+
+            if (query) {
+                $('#search-query-display').text(`搜尋關鍵字: "${query}"`);
+                $.ajax({
+                    url: `../backend/api/search.php?query=${query}`,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        let hasResults = false;
+
+                        // 顯示講道結果
+                        const sermonList = $('#sermon-results .list-group');
+                        if (data.sermons && data.sermons.length > 0) {
+                            hasResults = true;
+                            data.sermons.forEach(sermon => {
+                                sermonList.append(`
+                                    <a href="sermon_detail.html?id=${sermon.id}" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">${sermon.title}</h5>
+                                            <small>${sermon.date}</small>
+                                        </div>
+                                        <p class="mb-1">講員: ${sermon.speaker}</p>
+                                    </a>
+                                `);
+                            });
+                        } else {
+                            $('#sermon-results .no-results').removeClass('d-none');
+                        }
+
+                        // 顯示活動結果
+                        const eventList = $('#event-results .list-group');
+                        if (data.events && data.events.length > 0) {
+                            hasResults = true;
+                            data.events.forEach(event => {
+                                eventList.append(`
+                                    <a href="event_detail.html?id=${event.id}" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">${event.title}</h5>
+                                            <small>${event.date}</small>
+                                        </div>
+                                        <p class="mb-1">地點: ${event.location}</p>
+                                    </a>
+                                `);
+                            });
+                        } else {
+                            $('#event-results .no-results').removeClass('d-none');
+                        }
+
+                        // 顯示最新消息結果
+                        const newsList = $('#news-results .list-group');
+                        if (data.news && data.news.length > 0) {
+                            hasResults = true;
+                            data.news.forEach(newsItem => {
+                                newsList.append(`
+                                    <a href="news_detail.html?id=${newsItem.id}" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">${newsItem.title}</h5>
+                                            <small>${newsItem.published_at}</small>
+                                        </div>
+                                    </a>
+                                `);
+                            });
+                        } else {
+                            $('#news-results .no-results').removeClass('d-none');
+                        }
+
+                        if (!hasResults) {
+                            $('#no-overall-results').removeClass('d-none');
+                        }
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching search results:', status, error);
+                        $('#search-results-container').html('<p class="text-danger">載入搜尋結果時發生錯誤。</p>');
+                    }
+                });
+            } else {
+                $('#search-query-display').text('請輸入搜尋關鍵字。');
+            }
+        });
+    </script>
+</body>
+</html>

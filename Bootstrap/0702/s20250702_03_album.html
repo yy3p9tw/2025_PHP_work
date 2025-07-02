@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ocean Gallery</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/css/bootstrap.min.css"
+        integrity="sha512-fw7f+TcMjTb7bpbLJZlP8g2Y4XcCyFZW8uy8HsRZsH/SwbMw0plKHFHr99DN3l04VsYNwvzicUX/6qurvIxbxw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        body {
+            background: linear-gradient(to bottom, #a2d4f3 0%, #0099cc 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #003f5c;
+        }
+
+        .navbar-dark {
+            background-color: #006994 !important;
+        }
+
+        .album {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            padding: 2rem;
+        }
+
+        .card {
+            border: none;
+            background-color: #e0f7fa;
+        }
+
+        .card-body {
+            color: #004d40;
+        }
+
+        .btn-primary {
+            background-color: #0077b6;
+            border-color: #0077b6;
+        }
+
+        .btn-secondary {
+            background-color: #00b4d8;
+            border-color: #00b4d8;
+            color: #fff;
+        }
+
+        .footer,
+        footer {
+            background-color: #005f73;
+            color: #e0fbfc;
+        }
+
+        .text-white a {
+            color: #ade8f4;
+        }
+
+        svg rect {
+            fill: #00bcd4 !important;
+        }
+
+        .text-muted {
+            color: #004d61 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar navbar-dark shadow-sm">
+            <div class="container">
+                <a href="#" class="navbar-brand d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
+                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2"
+                        viewBox="0 0 24 24">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                        <circle cx="12" cy="13" r="4" />
+                    </svg>
+                    <strong>Ocean Gallery</strong>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="py-5 text-center container">
+            <div class="row py-lg-5">
+                <div class="col-lg-6 col-md-8 mx-auto">
+                    <h1 class="fw-light">Ocean Vibes</h1>
+                    <p class="lead text-muted">Explore the beauty of the deep blue. Discover marine life, coral reefs,
+                        and ocean serenity.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="album py-5">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+                    <!-- 多個卡片 -->
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                                preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="#00bcd4" />
+                                <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">Ocean</text>
+                            </svg>
+                            <div class="card-body">
+                                <p class="card-text">A calm sea with gliding dolphins under the golden sunset.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                                preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="#00bcd4" />
+                                <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">Coral</text>
+                            </svg>
+                            <div class="card-body">
+                                <p class="card-text">Vibrant coral reefs teeming with colorful marine life.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                                preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="#00bcd4" />
+                                <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">Waves</text>
+                            </svg>
+                            <div class="card-body">
+                                <p class="card-text">Gentle waves rolling onto a sandy tropical beach.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 你可自行複製更多卡片 -->
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-muted py-5 footer">
+        <div class="container text-center">
+            <p class="mb-1">Ocean Gallery &copy; 2025. Dive into beauty and wonder of the sea.</p>
+            <p class="mb-0"><a href="#">Back to top</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/js/bootstrap.bundle.min.js"
+        integrity="sha512-zKeerWHHuP3ar7kX2WKBSENzb+GJytFSBL6HrR2nPSR1kOX1qjm+oHooQtbDpDBSITgyl7QXZApvDfDWvKjkUw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</body>
+
+</html>

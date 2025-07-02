@@ -36,20 +36,22 @@ if ($method === 'POST') {
         exit();
     }
 
-    // --- 在這裡可以加入將聯絡訊息存入資料庫的邏輯，或發送 Email ---
-    // 例如：
-    // require_once '../includes/db.php';
-    // $stmt = $conn->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)");
-    // $stmt->bind_param('ssss', $name, $email, $subject, $message);
-    // if ($stmt->execute()) {
-    //     // 成功
-    // } else {
-    //     // 失敗
-    // }
-    // $conn->close();
 
-    http_response_code(200); // OK
-    echo json_encode(['success' => true, 'message' => '您的訊息已成功送出，我們會盡快回覆您。']);
+    // 寄送 Email
+    $to = 'yourchurch@email.com'; // 請改成實際收件者
+    $subject_mail = $subject ? ("[聯絡表單] $subject") : "[聯絡表單] 無主旨";
+    $body = "姓名: $name\nEmail: $email\n主旨: $subject\n訊息:\n$message";
+    $headers = "From: $email\r\nReply-To: $email\r\nContent-Type: text/plain; charset=utf-8";
+
+    $mailResult = mail($to, $subject_mail, $body, $headers);
+
+    if ($mailResult) {
+        http_response_code(200);
+        echo json_encode(['success' => true, 'message' => '您的訊息已成功送出，我們會盡快回覆您。']);
+    } else {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => '訊息寄送失敗，請稍後再試。']);
+    }
 
 } else {
     http_response_code(405); // Method Not Allowed

@@ -10,9 +10,6 @@ if (!isLoggedIn() || !isAdmin()) {
     exit();
 }
 
-$db = new Database();
-$conn = $db->getConnection();
-
 $message = '';
 $message_type = '';
 
@@ -31,30 +28,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             try {
                 if ($user_id) { // 編輯
-                    $sql = 'UPDATE users SET username = :username, role = :role';
+                    $sql = 'UPDATE users SET username = ?, role = ?';
+                    $params = [$username, $role];
                     if (!empty($password)) { // 如果有輸入新密碼，則更新密碼
                         $hashed_password = hashPassword($password);
-                        $sql .= ', password = :password';
+                        $sql .= ', password_hash = ?'; // Changed to password_hash
+                        $params[] = $hashed_password;
                     }
-                    $sql .= ' WHERE id = :id';
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bindParam(':id', $user_id);
+                    $sql .= ' WHERE id = ?';
+                    $params[] = $user_id;
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute($params);
                     $message = "使用者帳號已更新。";
                     $message_type = "success";
                 } else { // 新增
                     $hashed_password = hashPassword($password);
-                    $sql = 'INSERT INTO users (username, password, role) VALUES (:username, :password, :role)';
-                    $stmt = $conn->prepare($sql);
+                    $sql = 'INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)'; // Changed to password_hash
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute([$username, $hashed_password, $role]);
                     $message = "使用者帳號已新增。";
                     $message_type = "success";
                 }
-
-                $stmt->bindParam(':username', $username);
-                $stmt->bindParam(':role', $role);
-                if (!empty($password) || !$user_id) { // 新增時或編輯時有新密碼才綁定
-                    $stmt->bindParam(':password', $hashed_password);
-                }
-                $stmt->execute();
 
             } catch (PDOException $e) {
                 if ($e->getCode() == '23000') { // 唯一約束錯誤 (例如使用者名稱重複)
@@ -76,9 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $message = "您不能刪除自己的帳號。";
             $message_type = "danger";
         } else {
-            $stmt = $conn->prepare('DELETE FROM users WHERE id = :id');
-            $stmt->bindParam(':id', $user_id);
-            $stmt->execute();
+            $stmt = $pdo->prepare('DELETE FROM users WHERE id = ?');
+            $stmt->execute([$user_id]);
             $message = "使用者帳號已刪除。";
             $message_type = "success";
         }
@@ -90,8 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // 獲取所有使用者
-$users_stmt = $conn->query('SELECT id, username, role FROM users ORDER BY id');
-$users = $users_stmt->fetchAll(PDO::FETCH_ASSOC);
+$users_stmt = $pdo->query('SELECT id, username, role FROM users ORDER BY id');
+$users = $users_stmt->fetchAll();
 
 // 處理重定向帶來的訊息
 if (isset($_GET['msg']) && isset($_GET['type'])) {

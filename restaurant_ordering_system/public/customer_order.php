@@ -1,68 +1,61 @@
 <?php
+session_start();
 require_once '../includes/db.php';
-
-$database = new Database();
-$conn = $database->getConnection();
+require_once '../includes/functions.php'; // Ensure functions.php is included
 
 $table_number = $_GET['table_number'] ?? '';
 
 // 驗證桌號是否存在於資料庫
-$stmt = $conn->prepare('SELECT id FROM tables WHERE table_number = :table_number');
-$stmt->bindParam(':table_number', $table_number);
-$stmt->execute();
-$table = $stmt->fetch(PDO::FETCH_ASSOC);
+try {
+    $stmt = $pdo->prepare('SELECT id FROM tables WHERE table_number = ?');
+    $stmt->execute([$table_number]);
+    $table = $stmt->fetch();
 
-if (!$table) {
-    // 如果桌號不存在，導回首頁或顯示錯誤訊息
-    header('Location: index.php?error=invalid_table');
-    exit();
-}
-
-$table_id = $table['id'];
-
-// 獲取所有餐點分類
-$categories_stmt = $conn->query('SELECT * FROM categories ORDER BY id');
-$categories = $categories_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// 獲取所有餐點
-$menu_items_stmt = $conn->query('SELECT * FROM menu_items WHERE is_available = TRUE ORDER BY category_id, name');
-$menu_items = $menu_items_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// 將餐點按分類分組
-$grouped_menu_items = [];
-foreach ($menu_items as $item) {
-    $grouped_menu_items[$item['category_id']][] = $item;
-}
-
-// 獲取所有客製化選項及其選擇項
-$options_stmt = $conn->query('SELECT * FROM customization_options ORDER BY id');
-$customization_options = $options_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$choices_by_option = [];
-if (!empty($customization_options)) {
-    $option_ids = implode(',', array_column($customization_options, 'id'));
-    $choices_stmt = $conn->query("SELECT * FROM customization_choices WHERE option_id IN ($option_ids) ORDER BY option_id, id");
-    $customization_choices_data = $choices_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    foreach ($customization_choices_data as $choice) {
-        $choices_by_option[$choice['option_id']][] = $choice;
+    if (!$table) {
+        header('Location: index.php?error=invalid_table');
+        exit();
     }
-}
 
-// 獲取餐點與客製化選項的關聯
-$menu_item_customization_map = [];
-if (!empty($menu_items)) {
-    $menu_item_ids = implode(',', array_column($menu_items, 'id'));
-    $mic_stmt = $conn->query("SELECT menu_item_id, option_id FROM menu_item_customizations WHERE menu_item_id IN ($menu_item_ids)");
-    $mic_data = $mic_stmt->fetchAll(PDO::FETCH_ASSOC);
+    $table_id = $table['id'];
 
-    foreach ($mic_data as $mic) {
-        $menu_item_customization_map[$mic['menu_item_id']][] = $mic['option_id'];
+    // 獲取所有餐點分類
+    $categories = $pdo->query('SELECT * FROM categories ORDER BY id')->fetchAll();
+
+    // 獲取所有餐點
+    $menu_items = $pdo->query('SELECT * FROM menu_items WHERE is_available = TRUE ORDER BY category_id, name')->fetchAll();
+
+    // 將餐點按分類分組
+    $grouped_menu_items = [];
+    foreach ($menu_items as $item) {
+        $grouped_menu_items[$item['category_id']][] = $item;
     }
+
+    // 獲取所有客製化選項及其選擇項
+    $customization_options = $pdo->query('SELECT * FROM customization_options ORDER BY id')->fetchAll();
+
+    $choices_by_option = [];
+    if (!empty($customization_options)) {
+        $choices_stmt = $pdo->query("SELECT * FROM customization_choices ORDER BY option_id, id");
+        foreach ($choices_stmt->fetchAll() as $choice) {
+            $choices_by_option[$choice['option_id']][] = $choice;
+        }
+    }
+
+    // 獲取餐點與客製化選項的關聯
+    $menu_item_customization_map = [];
+    if (!empty($menu_items)) {
+        $mic_stmt = $pdo->query("SELECT menu_item_id, option_id FROM menu_item_customizations");
+        foreach ($mic_stmt->fetchAll() as $mic) {
+            $menu_item_customization_map[$mic['menu_item_id']][] = $mic['option_id'];
+        }
+    }
+
+} catch (PDOException $e) {
+    error_log($e->getMessage());
+    die("Database query failed: " . $e->getMessage());
 }
 
 // 處理購物車 (使用 Session)
-session_start();
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
@@ -71,19 +64,15 @@ if (!isset($_SESSION['cart'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
     $item_id = $_POST['item_id'];
     $quantity = (int)$_POST['quantity'];
-    $selected_options = $_POST['custom_options'] ?? []; // 獲取選擇的客製化選項
+    $selected_options = $_POST['custom_options'] ?? [];
 
     if ($quantity > 0) {
-        // 構建唯一的購物車鍵，包含餐點ID和客製化選項
-        // 將客製化選項排序後序列化，確保相同的選項組合有相同的鍵
-        ksort($selected_options); // 確保順序一致
+        ksort($selected_options);
         $custom_options_json = json_encode($selected_options);
-        $cart_item_key = $item_id . '_' . md5($custom_options_json); // 使用MD5確保鍵的長度可控
+        $cart_item_key = $item_id . '_' . md5($custom_options_json);
 
-        // 獲取客製化選項的價格調整
         $customization_price_adjustment = 0;
         foreach ($selected_options as $option_id => $choice_id) {
-            // 查找對應的 choice_id 的價格調整
             foreach ($customization_choices_data as $choice) {
                 if ($choice['id'] == $choice_id) {
                     $customization_price_adjustment += $choice['price_adjustment'];
@@ -92,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
             }
         }
 
-        // 將餐點和客製化選項加入購物車
         if (isset($_SESSION['cart'][$cart_item_key])) {
             $_SESSION['cart'][$cart_item_key]['quantity'] += $quantity;
         } else {
@@ -100,11 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
                 'item_id' => $item_id,
                 'quantity' => $quantity,
                 'custom_options' => $selected_options,
-                'customization_price_adjustment' => $customization_price_adjustment // 儲存客製化價格調整
+                'customization_price_adjustment' => $customization_price_adjustment
             ];
         }
     }
-    // 重定向以防止表單重複提交
     header('Location: customer_order.php?table_number=' . urlencode($table_number));
     exit();
 }

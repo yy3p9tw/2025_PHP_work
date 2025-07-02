@@ -126,3 +126,12 @@ if (!empty($order_details_ids)) {
 <?php else: ?>
     <p>此訂單沒有明細。</p>
 <?php endif; ?>
+
+<?php if (isAdmin()): ?>
+<div class="mt-4 text-end">
+    <form action="orders.php" method="POST" class="d-inline" onsubmit="return confirm('確定要刪除此訂單嗎？此動作無法復原！');">
+        <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
+        <button type="submit" name="delete_order" class="btn btn-danger">刪除訂單</button>
+    </form>
+</div>
+<?php endif; ?>

@@ -1,0 +1,43 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding-top: 0px; /* 導覽列高度設為0，完全貼齊頂部 */
+}
+
+
+#home {
+    height: 100vh;
+    overflow: hidden;
+}
+
+
+#home .carousel-item img {
+    height: 100vh;
+    object-fit: cover;
+}
+
+#home .carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+section {
+    padding: 60px 0;
+}
+
+#products .card {
+    transition: transform 0.2s ease-in-out;
+}
+
+#products .card:hover {
+    transform: translateY(-5px);
+}
+
+footer {
+    margin-top: 0;
+}

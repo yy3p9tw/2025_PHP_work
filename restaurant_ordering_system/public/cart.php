@@ -1,39 +1,38 @@
 <?php
 session_start();
 require_once '../includes/db.php';
-
-$database = new Database();
-$conn = $database->getConnection();
+require_once '../includes/functions.php'; // Ensure functions.php is included
 
 $table_number = $_GET['table_number'] ?? '';
 
 // 驗證桌號是否存在於資料庫
-$stmt = $conn->prepare('SELECT id FROM tables WHERE table_number = :table_number');
-$stmt->bindParam(':table_number', $table_number);
-$stmt->execute();
-$table = $stmt->fetch(PDO::FETCH_ASSOC);
+try {
+    $stmt = $pdo->prepare('SELECT id FROM tables WHERE table_number = ?');
+    $stmt->execute([$table_number]);
+    $table = $stmt->fetch();
 
-if (!$table) {
-    // 如果桌號不存在，導回首頁或顯示錯誤訊息
-    header('Location: index.php?error=invalid_table');
-    exit();
-}
-
-$table_id = $table['id'];
-
-// 獲取所有客製化選項及其選擇項 (用於顯示)
-$options_stmt = $conn->query('SELECT * FROM customization_options ORDER BY id');
-$customization_options_data = $options_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$choices_by_option_id = [];
-if (!empty($customization_options_data)) {
-    $option_ids = implode(',', array_column($customization_options_data, 'id'));
-    $choices_stmt = $conn->query("SELECT * FROM customization_choices WHERE option_id IN ($option_ids) ORDER BY option_id, id");
-    $customization_choices_data = $choices_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    foreach ($customization_choices_data as $choice) {
-        $choices_by_option_id[$choice['option_id']][$choice['id']] = $choice; // 方便通過 option_id 和 choice_id 查找
+    if (!$table) {
+        header('Location: index.php?error=invalid_table');
+        exit();
     }
+
+    $table_id = $table['id'];
+
+    // 獲取所有客製化選項及其選擇項 (用於顯示)
+    $options_stmt = $pdo->query('SELECT * FROM customization_options ORDER BY id');
+    $customization_options_data = $options_stmt->fetchAll();
+
+    $choices_by_option_id = [];
+    if (!empty($customization_options_data)) {
+        $choices_stmt = $pdo->query("SELECT * FROM customization_choices ORDER BY option_id, id");
+        foreach ($choices_stmt->fetchAll() as $choice) {
+            $choices_by_option_id[$choice['option_id']][$choice['id']] = $choice;
+        }
+    }
+
+} catch (PDOException $e) {
+    error_log($e->getMessage());
+    die("Database query failed: " . $e->getMessage());
 }
 
 // 處理購物車更新或移除請求
@@ -45,13 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($quantity > 0) {
             $_SESSION['cart'][$cart_item_key]['quantity'] = $quantity;
         } else {
-            unset($_SESSION['cart'][$cart_item_key]); // 數量為0則移除
+            unset($_SESSION['cart'][$cart_item_key]);
         }
     } elseif (isset($_POST['remove_item'])) {
         $cart_item_key = $_POST['cart_item_key'];
         unset($_SESSION['cart'][$cart_item_key]);
     }
-    // 重定向以防止表單重複提交
     header('Location: cart.php?table_number=' . urlencode($table_number));
     exit();
 }
@@ -67,8 +65,9 @@ if (!empty($_SESSION['cart'])) {
 
     if (!empty($menu_item_ids_in_cart)) {
         $menu_item_ids_str = implode(',', array_unique($menu_item_ids_in_cart));
-        $stmt = $conn->query("SELECT id, name, price, image_url FROM menu_items WHERE id IN ($menu_item_ids_str)");
-        $raw_menu_items_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Using IN clause with prepared statements is tricky, direct query for IDs is acceptable here if IDs are guaranteed to be integers
+        $stmt = $pdo->query("SELECT id, name, price, image_url FROM menu_items WHERE id IN ($menu_item_ids_str)");
+        $raw_menu_items_data = $stmt->fetchAll();
 
         $menu_items_data = [];
         foreach ($raw_menu_items_data as $item) {
@@ -82,7 +81,7 @@ if (!empty($_SESSION['cart'])) {
         $custom_options = $cart_item['custom_options'] ?? [];
         $customization_price_adjustment = $cart_item['customization_price_adjustment'] ?? 0;
 
-        $menu_item = $menu_items_data[$item_id] ?? null; // 獲取餐點基本資訊
+        $menu_item = $menu_items_data[$item_id] ?? null;
 
         if ($menu_item) {
             $base_price = $menu_item['price'];
