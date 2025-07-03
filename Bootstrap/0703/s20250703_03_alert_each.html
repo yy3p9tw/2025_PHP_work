@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 載入bs5 css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/css/bootstrap.min.css"
+        integrity="sha512-fw7f+TcMjTb7bpbLJZlP8g2Y4XcCyFZW8uy8HsRZsH/SwbMw0plKHFHr99DN3l04VsYNwvzicUX/6qurvIxbxw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container mt-3">
+        <h2 class="myBtn">Alerts</h2>
+        <div class="my-alert">
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- 載入bs5 js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/js/bootstrap.min.js"
+        integrity="sha512-zKeerWHHuP3ar7kX2WKBSENzb+GJytFSBL6HrR2nPSR1kOX1qjm+oHooQtbDpDBSITgyl7QXZApvDfDWvKjkUw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- 載入jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            let data = [
+                {
+                    'id': 1,
+                    'class': 'alert-info',
+                    'text': 'Hello'
+                },
+                {
+                    'id': 2,
+                    'class': 'alert-success',
+                    'text': '你好嗎'
+                },
+                {
+                    'id': 3,
+                    'class': 'alert-info',
+                    'text': '衷心感謝'
+                },
+                {
+                    'id': 4,
+                    'class': 'alert-warning',
+                    'text': '珍重再見'
+                },
+                {
+                    'id': 5,
+                    'class': 'alert-danger',
+                    'text': '期待再相逢'
+                },
+            ];
+
+            // 1.bind
+            const myAlert = $('.my-alert');
+            const myBtn = $('.myBtn');
+
+
+
+            // 2.action
+            myBtn.click(function () {
+                myAlert.empty();
+                let tmpText = ``;
+                $.each(data, function (key, value) {
+                    tmpText += `
+                    <div class="alert ${value.class} alert-dismissible">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong>Success!</strong> ${value.text}.
+                    </div>
+                `;
+                });
+
+
+                myAlert.append(tmpText);
+
+            });
+
+        });
+    </script>
+</body>
+
+</html>

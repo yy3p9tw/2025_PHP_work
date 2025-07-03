@@ -1,12 +1,31 @@
+:root {
+    --bs-primary: #6f42c1; /* 自訂主要顏色 */
+    --bs-primary-rgb: 111, 66, 193;
+    --bs-dark: #2c3e50; /* 深藍灰色 */
+    --bs-dark-rgb: 44, 62, 80;
+    --bs-body-bg: #34495e; /* 主要內容背景色 */
+    --bs-body-color: #ecf0f1; /* 預設文字顏色 */
+}
+
 body {
-    background-color: #f8f9fa;
+    background-color: var(--bs-body-bg); /* 使用新的背景色 */
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    color: var(--bs-body-color); /* 使用新的文字顏色 */
 }
 
 .card {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* 調整陰影 */
+    background-color: var(--bs-dark); /* 卡片背景色 */
+    color: var(--bs-body-color); /* 卡片文字顏色 */
 }
 
-/* 側邊導航欄樣式 */
+.card-header h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Custom styles for admin panel */
 .sidebar {
     position: fixed;
     top: 0;
@@ -15,32 +34,47 @@ body {
     z-index: 100;
     padding: 48px 0 0; /* Height of navbar */
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    background-color: var(--bs-dark) !important; /* 使用主題深色，並強制應用 */
 }
 
 .sidebar .nav-link {
     font-weight: 500;
-    color: #333;
+    color: var(--bs-body-color); /* 使用護眼淺色 */
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    padding: 0.5rem 1rem; /* 增加填充 */
+    border-radius: 0.25rem; /* 輕微圓角 */
 }
 
 .sidebar .nav-link.active {
-    color: #007bff;
+    color: var(--bs-body-color); /* 保持護眼淺色 */
+    font-weight: 700;
+    background-color: rgba(var(--bs-primary-rgb), 0.2); /* 淺透明主題色背景 */
 }
 
 .sidebar .nav-link:hover {
-    color: #007bff;
+    color: var(--bs-body-color); /* 保持護眼淺色 */
+    background-color: rgba(var(--bs-primary-rgb), 0.1); /* 淺透明主題色背景 */
+}
+
+.sidebar .nav-link svg {
+    margin-right: 8px;
 }
 
 .sidebar-heading {
     font-size: .75rem;
     text-transform: uppercase;
+    color: rgba(var(--bs-body-color-rgb), 0.5); /* 淺色文字 */
 }
 
 .navbar-brand {
     padding-top: .75rem;
     padding-bottom: .75rem;
-    font-size: 1rem;
-    background-color: rgba(0, 0, 0, .25);
+    font-size: 1.2rem; /* 稍微增大字體 */
+    background-color: var(--bs-dark); /* 使用主題深色 */
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: var(--bs-body-color); /* 使用護眼淺色 */
 }
 
 .navbar .navbar-toggler {
@@ -55,7 +89,7 @@ body {
 }
 
 .form-control-dark {
-    color: #fff;
+    color: var(--bs-body-color);
     background-color: rgba(255, 255, 255, .1);
     border-color: rgba(255, 255, 255, .1);
 }
@@ -67,4 +101,202 @@ body {
 
 main {
     padding-top: 48px; /* Adjust for fixed navbar */
+}
+
+/* Main content titles */
+main h1.h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.2rem; /* 增大標題字體 */
+    font-weight: 700;
+    color: var(--bs-body-color); /* 使用新的文字顏色 */
+}
+
+/* Buttons */
+.btn-primary, .btn-info, .btn-danger, .btn-success, .btn-secondary {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-primary:hover {
+    background-color: #5a35a0; /* 稍微深一點的顏色 */
+    border-color: #5a35a0;
+}
+
+.btn-info {
+    background-color: #17a2b8; /* Bootstrap info color */
+    border-color: #17a2b8;
+    color: #fff; /* 編輯按鈕文字顏色為白色 */
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #138496;
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Bootstrap danger color */
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #c82333;
+}
+
+.btn-success {
+    background-color: #28a745; /* Bootstrap success color */
+    border-color: #28a745;
+    color: #fff; /* 成功按鈕文字顏色為白色 */
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #218838;
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Bootstrap secondary color */
+    border-color: #6c757d;
+    color: #fff; /* 次要按鈕文字顏色為白色 */
+}
+
+.btn-secondary:hover {
+    background-color: #545b62;
+    border-color: #545b62;
+}
+
+/* Card titles in dashboard */
+.card-header {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.card-body h5.card-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem; /* 增大統計數字字體 */
+}
+
+/* Form elements */
+.form-label {
+    color: var(--bs-body-color);
+}
+
+.form-control {
+    background-color: #495057; /* 表單輸入框背景色 */
+    color: var(--bs-body-color); /* 表單輸入框文字顏色 */
+    border-color: #6c757d; /* 表單輸入框邊框顏色 */
+}
+
+.form-control::placeholder {
+    color: rgba(236, 240, 241, 0.7); /* 佔位符顏色 */
+}
+
+.form-control:focus {
+    background-color: #495057;
+    color: var(--bs-body-color);
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25); /* 主題色陰影 */
+}
+
+/* File input button styling */
+input[type="file"]::file-selector-button {
+    background-color: var(--bs-primary); /* 使用主題色 */
+    color: #fff; /* 文字顏色為白色 */
+    border: none; /* 無邊框 */
+    padding: 0.5rem 1rem; /* 填充 */
+    border-radius: 0.25rem; /* 圓角 */
+    transition: background-color 0.2s ease-in-out; /* 過渡效果 */
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #5a35a0; /* 懸停時稍微深一點的顏色 */
+}
+
+.table {
+    color: var(--bs-body-color); /* 表格文字顏色 */
+}
+
+.table thead {
+    color: var(--bs-primary); /* 表格標題顏色 */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(var(--bs-body-color-rgb), 0.05); /* 條紋表格的背景色 */
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: transparent; /* 條紋表格的背景色 */
+}
+
+.table-hover tbody tr:hover {
+    color: var(--bs-body-color); /* 懸停時文字顏色 */
+    background-color: rgba(var(--bs-primary-rgb), 0.1); /* 懸停時的背景色 */
+}
+
+/* Progress Bar */
+.progress {
+    background-color: rgba(var(--bs-body-color-rgb), 0.1); /* 護眼淺色半透明背景 */
+}
+
+.progress-bar {
+    background-color: #BFFF00; /* 萊姆綠 */
+    color: var(--bs-dark); /* 文字顏色為深色，與萊姆綠形成對比 */
+}
+
+/* Alerts */
+.alert {
+    color: var(--bs-body-color);
+}
+
+.alert-success {
+    background-color: rgba(40, 167, 69, 0.2);
+    border-color: rgba(40, 167, 69, 0.5);
+}
+
+.alert-danger {
+    background-color: rgba(220, 53, 69, 0.2);
+    border-color: rgba(220, 53, 69, 0.5);
+}
+
+.alert-info {
+    background-color: rgba(23, 162, 184, 0.2);
+    border-color: rgba(23, 162, 184, 0.5);
+}
+
+.alert-warning {
+    background-color: rgba(255, 193, 7, 0.2);
+    border-color: rgba(255, 193, 7, 0.5);
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+    background-color: transparent; /* 透明背景 */
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+}
+
+.breadcrumb-item {
+    color: var(--bs-body-color); /* 文字顏色 */
+}
+
+.breadcrumb-item a {
+    color: var(--bs-primary); /* 連結顏色 */
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: var(--bs-body-color); /* 活動項目文字顏色 */
+    font-weight: 600;
 }

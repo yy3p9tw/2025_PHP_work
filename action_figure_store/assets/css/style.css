@@ -1,3 +1,12 @@
+:root {
+    --bs-primary: #6f42c1; /* 自訂主要顏色 */
+    --bs-primary-rgb: 111, 66, 193;
+    --bs-dark: #2c3e50; /* 深藍灰色 */
+    --bs-dark-rgb: 44, 62, 80;
+    --bs-body-bg: #34495e; /* 主要內容背景色 */
+    --bs-body-color: #ecf0f1; /* 預設文字顏色 */
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -5,23 +14,36 @@
 }
 
 body {
-    padding-top: 0px; /* 導覽列高度設為0，完全貼齊頂部 */
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    background-color: var(--bs-body-bg); /* 使用新的背景色 */
+    color: var(--bs-body-color); /* 使用新的文字顏色 */
 }
 
+/* 導覽列 */
+.navbar.bg-dark {
+    background-color: var(--bs-dark) !important; /* 確保使用新的深色 */
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+    color: var(--bs-body-color) !important; /* 確保導覽列文字顏色為淺色 */
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--bs-primary) !important; /* 懸停時使用主題色 */
+}
 
 #home {
     height: 100vh;
     overflow: hidden;
 }
 
-
 #home .carousel-item img {
     height: 100vh;
-    object-fit: cover;
+    object-fit: cover; /* 確保圖片填滿整個區域 */
 }
 
 #home .carousel-caption {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7); /* 稍微加深背景色 */
     padding: 20px;
     border-radius: 8px;
 }
@@ -31,13 +53,79 @@ section {
 }
 
 #products .card {
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* 添加陰影過渡 */
+    background-color: var(--bs-dark); /* 卡片背景色 */
+    color: var(--bs-body-color); /* 卡片文字顏色 */
 }
 
 #products .card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* 增加陰影效果 */
+}
+
+/* 關於我們區塊 */
+#about.bg-light {
+    background-color: var(--bs-dark) !important; /* 使用新的深色背景 */
+    color: var(--bs-body-color); /* 確保文字顏色為淺色 */
 }
 
 footer {
     margin-top: 0;
+    background-color: var(--bs-dark) !important; /* 使用新的深色背景 */
+    color: var(--bs-body-color); /* 確保文字顏色為淺色 */
+}
+
+/* 輪播文字優化 */
+#home .carousel-caption h5 {
+    font-family: 'Montserrat', sans-serif; /* 應用新字體 */
+    font-size: 3.5rem; /* 進一步增大標題字體 */
+    font-weight: 900; /* 更粗 */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9); /* 強化文字陰影 */
+}
+
+#home .carousel-caption p {
+    font-size: 1.3rem; /* 調整描述字體大小 */
+    line-height: 1.7; /* 調整行高 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* 添加文字陰影 */
+}
+
+/* 商品卡片文字優化 */
+#products .card-body .card-title {
+    font-family: 'Montserrat', sans-serif; /* 應用新字體 */
+    font-size: 1.8rem; /* 增大商品名稱字體 */
+    font-weight: 700; /* 加粗 */
+}
+
+#products .card-body .card-text {
+    font-size: 1rem; /* 調整描述字體大小 */
+    line-height: 1.6; /* 調整行高 */
+}
+
+#products .card-body .card-text.fw-bold {
+    font-family: 'Montserrat', sans-serif; /* 應用新字體 */
+    font-size: 1.6rem; /* 增大價格字體 */
+    font-weight: 700; /* 加粗 */
+    color: var(--bs-primary); /* 使用主題色 */
+}
+
+/* 聯絡我們表單 */
+#contact .form-label {
+    color: var(--bs-body-color); /* 確保表單標籤顏色為淺色 */
+}
+
+#contact .form-control {
+    background-color: #495057; /* 表單輸入框背景色 */
+    color: var(--bs-body-color); /* 表單輸入框文字顏色 */
+    border-color: #6c757d; /* 表單輸入框邊框顏色 */
+}
+
+#contact .form-control::placeholder {
+    color: rgba(236, 240, 241, 0.7); /* 佔位符顏色 */
+}
+
+#contact .form-control:focus {
+    background-color: #495057;
+    color: var(--bs-body-color);
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25); /* 主題色陰影 */
 }

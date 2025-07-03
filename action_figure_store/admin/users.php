@@ -110,6 +110,8 @@ $users = $users_stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>使用者管理 - 公仔銷售網站後台</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/admin_style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container-fluid">
@@ -158,7 +160,7 @@ $users = $users_stmt->fetchAll(PDO::FETCH_ASSOC);
                     <h1 class="h2">使用者管理</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                            新增使用者
+                            <i class="bi bi-plus-circle"></i> 新增使用者
                         </button>
                     </div>
                 </div>
