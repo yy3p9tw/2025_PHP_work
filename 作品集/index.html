@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>于崇銘作品集</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="./resume/resume.css" />
+  <link rel="stylesheet" href="./assets/resume/resume.css" />
+  <link rel="stylesheet" href="./assets/portfolio.css" />
 </head>
 <body>
+  <canvas id="matrix-canvas-bg"></canvas>
   <header class="site-header shadow-sm mb-0">
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container-fluid">
         <a class="navbar-brand fw-bold" href="#hero">于崇銘</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,27 +28,38 @@
       </div>
     </nav>
   </header>
-  <section id="hero" class="hero-section text-center">
-    <img class="hero-avatar rounded-circle shadow mb-3" src="./resume/20250613_152859.jpg" alt="大頭照" />
-    <h1 class="main-title mt-2">于崇銘</h1>
-    <h2 class="mb-3">後端資料庫 / 網頁設計師</h2>
-    <p class="lead">熱愛學習與分享，專注於 PHP、MySQL、前後端整合與網站開發。</p>
-  </section>
-  <section id="about" class="about-section">
-    <div class="container d-flex align-items-center" style="gap: 2.5rem;">
-      <div class="about-title flex-shrink-0" style="min-width:110px;">
-        <h2 class="mb-0" style="font-size:2.3em; color:#c97a4b; font-weight:700; letter-spacing:0.05em; line-height:1.1;">關於我</h2>
-      </div>
-      <div class="about-content flex-grow-1">
-        <p class="mb-2" style="font-size:1.18em; color:#7a4a1e; line-height:1.7;">泰山職訓局PHP2025畢業，具備汽修、網站設計、資料庫管理等多元背景。擅長團隊合作與溝通，樂於挑戰新技術。</p>
-        <div class="skills mb-0">
-          <span>HTML</span><span>CSS</span><span>JavaScript</span><span>PHP</span><span>MySQL</span><span>Laravel</span><span>Git</span><span>Photoshop</span><span>Word</span><span>Excel</span><span>PowerPoint</span>
+  <main>
+    <section id="hero" class="hero-section text-center">
+      <canvas id="matrix-canvas"></canvas>
+      <img class="hero-avatar rounded-circle shadow mb-3" src="./assets/resume/20250613_152859.jpg" alt="大頭照" />
+      <h1 class="main-title mt-2">于崇銘</h1>
+      <h2 class="mb-3">後端資料庫 / 網頁設計師</h2>
+      <p class="lead">熱愛學習與分享，專注於 PHP、MySQL、前後端整合與網站開發。</p>
+    </section>
+    <section id="about" class="about-section container">
+      <div class="d-flex align-items-center flex-column flex-md-row">
+        <div class="about-title flex-shrink-0">
+          <h2 class="mb-0">關於我</h2>
+        </div>
+        <div class="about-content flex-grow-1">
+          <p class="mb-2">泰山職訓局PHP2025畢業，具備汽修、網站設計、資料庫管理等多元背景。擅長團隊合作與溝通，樂於挑戰新技術。</p>
+          <div class="skills mb-0">
+            <span class="skill-html">HTML</span>
+            <span class="skill-css">CSS</span>
+            <span class="skill-js">JavaScript</span>
+            <span class="skill-php">PHP</span>
+            <span class="skill-mysql">MySQL</span>
+            <span class="skill-laravel">Laravel</span>
+            <span class="skill-git">Git</span>
+            <span class="skill-photoshop">Photoshop</span>
+            <span class="skill-word">Word</span>
+            <span class="skill-excel">Excel</span>
+            <span class="skill-powerpoint">PowerPoint</span>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-  <section id="resume" class="resume-section">
-    <div class="container">
+    </section>
+    <section id="resume" class="resume-section container">
       <h2 class="mb-3">經歷</h2>
       <div class="timeline mb-4">
         <div class="timeline-item">
@@ -80,116 +93,39 @@
           </div>
         </div>
       </div>
-    </div>
-     
-  </section>
-  <section id="portfolio" class="portfolio-section">
-    <div class="container d-flex align-items-start" style="gap: 0;">
-      <div class="portfolio-title flex-shrink-0" style="min-width:110px; margin-right:2.5vw;">
-        <h2 class="mb-0" style="font-size:2.3em; color:#c97a4b; font-weight:700; letter-spacing:0.05em; line-height:1.1; writing-mode: vertical-rl; text-orientation: mixed;">作品集</h2>
+    </section>
+    <section id="portfolio" class="portfolio-section container">
+      <div class="d-flex align-items-start flex-column flex-md-row">
+        <div class="portfolio-title flex-shrink-0">
+          <h2 class="mb-0">作品集</h2>
+        </div>
+        <div class="portfolio-content flex-grow-1 w-100">
+          <div id="portfolio-list-container" class="row g-4 justify-content-center"></div>
+          <div id="portfolio-pagination" class="portfolio-pagination mt-3"></div>
+        </div>
       </div>
-      <div class="portfolio-content flex-grow-1 w-100">
-        <div id="portfolio-list-container" class="row g-4 justify-content-center"></div>
-        <div id="portfolio-pagination" class="portfolio-pagination mt-3"></div>
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
   <footer class="site-footer mt-4">
-    <div>© 2025 于崇銘. 保留所有權利。</div>
     <div class="footer-links mt-2">
-      <a href="#hero">首頁</a> |
-      <a href="#about">關於我</a> |
-      <a href="#resume">經歷</a> |
-      <a href="#portfolio">作品集</a> |
+      <a href="#hero">首頁</a>|
+      <a href="#about">關於我</a>|
+      <a href="#resume">經歷</a>|
+      <a href="#portfolio">作品集</a>
     </div>
     <div class="footer-contact mt-2">
       <span class="me-3"><strong>Email:</strong> yy3p9tw@gmail.com</span>
       <span class="me-3"><strong>電話:</strong> 0983821020</span>
-      <a href="https://line.me/en/" target="_blank"><img src="./resume/2025050503.png" alt="LINE" class="social-logo" style="vertical-align:middle;width:28px;height:28px;" /></a>
-      <a href="https://github.com/yy3p9tw" target="_blank"><img src="./resume/2025050504.png" alt="GitHub" class="social-logo" style="vertical-align:middle;width:28px;height:28px;" /></a>
+      <a href="https://line.me/en/" target="_blank"><img src="./assets/resume/2025050503.png" alt="LINE" class="social-logo" /></a>
+      <a href="https://github.com/yy3p9tw" target="_blank"><img src="./assets/resume/2025050504.png" alt="GitHub" class="social-logo" /></a>
+      <div class="copyright-text">© 2025 于崇銘. 保留所有權利。</div>
     </div>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="./resume/resume.js"></script>
-  <script src="./resume/bubble.js"></script>
-  <script>
-// 作品資料（加上 img 欄位，若無圖則用預設圖）
-const portfolioList = [
-  { title: '複利計算器', desc: 'JavaScript 複利計算互動網頁，可計算每年利息與總金額。', url: './compound/Compound.html', btn: '查看作品', img: './compound/screenshot.png' },
-  { title: '電商平台', desc: 'jQuery 製作的簡易電商購物車，支援商品數量與即時總計。', url: './ecommerce/index.html', btn: '查看作品', img: './ecommerce/screenshot.png' },
-  { title: 'P5音樂', desc: 'p5.js 音樂互動網頁，結合動畫與聲音。', url: './P5/P5_music.html', btn: '查看作品', img: './P5/screenshot.png' },
-  { title: '課表圖', desc: '響應式課表設計，適合各裝置瀏覽。', url: './schedule/timetable.html', btn: '查看作品', img: './schedule/screenshot.png' },
-  { title: '表單訓練', desc: 'HTML 表單設計與驗證練習。', url: './form-training/form.html', btn: '查看作品', img: './form-training/screenshot.png' },
-  { title: '超連結練習', desc: '多頁面連結與導覽設計練習。', url: './flavor-journey/flavor_journey.html', btn: '查看作品', img: './flavor-journey/screenshot.png' },
-  { title: 'CSS-FLEX 練習', desc: 'Flexbox 版面配置與彈性排版。', url: './css-box/FLEX.html', btn: '查看作品', img: './css-box/screenshot.png' },
-  { title: 'CSS-FLEX JOJO練習', desc: '進階 Flexbox 動畫與主題設計。', url: './css-box/FLEX_JOJO.html', btn: '查看作品', img: './css-box/screenshot.png' },
-  { title: 'SWOT 表格', desc: 'CSS 模組化表格設計與排版。', url: './css-modular/SWOT.html', btn: '查看作品', img: './css-modular/screenshot.png' },
-  { title: '網頁設計丙級框架', desc: '丙級檢定標準網頁框架練習。', url: './level-c-framework/index.html', btn: '查看作品', img: './level-c-framework/screenshot.png' },
-  { title: '美術作品集', desc: '個人美術創作與設計作品展示。', url: './art/art.html', btn: '查看美術作品', img: './art/screenshot.png' },
-  { title: '計算機', desc: 'JavaScript 計算機小工具。', url: './calculator/calculator.html', btn: '查看作品', img: './calculator/screenshot.png' },
-  { title: '匯率爬蟲與轉換', desc: 'JavaScript 即時匯率查詢與幣別轉換工具，支援多國幣別、即時更新與互換功能。', url: './exchange-crawler/index.html', btn: '查看作品', img: './exchange-crawler/screenshot.png' },
-  { title: '會員資料庫', desc: 'PHP+MySQL 會員系統論壇，含登入註冊。', url: './food-forum/index.php', btn: '查看作品', img: './food-forum/screenshot.png' },
-  { title: '萬年曆', desc: 'PHP 動態產生萬年曆，支援多種顯示。', url: './calendar/index.php', btn: '查看作品', img: './calendar/screenshot.png' },
-  { title: '變數', desc: 'PHP 變數宣告與基本運算練習。', url: './php-basic/variable.php', btn: '查看作品', img: './php-basic/screenshot.png' },
-  { title: '選擇結構', desc: 'PHP if/switch 條件判斷練習。', url: './php-basic/switch_case.php', btn: '查看作品', img: './php-basic/screenshot.png' },
-  { title: 'for 迴圈', desc: 'PHP for 迴圈語法與應用。', url: './php-basic/for_loop.php', btn: '查看作品', img: './php-basic/screenshot.png' },
-  { title: '九九乘法表', desc: 'PHP 動態產生九九乘法表。', url: './php-basic/multiplication_table.php', btn: '查看作品', img: './php-basic/screenshot.png' },
-  { title: '迴圈圖形', desc: 'PHP 迴圈產生各種圖形。', url: './php-basic/loop_shapes.php', btn: '查看作品', img: './php-basic/screenshot.png' },
-  { title: '檔案上傳', desc: 'PHP+MySQL 實作的多類型檔案上傳與管理系統。', url: '../PHP檔案上傳/index.php', btn: '進入檔案上傳系統', img: '../PHP檔案上傳/screenshot.png' },
-  { title: '3D 立體卡片效果', desc: '滑鼠移動時產生 3D 立體視覺互動，純 CSS+JS 實作。', url: './3d_card_effect/index.html', btn: '查看作品', img: './3d_card_effect/screenshot.png' },
-  { title: '圓形進度條互動', desc: '可用滑鼠直接拖曳調整的圓形進度條，SVG+JS 實作。', url: './circular_progress/index.html', btn: '查看作品', img: './circular_progress/screenshot.png' },
-  { title: '便利貼互動', desc: '可新增、拖曳、刪除、隨機顏色的便利貼互動網頁。', url: './sticky_notes/index.html', btn: '查看作品', img: './sticky_notes/screenshot.png' },
-  { title: 'Ajax 會員登入系統', desc: 'JavaScript Ajax 會員登入功能，包含表單驗證、載入動畫、錯誤處理等完整功能。', url: './ajax_login/index.html', btn: '查看作品', img: './ajax_login/screenshot.png' },
-  { title: '前端點餐系統', desc: '完整的餐廳點餐流程，包含座位選擇、菜單點餐、訂單確認等功能。', url: '../restaurant_ordering_system/index.php', btn: '查看作品', img: '../restaurant_ordering_system/screenshot.png' }
-];
-
-const PAGE_SIZE = 6;
-let currentPage = 1;
-
-function renderPortfolio() {
-  const start = (currentPage - 1) * PAGE_SIZE;
-  const end = start + PAGE_SIZE;
-  const pageItems = portfolioList.slice(start, end);
-  const container = document.getElementById('portfolio-list-container');
-  container.innerHTML = pageItems.map(item => `
-    <div class="col-12 col-sm-6 col-lg-4">
-      <div class="portfolio-card position-relative overflow-hidden shadow-sm rounded-4 h-100">
-        <img src="${item.img || './resume/portfolio/default.jpg'}" class="portfolio-img w-100" alt="${item.title}" style="aspect-ratio: 4/3; object-fit: cover; border-radius: 1rem;">
-        <div class="portfolio-overlay d-flex flex-column justify-content-center align-items-center text-center">
-          <div class="portfolio-title mb-2">${item.title}</div>
-          <div class="portfolio-desc mb-3">${item.desc}</div>
-          <a href="${item.url}" class="btn btn-primary" target="_blank">${item.btn}</a>
-        </div>
-      </div>
-    </div>
-  `).join('');
-  renderPagination();
-}
-
-function renderPagination() {
-  const totalPages = Math.ceil(portfolioList.length / PAGE_SIZE);
-  const pagination = document.getElementById('portfolio-pagination');
-  if (!pagination) return;
-  if (totalPages <= 1) { pagination.innerHTML = ''; return; }
-  let btns = '';
-  for (let i = 1; i <= totalPages; i++) {
-    if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-      btns += `<button class="${i === currentPage ? 'active' : ''}" onclick="gotoPortfolioPage(${i})">${i}</button>`;
-    } else if (i === currentPage - 2 || i === currentPage + 2) {
-      btns += `<span class="pagination-ellipsis">...</span>`;
-    }
-  }
-  pagination.innerHTML = btns;
-}
-
-window.gotoPortfolioPage = function(page) {
-  currentPage = page;
-  renderPortfolio();
-};
-
-document.addEventListener('DOMContentLoaded', function() {
-  renderPortfolio();
-});
-  </script>
+  <script src="./assets/resume/resume.js"></script>
+  <script src="./assets/bubble.js"></script>
+  <script src="./assets/matrix.js"></script>
+  <script src="./assets/portfolio.js"></script>
+  
 </body>
 </html>

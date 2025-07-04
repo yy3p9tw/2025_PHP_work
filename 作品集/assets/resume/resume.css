@@ -1,0 +1,460 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;800;900&display=swap');
+
+/* --- Color Palette (Light Theme) --- */
+:root {
+  --primary-color: #7a4a1e; /* Muted Brown/Orange for text, links */
+  --accent-color: #c97a4b; /* Warm Orange for headings, highlights */
+  --background-gradient-start: #f8e8ff; /* Light Lavender */
+  --background-gradient-end: #e0f7fa; /* Light Aqua */
+  --card-bg-light: rgba(255, 255, 255, 0.65); /* Translucent White for cards */
+  --card-bg-medium: rgba(255, 255, 255, 0.7); /* Slightly more translucent */
+  --card-bg-dark: rgba(255, 255, 255, 0.45); /* Even more translucent */
+  --shadow-light: rgba(179, 157, 219, 0.2); /* Light Purple Shadow */
+  --shadow-medium: rgba(224, 247, 250, 0.6); /* Light Aqua Shadow */
+  --shadow-strong: rgba(248, 187, 208, 0.6); /* Light Pink Shadow */
+  --border-color: rgba(255, 255, 255, 0.9); /* White border for elements */
+
+  /* Skill colors - keeping original vibrant pastels */
+  --skill-html: #ffb6c1; /* Pink */
+  --skill-css: #ffd700; /* Gold */
+  --skill-js: #aeeeee; /* Light Cyan */
+  --skill-php: #b39ddb; /* Light Purple */
+  --skill-mysql: #ffecb3; /* Light Yellow */
+  --skill-laravel: #b2dfdb; /* Light Teal */
+  --skill-git: #f8bbd0; /* Light Rose */
+  --skill-photoshop: #c5e1a5; /* Light Green */
+  --skill-word: #fff59d; /* Pale Yellow */
+  --skill-excel: #b3e5fc; /* Light Blue */
+  --skill-powerpoint: #f48fb1; /* Medium Pink */
+}
+
+/* --- Base Styles --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Noto Sans TC', Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--primary-color);
+  background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  display: flex;
+  flex-direction: column;
+}
+
+
+main {
+  flex-grow: 1;
+}
+
+#matrix-canvas-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#matrix-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.container {
+  max-width: 900px; /* Consistent max-width for main content */
+  margin: 2.5rem auto; /* Consistent vertical margin */
+  padding: 2.2rem 1.5rem; /* Consistent padding */
+  background: var(--card-bg-dark); /* Translucent background for main sections */
+  border-radius: 2.2rem; /* Large rounded corners */
+  box-shadow: 0 6px 32px var(--shadow-medium), 0 1.5px 0 var(--border-color); /* Layered shadow */
+  position: relative;
+  z-index: 1; /* Ensure content is above background effects */
+}
+
+/* --- Header --- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100; /* High z-index to stay on top */
+  background: var(--card-bg-light); /* Slightly less translucent for header */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  box-shadow: 0 2px 16px var(--shadow-light); /* Subtle shadow */
+  padding: 0.8rem 0;
+}
+
+.site-header .navbar-brand {
+  color: var(--primary-color);
+  font-weight: 800;
+  font-size: 1.6em;
+}
+
+.site-header .nav-link {
+  color: var(--primary-color);
+  font-weight: 700;
+  margin: 0 0.8em;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.site-header .nav-link:hover {
+  color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28122, 74, 30, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* --- Hero Section --- */
+.hero-section {
+  text-align: center;
+  min-height: 350px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-avatar {
+  border: 6px solid var(--border-color);
+  box-shadow: 0 4px 24px var(--shadow-strong), 0 0.5px 0 var(--border-color);
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  background: var(--border-color);
+  position: relative;
+  z-index: 2;
+}
+
+.hero-section .main-title {
+  font-size: 2.7em;
+  font-weight: 800;
+  color: var(--accent-color);
+  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.5), 0 1px 0 rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.04em;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-section h2 {
+  font-size: 1.5em;
+  color: var(--primary-color);
+  font-weight: 600;
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.7);
+  position: relative;
+  z-index: 2;
+}
+
+.hero-section p.lead {
+  color: var(--primary-color);
+  background: var(--card-bg-medium);
+  border-radius: 1.2em;
+  display: inline-block;
+  padding: 0.5em 1.2em;
+  font-size: 1.18em;
+  box-shadow: 0 1px 8px rgba(255, 255, 255, 0.7);
+  position: relative;
+  z-index: 2;
+}
+
+/* --- About Section --- */
+.about-section .container {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  box-shadow: 0 2px 12px var(--shadow-light);
+}
+
+.about-title {
+  min-width: 110px;
+}
+
+.about-title h2 {
+  font-size: 2.3em;
+  color: var(--accent-color);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  text-shadow: 0 1px 0 var(--border-color);
+}
+
+.resume-section h2 {
+  font-size: 2.3em;
+  color: var(--accent-color);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+}
+
+.about-content p {
+  font-size: 1.18em;
+  color: var(--primary-color);
+  line-height: 1.7;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7em;
+}
+
+.skills span {
+  font-weight: 600;
+  border-radius: 2em;
+  padding: 0.3em 1.1em;
+  font-size: 1em;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.skills span:hover {
+  transform: translateY(-3px);
+}
+
+.skill-html {
+  background: var(--skill-html);
+  color: #fff;
+}
+.skill-css {
+  background: var(--skill-css);
+  color: var(--primary-color);
+}
+.skill-js {
+  background: var(--skill-js);
+  color: var(--primary-color);
+}
+.skill-php {
+  background: var(--skill-php);
+  color: #fff;
+}
+.skill-mysql {
+  background: var(--skill-mysql);
+  color: var(--primary-color);
+}
+.skill-laravel {
+  background: var(--skill-laravel);
+  color: var(--primary-color);
+}
+.skill-git {
+  background: var(--skill-git);
+  color: var(--primary-color);
+}
+.skill-photoshop {
+  background: var(--skill-photoshop);
+  color: var(--primary-color);
+}
+.skill-word {
+  background: var(--skill-word);
+  color: var(--primary-color);
+}
+.skill-excel {
+  background: var(--skill-excel);
+  color: var(--primary-color);
+}
+.skill-powerpoint {
+  background: var(--skill-powerpoint);
+  color: #fff;
+}
+
+/* --- Resume Section --- */
+.resume-section .container {
+  box-shadow: 0 2px 12px var(--shadow-light);
+}
+
+.timeline {
+  border-left: 3px solid var(--accent-color);
+  padding-left: 1.5em;
+}
+
+.timeline-item {
+  margin-bottom: 1.5em;
+  position: relative;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.9em; /* Adjust to align with border-left */
+  top: 0.3em;
+  width: 1em;
+  height: 1em;
+  background: var(--accent-color);
+  border-radius: 50%;
+  border: 3px solid var(--border-color);
+  z-index: 1;
+}
+
+.timeline-content {
+  background: var(--card-bg-light);
+  border-radius: 1.2em;
+  box-shadow: 0 1px 8px rgba(224, 247, 250, 0.2);
+  padding: 1em 1.5em;
+  color: var(--primary-color);
+}
+
+.timeline-date {
+  font-weight: 700;
+  color: var(--accent-color);
+  display: block;
+  margin-bottom: 0.3em;
+}
+
+.timeline-content strong {
+  color: var(--accent-color);
+}
+
+/* --- Footer --- */
+.site-footer {
+  background: var(--card-bg-light);
+  border-radius: 1.5em;
+  box-shadow: 0 2px 12px var(--shadow-medium);
+  margin: 0 auto 1.5rem; /* Removed margin-top */
+  max-width: 900px;
+  padding: 1.5em 1em;
+  text-align: center;
+  color: var(--primary-color);
+  z-index: 10; /* Added z-index */
+}
+
+.site-footer div {
+  font-size: 1.1em;
+  font-weight: 700;
+  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.8), 0 1px 0 rgba(255, 255, 255, 0.8);
+  background: var(--card-bg-light);
+  border-radius: 1em;
+  display: inline-block;
+  padding: 0.3em 1.2em;
+}
+
+.footer-links {
+  font-size: 1em;
+  font-weight: 600;
+  margin-top: 0.5em;
+}
+
+.footer-links a {
+  color: var(--primary-color);
+  font-weight: 700;
+  text-decoration: none;
+  margin: 0 0.5em;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent-color);
+}
+
+.footer-contact {
+  font-size: 1em;
+  margin-top: 0.5em;
+}
+
+.footer-contact strong {
+  color: var(--accent-color);
+}
+
+.social-logo {
+  vertical-align: middle;
+  width: 28px;
+  height: 28px;
+  margin-left: 0.5em;
+  transition: transform 0.2s ease;
+}
+
+.social-logo:hover {
+  transform: scale(1.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .container {
+    margin: 1.5rem auto;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+  }
+
+  .site-header .navbar-brand {
+    font-size: 1.4em;
+  }
+
+  .hero-section .main-title {
+    font-size: 2.2em;
+  }
+
+  .hero-section h2 {
+    font-size: 1.2em;
+  }
+
+  .hero-section p.lead {
+    font-size: 1em;
+    padding: 0.4em 1em;
+  }
+
+  .about-section .container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .about-title {
+    min-width: unset;
+    text-align: center;
+  }
+
+  .about-title h2,
+  .resume-section h2 {
+    font-size: 2em;
+  }
+
+  .skills {
+    justify-content: center;
+  }
+
+  .timeline-item::before {
+    left: -1.7em;
+  }
+
+  .site-footer {
+    margin: 1.5rem auto;
+    padding: 1em;
+    border-radius: 1em;
+  }
+
+  .site-footer div {
+    font-size: 0.9em;
+    padding: 0.2em 0.8em;
+  }
+
+  .footer-links a {
+    margin: 0 0.3em;
+  }
+
+  .footer-contact span {
+    display: block;
+    margin-bottom: 0.5em;
+  }
+}
