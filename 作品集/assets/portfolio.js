@@ -1,23 +1,30 @@
+console.log('portfolio.js loaded');
+
 const portfolioManager = {
   portfolioList: [],
   PAGE_SIZE: 6,
   currentPage: 1,
 
   renderPortfolio: function() {
+    console.log('Rendering portfolio items:', this.portfolioList);
     const start = (this.currentPage - 1) * this.PAGE_SIZE;
     const end = start + this.PAGE_SIZE;
     const pageItems = this.portfolioList.slice(start, end);
     const container = document.getElementById('portfolio-list-container');
+    if (!container) {
+      console.error('Portfolio list container not found!');
+      return;
+    }
     container.innerHTML = pageItems.map(item => `
       <div class="col-12 col-sm-6 col-lg-4">
-        <div class="portfolio-card position-relative overflow-hidden shadow-sm rounded-4 h-100">
-          <img src="${item.img || './resume/portfolio/default.jpg'}" class="portfolio-img w-100" alt="${item.title}">
-          <div class="portfolio-overlay d-flex flex-column justify-content-center align-items-center text-center">
-            <div class="portfolio-title mb-2">${item.title}</div>
-            <div class="portfolio-desc mb-3">${item.desc}</div>
-            <a href="${item.url}" class="btn btn-primary" target="_blank">${item.btn}</a>
+        <a href="${item.url}" target="_blank" class="portfolio-card-link">
+          <div class="portfolio-card position-relative overflow-hidden shadow-sm rounded-4 h-100" style="background-image: url('${item.img || './assets/resume/portfolio/default.jpg'}');">
+            <div class="portfolio-content-wrapper">
+              <div class="portfolio-title mb-2">${item.title}</div>
+              <div class="portfolio-desc">${item.desc}</div>
+            </div>
           </div>
-        </div>
+        </a>
       </div>
     `).join('');
     this.renderPagination();
@@ -45,9 +52,16 @@ const portfolioManager = {
   },
 
   init: function() {
-    fetch('./portfolio_data.json')
-      .then(response => response.json())
+    console.log('Fetching portfolio data...');
+    fetch('./assets/portfolio_data.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(data => {
+        console.log('Portfolio data loaded:', data);
         this.portfolioList = data;
         this.renderPortfolio();
       })
