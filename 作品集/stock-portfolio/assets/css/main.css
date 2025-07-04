@@ -1,0 +1,464 @@
+/* 自定義字體 */
+body {
+    font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+/* 導航欄樣式 */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #007bff !important;
+}
+
+/* 卡片樣式 */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px 12px 0 0 !important;
+    font-weight: 600;
+}
+
+/* 統計卡片 */
+.stats-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+/* 表格樣式 */
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+}
+
+.table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.01);
+}
+
+/* 按鈕樣式 */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    border: none;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    border: none;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);
+    border: none;
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    border: none;
+}
+
+/* 輸入框樣式 */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* 警告框樣式 */
+.alert {
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    color: #721c24;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    color: #856404;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    color: #0c5460;
+}
+
+/* 進度條樣式 */
+.progress {
+    height: 8px;
+    border-radius: 4px;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 4px;
+}
+
+/* 徽章樣式 */
+.badge {
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+/* 載入動畫 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .table-responsive {
+        border-radius: 8px;
+    }
+    
+    .btn {
+        font-size: 0.9rem;
+    }
+}
+
+/* 滾動條樣式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 圖示樣式 */
+.bi {
+    vertical-align: -0.125em;
+}
+
+/* 價格顯示 */
+.price-up {
+    color: #28a745 !important;
+}
+
+.price-down {
+    color: #dc3545 !important;
+}
+
+.price-neutral {
+    color: #6c757d !important;
+}
+
+/* 動畫效果 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 市場指數卡片 */
+.market-index-card {
+    border-left: 4px solid #667eea;
+    transition: all 0.3s ease;
+}
+
+.market-index-card:hover {
+    border-left-color: #764ba2;
+    transform: translateX(5px);
+}
+
+/* 投資組合圖表 */
+.portfolio-chart {
+    height: 400px;
+    width: 100%;
+}
+
+/* 新聞列表 */
+.news-item {
+    border-bottom: 1px solid #e9ecef;
+    padding: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+.news-item:hover {
+    background-color: #f8f9fa;
+    padding-left: 1rem;
+}
+
+.news-item:last-child {
+    border-bottom: none;
+}
+
+/* 搜索框 */
+.search-box {
+    position: relative;
+}
+
+.search-box .form-control {
+    padding-right: 2.5rem;
+}
+
+.search-box .search-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+/* 標籤樣式 */
+.tag {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 12px;
+    background-color: #e9ecef;
+    color: #495057;
+    margin-right: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.tag-primary {
+    background-color: #667eea;
+    color: white;
+}
+
+.tag-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.tag-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* 工具提示 */
+.tooltip-inner {
+    background-color: #495057;
+    border-radius: 6px;
+    font-size: 0.875rem;
+}
+
+/* 模態框 */
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid #e9ecef;
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-footer {
+    border-top: 1px solid #e9ecef;
+    border-radius: 0 0 12px 12px;
+}
+
+/* 分頁樣式 */
+.pagination .page-link {
+    border-radius: 6px;
+    margin: 0 2px;
+    border: 1px solid #dee2e6;
+    color: #667eea;
+}
+
+.pagination .page-link:hover {
+    background-color: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+/* 下拉選單 */
+.dropdown-menu {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-item {
+    border-radius: 4px;
+    margin: 2px 4px;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #667eea;
+    color: white;
+}
+
+/* 麵包屑 */
+.breadcrumb {
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 0.5rem 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    color: #6c757d;
+}
+
+/* 側邊欄 */
+.sidebar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    margin: 0.25rem 0;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+/* 帳戶餘額顯示 */
+.balance-display {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #667eea;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 股票代碼樣式 */
+.stock-code {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    background-color: #f8f9fa;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+/* 百分比顯示 */
+.percentage {
+    font-weight: 600;
+}
+
+.percentage.positive {
+    color: #28a745;
+}
+
+.percentage.negative {
+    color: #dc3545;
+}
+
+/* 圖表容器 */
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin: 1rem 0;
+}

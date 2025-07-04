@@ -1,0 +1,359 @@
+/* 認證頁面專用樣式 */
+body {
+    font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.card-body {
+    padding: 3rem !important;
+}
+
+.display-4 {
+    color: #667eea;
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    transform: translateY(-1px);
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px 0 0 8px;
+    color: #667eea;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-outline-secondary {
+    border-color: #e0e0e0;
+    color: #6c757d;
+    border-radius: 0 8px 8px 0;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.alert {
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    color: #721c24;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+}
+
+.form-check-input:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+.form-check-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.text-primary {
+    color: #667eea !important;
+}
+
+.text-primary:hover {
+    color: #764ba2 !important;
+    text-decoration: underline;
+}
+
+/* 動畫效果 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 2rem !important;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    h3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* 輸入框驗證狀態 */
+.form-control.is-valid {
+    border-color: #28a745;
+}
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+.valid-feedback {
+    color: #28a745;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* 密碼強度指示器 */
+.password-strength {
+    height: 4px;
+    background-color: #e9ecef;
+    border-radius: 2px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.password-strength-bar {
+    height: 100%;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.password-strength-weak {
+    background-color: #dc3545;
+    width: 33%;
+}
+
+.password-strength-medium {
+    background-color: #ffc107;
+    width: 66%;
+}
+
+.password-strength-strong {
+    background-color: #28a745;
+    width: 100%;
+}
+
+/* 載入狀態 */
+.btn-loading {
+    position: relative;
+    color: transparent;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border: 2px solid #ffffff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 社交登入按鈕 */
+.btn-social {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-google {
+    background-color: #db4437;
+    color: white;
+    border: none;
+}
+
+.btn-google:hover {
+    background-color: #c23321;
+    transform: translateY(-1px);
+}
+
+.btn-facebook {
+    background-color: #3b5998;
+    color: white;
+    border: none;
+}
+
+.btn-facebook:hover {
+    background-color: #2d4373;
+    transform: translateY(-1px);
+}
+
+/* 分隔線 */
+.divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e9ecef;
+}
+
+.divider span {
+    background-color: white;
+    padding: 0 1rem;
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+/* 忘記密碼連結 */
+.forgot-password {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.forgot-password a {
+    color: #667eea;
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+/* 隱私政策和服務條款 */
+.terms-privacy {
+    font-size: 0.875rem;
+    color: #6c757d;
+    line-height: 1.4;
+}
+
+.terms-privacy a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.terms-privacy a:hover {
+    text-decoration: underline;
+}
+
+/* Demo 帳號提示 */
+.demo-accounts {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.demo-accounts small {
+    color: #6c757d;
+    line-height: 1.4;
+}
+
+/* 電子郵件驗證 */
+.email-verification {
+    text-align: center;
+    padding: 2rem;
+}
+
+.email-verification i {
+    color: #667eea;
+    margin-bottom: 1rem;
+}
+
+.email-verification h4 {
+    color: #495057;
+    margin-bottom: 1rem;
+}
+
+.email-verification p {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+
+/* 重設密碼 */
+.reset-password {
+    text-align: center;
+    padding: 2rem;
+}
+
+.reset-password i {
+    color: #667eea;
+    margin-bottom: 1rem;
+}
+
+.reset-password h4 {
+    color: #495057;
+    margin-bottom: 1rem;
+}
+
+.reset-password p {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
