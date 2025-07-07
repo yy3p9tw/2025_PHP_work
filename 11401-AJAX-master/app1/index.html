@@ -22,15 +22,16 @@
 </div>
     </div>
     <div class="menu">
-        <a href="#">首頁</a>
-        <a href="#">健康天地</a>
-        <a href="#">籃球介紹</a>
-        <a href="#">棒球介紹</a>
-        <a href="#">游泳介紹</a>
-        <a href="#">訪客留言</a>
-        <a href="#">資料來源</a>
+        <a href="index.html">首頁</a>
+        <a href="javascript:loadpage('./results/health.html')">健康天地</a>
+        <a href="javascript:loadpage('./results/basketball.html')">籃球介紹</a>
+        <a href="javascript:loadpage('./results/baseball.html')">棒球介紹</a>
+        <a href="javascript:loadpage('./results/swimming.html')">游泳介紹</a>
+        <a href="javascript:loadpage('./results/msgboard.html')">訪客留言</a>
+        <a href="javascript:loadpage('./results/reference.html')">資料來源</a>
     </div>
     <div class="content">
+      
     </div>
     <div class="footer">
       網頁設計及維護：ＸＸＯＯＯ<br>
@@ -41,6 +42,17 @@
 </html>
 <script>
 //建立一個函式loadpage(page)用來載入內容至content區塊中
+/* function loadpage(page){
+  $.get(page,function(res){
+      $(".content").html(res)
+  })
+} */
 
+loadpage('./results/main.html')
+
+function loadpage(page){
+  
+  $(".content").load(page)
+}
 
 </script>
