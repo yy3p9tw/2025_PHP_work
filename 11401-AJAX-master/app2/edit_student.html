@@ -95,12 +95,9 @@
             <input type="date" id="birthday" name="birthday" value="">
             </div>
             <div class="form-group">
-            <label for="classname">班級</label>
-            <input type="text" id="classname" name="classname" value="">
-            </div>
-            <div class="form-group">
-            <label for="classroom">教室</label>
-            <input type="number" id="classroom" name="classroom" value="">
+            <label for="classroom">班級</label>
+            <select name="classroom" id="classroom">
+            </select>
             </div>
             <div class="form-group">
             <label for="seat_num">座號</label>
@@ -149,7 +146,15 @@ console.log(params); */
 //let id = url.split('=')[1]; // 取得 URL 中的 id 參數
 //console.log(id);
 
-
+function classroomMenu(classroom){
+    $.get("./api/classrooms.php",function(classrooms){
+        console.log(classrooms);
+        classrooms.forEach(item=>{
+            let selected=(item.classroom == classroom)?'selected':'';
+            $("#classroom").append(`<option value="${item.classroom}" ${selected}>${item.name}</option>`);
+        })
+    })
+}
 function getStudent(id){
     $.get("./api/get_student.php",{id},function(student){
         console.log(student)
@@ -157,8 +162,6 @@ function getStudent(id){
         $("#name").val(student.name);
         $("#national_id").val(student.national_id);
         $("#birthday").val(student.birthday);
-        $("#classname").val(student.classname);
-        $("#classroom").val(student.classroom);
         $("#seat_num").val(student.seat_num);
         $("#major").val(student.major);
         $("#secondary").val(student.secondary);
@@ -166,7 +169,7 @@ function getStudent(id){
         $("#telphone").val(student.telphone);
         $("#address").val(student.address);
         $("#id").val(student.id); // 將學生的 id 存入隱藏欄位
-        
+        classroomMenu(student.classroom); // 呼叫函式載入班級選項
     })
 }
 

@@ -1,0 +1,5 @@
+body { background: #f7f8fa; }
+.blog-card { border-radius: 18px; overflow: hidden; }
+.card-img-top { max-height: 260px; object-fit: cover; background: #e3f2fd; }
+.navbar-brand { font-family: 'Segoe UI',sans-serif; letter-spacing:1px; }
+footer { font-size: 0.95em; }

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 載入bs5 css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/css/bootstrap.min.css"
+        integrity="sha512-fw7f+TcMjTb7bpbLJZlP8g2Y4XcCyFZW8uy8HsRZsH/SwbMw0plKHFHr99DN3l04VsYNwvzicUX/6qurvIxbxw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .box {
+            width: 300px;
+            height: 300px;
+            background-color: lightblue;
+            position: relative;
+        }
+
+        .my-modal {
+            display: none;
+        }
+
+        .box>.absolute {
+            position: absolute;
+            top: 0px;
+            right: 0;
+            /* width: 100px;
+            height: 100px; */
+            border: 3px solid red;
+            text-align: right;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- modal btn -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                <div class="d-grid">
+                    <button id="myBtn" type="button" class="btn btn-primary btn-block">myBtn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-modal">
+        <div class="d-flex justify-content-center align-items-center    ">
+            <div class="box">
+                <div class="absolute close-btn">X</div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <!-- 載入bs5 js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/js/bootstrap.min.js"
+            integrity="sha512-zKeerWHHuP3ar7kX2WKBSENzb+GJytFSBL6HrR2nPSR1kOX1qjm+oHooQtbDpDBSITgyl7QXZApvDfDWvKjkUw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <!-- 載入jquery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script>
+            $(document).ready(function () {
+                // 1.bind
+                const myBtn = $('#myBtn');
+                const myModal = $('.my-modal')
+                const closeBtn = $('.close-btn');
+
+
+                // 2.action click / hover
+                // myBtn.hover(function (e) {
+                myBtn.click(function (e) {
+                    console.log('myBtn ok');
+                    myModal.toggle();
+                    // myModal.attr('style', 'display: block;');
+
+                });
+
+                closeBtn.click(function (e) {
+                    // console.log('myBtn ok');
+                    myModal.hide();
+                    // myModal.attr('style', 'display: block;');
+
+                });
+            });
+        </script>
+</body>
+
+</html>
