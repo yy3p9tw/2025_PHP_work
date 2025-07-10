@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025年日本大阪世界博覽會</title>
+    <!-- 載入bs5 css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/css/bootstrap.min.css"
+        integrity="sha512-fw7f+TcMjTb7bpbLJZlP8g2Y4XcCyFZW8uy8HsRZsH/SwbMw0plKHFHr99DN3l04VsYNwvzicUX/6qurvIxbxw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --expo-red: #e60012;
+            --expo-blue: #1e3a8a;
+            --expo-gold: #ffd700;
+        }
+
+        body {
+            font-family: 'Noto Sans CJK TC', sans-serif;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--expo-red), var(--expo-blue));
+            color: white;
+            padding: 100px 0;
+        }
+
+        .expo-card {
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .expo-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .countdown-box {
+            background: var(--expo-gold);
+            color: var(--expo-blue);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .pavilion-img {
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .tech-badge {
+            background: var(--expo-red);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .footer-expo {
+            background: var(--expo-blue);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 導航列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#"><i class="bi bi-globe"></i> 大阪萬博 2025</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">首頁</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">展館介紹</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#pavilions">各國展館</a></li>
+                            <li><a class="dropdown-item" href="#tech">科技展示</a></li>
+                            <li><a class="dropdown-item" href="#culture">文化體驗</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">活動資訊</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#events">特別活動</a></li>
+                            <li><a class="dropdown-item" href="#schedule">活動時程</a></li>
+                            <li><a class="dropdown-item" href="#tickets">購票資訊</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#info">交通資訊</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要輪播 -->
+    <section id="home" class="mt-5">
+        <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://picsum.photos/id/1002/1920/600" class="d-block w-100" alt="大阪萬博主會場">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>2025年日本大阪世界博覽會</h2>
+                        <p>「設計未來社會的實驗場」- 體驗未來生活的創新科技</p>
+                        <button class="btn btn-primary btn-lg">立即購票</button>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://picsum.photos/id/1003/1920/600" class="d-block w-100" alt="未來科技展示">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>未來科技體驗</h2>
+                        <p>AI、VR、機器人等最新科技展示</p>
+                        <button class="btn btn-success btn-lg">探索科技</button>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://picsum.photos/id/1004/1920/600" class="d-block w-100" alt="文化交流">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>世界文化交流</h2>
+                        <p>來自全球各國的文化展示與美食體驗</p>
+                        <button class="btn btn-warning btn-lg">體驗文化</button>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-4">2025年日本大阪世界博覽會</h1>
+            <p class="lead mb-4">「設計未來社會的實驗場」</p>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="countdown-box">
+                        <h3>倒數計時</h3>
+                        <div class="row text-center">
+                            <div class="col-3">
+                                <h2 id="days">000</h2>
+                                <small>天</small>
+                            </div>
+                            <div class="col-3">
+                                <h2 id="hours">00</h2>
+                                <small>時</small>
+                            </div>
+                            <div class="col-3">
+                                <h2 id="minutes">00</h2>
+                                <small>分</small>
+                            </div>
+                            <div class="col-3">
+                                <h2 id="seconds">00</h2>
+                                <small>秒</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 展館介紹 -->
+    <section id="pavilions" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">主要展館介紹</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card expo-card h-100">
+                        <img src="https://picsum.photos/id/1011/400/250" class="card-img-top pavilion-img" alt="日本館">
+                        <div class="card-body">
+                            <h5 class="card-title">日本館</h5>
+                            <p class="card-text">展示日本最新的科技創新與傳統文化融合</p>
+                            <span class="tech-badge">AI技術</span>
+                            <span class="tech-badge">機器人</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card expo-card h-100">
+                        <img src="https://picsum.photos/id/1012/400/250" class="card-img-top pavilion-img" alt="未來館">
+                        <div class="card-body">
+                            <h5 class="card-title">未來生活館</h5>
+                            <p class="card-text">體驗2050年的未來生活方式</p>
+                            <span class="tech-badge">VR/AR</span>
+                            <span class="tech-badge">IoT</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card expo-card h-100">
+                        <img src="https://picsum.photos/id/1013/400/250" class="card-img-top pavilion-img" alt="環境館">
+                        <div class="card-body">
+                            <h5 class="card-title">永續環境館</h5>
+                            <p class="card-text">綠色科技與永續發展解決方案</p>
+                            <span class="tech-badge">綠能</span>
+                            <span class="tech-badge">循環經濟</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 科技展示區 -->
+    <section id="tech" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">科技展示</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div id="techCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#techCarousel" data-bs-slide-to="0" class="active"></button>
+                            <button type="button" data-bs-target="#techCarousel" data-bs-slide-to="1"></button>
+                            <button type="button" data-bs-target="#techCarousel" data-bs-slide-to="2"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://picsum.photos/id/1021/600/400" class="d-block w-100" alt="AI展示">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://picsum.photos/id/1022/600/400" class="d-block w-100" alt="機器人展示">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://picsum.photos/id/1023/600/400" class="d-block w-100" alt="VR體驗">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#techCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#techCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h3>創新科技體驗</h3>
+                    <div class="accordion" id="techAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#ai">
+                                    <i class="bi bi-robot me-2"></i> 人工智慧展示
+                                </button>
+                            </h2>
+                            <div id="ai" class="accordion-collapse collapse show" data-bs-parent="#techAccordion">
+                                <div class="accordion-body">
+                                    體驗最新的AI助理、自動駕駛車輛、智慧醫療診斷等革命性技術。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#vr">
+                                    <i class="bi bi-headset-vr me-2"></i> 虛擬實境體驗
+                                </button>
+                            </h2>
+                            <div id="vr" class="accordion-collapse collapse" data-bs-parent="#techAccordion">
+                                <div class="accordion-body">
+                                    沉浸式VR體驗，包括虛擬旅遊、教育訓練、娛樂遊戲等多種應用。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#green">
+                                    <i class="bi bi-lightning-charge me-2"></i> 綠色能源
+                                </button>
+                            </h2>
+                            <div id="green" class="accordion-collapse collapse" data-bs-parent="#techAccordion">
+                                <div class="accordion-body">
+                                    太陽能、風能、氫能等再生能源技術展示，打造永續未來。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 活動時程 -->
+    <section id="events" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">特別活動</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="list-group">
+                        <div class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">開幕典禮</h5>
+                                <small>2025年4月13日</small>
+                            </div>
+                            <p class="mb-1">盛大的開幕式，各國領袖與國際名人出席</p>
+                        </div>
+                        <div class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">科技創新論壇</h5>
+                                <small>每週三、五</small>
+                            </div>
+                            <p class="mb-1">邀請全球科技領袖分享未來趨勢</p>
+                        </div>
+                        <div class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">文化表演</h5>
+                                <small>每日演出</small>
+                            </div>
+                            <p class="mb-1">各國傳統文化與現代藝術表演</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="bi bi-ticket-perforated"></i> 購票資訊</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="dropdown">
+                                <button class="btn btn-outline-primary dropdown-toggle w-100 mb-3" type="button" data-bs-toggle="dropdown">
+                                    選擇票種
+                                </button>
+                                <ul class="dropdown-menu w-100">
+                                    <li><a class="dropdown-item" href="#">一日券 - ¥8,000</a></li>
+                                    <li><a class="dropdown-item" href="#">三日券 - ¥20,000</a></li>
+                                    <li><a class="dropdown-item" href="#">季節券 - ¥50,000</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">學生優惠券</a></li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-success w-100">立即購買</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 交通資訊 -->
+    <section id="info" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">交通資訊</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4><i class="bi bi-train-front"></i> 電車路線</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-arrow-right"></i> 大阪地下鐵中央線「夢洲站」</li>
+                        <li class="mb-2"><i class="bi bi-arrow-right"></i> JR櫻島線「櫻島站」轉乘</li>
+                        <li class="mb-2"><i class="bi bi-arrow-right"></i> 關西機場直達巴士</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h4><i class="bi bi-clock"></i> 開放時間</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-calendar-check"></i> 平日：09:00 - 21:00</li>
+                        <li class="mb-2"><i class="bi bi-calendar-event"></i> 假日：09:00 - 22:00</li>
+                        <li class="mb-2"><i class="bi bi-info-circle"></i> 期間：2025年4月13日 - 10月13日</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-expo py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="bi bi-globe"></i> 2025年日本大阪世界博覽會</h5>
+                    <p class="mb-0">設計未來社會的實驗場</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">&copy; 2025 Expo Osaka. All rights reserved.</p>
+                    <div class="mt-2">
+                        <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 載入bs5 js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/js/bootstrap.bundle.min.js"
+        integrity="sha512-Tc0i+vRogmX4NN7tuLbQfBxa8JkfUSAxSFVzmU31nVdHyiHElPPy2cWfFacmCJKw0VqovrzKhdd2TSTMdAxp2g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- 載入jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(document).ready(function () {
+            // 倒數計時功能
+            function updateCountdown() {
+                const expoDate = new Date('2025-04-13T09:00:00').getTime();
+                const now = new Date().getTime();
+                const distance = expoDate - now;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                $('#days').text(days.toString().padStart(3, '0'));
+                $('#hours').text(hours.toString().padStart(2, '0'));
+                $('#minutes').text(minutes.toString().padStart(2, '0'));
+                $('#seconds').text(seconds.toString().padStart(2, '0'));
+
+                if (distance < 0) {
+                    $('#days, #hours, #minutes, #seconds').text('00');
+                }
+            }
+
+            // 每秒更新倒數計時
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // 平滑滾動
+            $('a[href^="#"]').on('click', function(e) {
+                e.preventDefault();
+                const target = $(this.getAttribute('href'));
+                if (target.length) {
+                    $('html, body').animate({
+                        scrollTop: target.offset().top - 70
+                    }, 1000);
+                }
+            });
+
+            // 卡片hover效果增強
+            $('.expo-card').hover(
+                function() {
+                    $(this).addClass('shadow-lg');
+                },
+                function() {
+                    $(this).removeClass('shadow-lg');
+                }
+            );
+
+            // 動態載入效果
+            $(window).scroll(function() {
+                $('.expo-card').each(function() {
+                    const elementTop = $(this).offset().top;
+                    const elementBottom = elementTop + $(this).outerHeight();
+                    const viewportTop = $(window).scrollTop();
+                    const viewportBottom = viewportTop + $(window).height();
+
+                    if (elementBottom > viewportTop && elementTop < viewportBottom) {
+                        $(this).addClass('animate__animated animate__fadeInUp');
+                    }
+                });
+            });
+
+            // 購票按鈕點擊效果
+            $('.btn').on('click', function(e) {
+                if ($(this).text().includes('購買') || $(this).text().includes('購票')) {
+                    e.preventDefault();
+                    $(this).html('<i class="bi bi-check-circle"></i> 已加入購物車');
+                    $(this).removeClass('btn-success btn-primary').addClass('btn-outline-success');
+                    setTimeout(() => {
+                        $(this).html('立即購買');
+                        $(this).removeClass('btn-outline-success').addClass('btn-success');
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

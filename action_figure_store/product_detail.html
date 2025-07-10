@@ -4,34 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>產品詳情 | 公仔天堂</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- 導覽列 -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html#home">公仔天堂</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html#home">首頁</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#products">產品</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#about">關於我們</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#contact">聯絡我們</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin/index.php">後台管理</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <!-- 導覽列佔位符 -->
+    <div id="navbar-placeholder"></div>
 
     <main class="container my-5" style="margin-top: 80px;">
-        <div id="product-detail" class="row justify-content-center">
-            <!-- 詳情內容由 JS 載入 -->
+        <!-- 載入中提示 -->
+        <div id="product-loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">載入中...</span>
+            </div>
+            <p class="mt-3 text-muted">載入商品詳情中...</p>
+        </div>
+
+        <!-- 商品詳情內容 -->
+        <div id="product-content" style="display: none;">
+            <div class="row">
+                <!-- 商品圖片 -->
+                <div class="col-md-6 mb-4">
+                    <img id="product-image" src="" alt="" class="img-fluid rounded shadow">
+                </div>
+                
+                <!-- 商品資訊 -->
+                <div class="col-md-6">
+                    <h1 id="product-name" class="mb-3"></h1>
+                    <p id="product-description" class="lead mb-4"></p>
+                    <h3 id="product-price" class="text-primary mb-4"></h3>
+                    
+                    <!-- 商品規格 -->
+                    <ul id="product-specs" class="list-group mb-4">
+                        <!-- 規格資訊將由 JavaScript 載入 -->
+                    </ul>
+                    
+                    <!-- 購買控制 -->
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="quantity" class="form-label">數量</label>
+                            <div class="input-group">
+                                <button id="decrease-quantity" class="btn btn-outline-secondary" type="button">-</button>
+                                <input id="quantity" type="number" class="form-control text-center" value="1" min="1">
+                                <button id="increase-quantity" class="btn btn-outline-secondary" type="button">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 按鈕組 -->
+                    <div class="d-flex gap-2">
+                        <button id="add-to-cart-btn" class="btn btn-primary btn-lg">
+                            <i class="bi bi-cart-plus"></i> 加入購物車
+                        </button>
+                        <a href="index.html" class="btn btn-outline-secondary btn-lg">
+                            <i class="bi bi-arrow-left"></i> 返回首頁
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -41,55 +74,26 @@
         </div>
     </footer>
 
+    <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    
     <script>
-    // 取得網址參數
-    function getQueryParam(name) {
-        const url = new URL(window.location.href);
-        return url.searchParams.get(name);
-    }
-
-    $(document).ready(function() {
-        const productId = getQueryParam('id');
-        if (!productId) {
-            $('#product-detail').html('<div class="col-12 text-center text-danger">找不到產品。</div>');
-            return;
-        }
-        $.ajax({
-            url: 'api/product_detail.php',
-            method: 'GET',
-            dataType: 'json',
-            data: { id: productId },
-            success: function(product) {
-                if (!product) {
-                    $('#product-detail').html('<div class="col-12 text-center text-danger">查無此產品。</div>');
-                    return;
-                }
-                const html = `
-                <div class="col-md-6 col-lg-5">
-                    <img src="${product.image_url}" class="img-fluid rounded shadow mb-4" alt="${product.name}">
-                </div>
-                <div class="col-md-6 col-lg-5 align-self-center">
-                    <h2 class="mb-3">${product.name}</h2>
-                    <p class="lead">${product.description}</p>
-                    <p class="h4 fw-bold text-danger mb-4">$${parseFloat(product.price).toFixed(2)}</p>
-                    <ul class="list-group mb-4">
-                        <li class="list-group-item"><strong>品牌：</strong>${product.brand || '無'}</li>
-                        <li class="list-group-item"><strong>庫存：</strong>${product.stock || '無'}</li>
-                        <li class="list-group-item"><strong>上架日期：</strong>${product.created_at || '無'}</li>
-                    </ul>
-                    <a href="index.html#products" class="btn btn-outline-secondary me-2"><i class="bi bi-arrow-left"></i> 返回產品列表</a>
-                    <button class="btn btn-primary"><i class="bi bi-cart-plus"></i> 加入購物車</button>
-                </div>
-                `;
-                $('#product-detail').html(html);
-            },
-            error: function() {
-                $('#product-detail').html('<div class="col-12 text-center text-danger">載入產品詳情失敗。</div>');
-            }
-        });
-    });
+        // 載入共用 navbar
+        fetch('navbar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('navbar-placeholder').innerHTML = html;
+                // navbar 載入完成後，載入分類功能
+                const script = document.createElement('script');
+                script.src = 'assets/js/category-navbar.js';
+                document.body.appendChild(script);
+            })
+            .catch(error => {
+                console.error('載入導航列失敗:', error);
+            });
     </script>
+    <script src="assets/js/product-detail.js"></script>
 </body>
 </html>
