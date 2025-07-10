@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $content = trim($_POST['content'] ?? '');
     $category_id = intval($_POST['category_id'] ?? 0);
     $user_id = $_SESSION['user']['id'];
-    $image_path = null;
+    $image_path = null; // 單張圖片上傳已移除，保留變數避免函式錯誤
     $tags = isset($_POST['tags']) ? (array)$_POST['tags'] : [];
     $tags_new = trim($_POST['tags_new'] ?? '');
     if ($tags_new) {
@@ -28,25 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // 圖片上傳處理
-    if (!empty($_FILES['image']['name'])) {
-        $target_dir = '../uploads/';
-        $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-        $allowed = ['jpg','jpeg','png','gif'];
-        if (!in_array($ext, $allowed)) {
-            $error = '僅允許上傳 jpg, jpeg, png, gif 圖片';
-        } else if ($_FILES['image']['size'] > 2*1024*1024) {
-            $error = '圖片大小不可超過 2MB';
-        } else {
-            $filename = uniqid('img_', true) . '.' . $ext;
-            $target_file = $target_dir . $filename;
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
-                $image_path = 'uploads/' . $filename;
-            } else {
-                $error = '圖片上傳失敗';
-            }
-        }
-    }
+    // 單張圖片上傳功能已移除，改用 CKEditor 內文插圖
 
     $summary = trim($_POST['summary'] ?? '');
     $is_featured = !empty($_POST['is_featured']) ? 1 : 0;
@@ -105,12 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="mb-3">
             <label class="form-label">內容</label>
-            <textarea name="content" class="form-control" rows="8" required><?= htmlspecialchars($_POST['content'] ?? '') ?></textarea>
+            <textarea name="content" id="content" class="form-control" style="min-height:800px;font-size:1.15rem;" rows="32" required><?= htmlspecialchars($_POST['content'] ?? '') ?></textarea>
+            <div class="form-text">可直接插入圖片、表格、連結等（支援 CKEditor 富文本編輯器）</div>
         </div>
-        <div class="mb-3">
-            <label class="form-label">上傳圖片 (選填, 2MB 內, jpg/png/gif)</label>
-            <input type="file" name="image" accept="image/*" class="form-control">
-        </div>
+        <!-- 單張圖片上傳功能已移除，改用 CKEditor 內文插圖（如需恢復可隨時加回） -->
         <div class="mb-3">
             <label for="summary" class="form-label">文章摘要</label>
             <textarea name="summary" id="summary" class="form-control" rows="2"><?=htmlspecialchars($_POST['summary']??'')?></textarea>
@@ -123,5 +103,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="dashboard.php" class="btn btn-secondary">返回</a>
     </form>
 </div>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(document.querySelector('#content'), {
+            ckfinder: {
+                // 若有自訂圖片上傳 API，可在這裡設定 uploadUrl
+                // uploadUrl: '/admin/upload_image.php'
+            },
+            toolbar: {
+                items: [
+                    'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo'
+                ]
+            },
+            language: 'zh',
+            image: {
+                toolbar: [
+                    'imageTextAlternative', 'imageStyle:full', 'imageStyle:side'
+                ]
+            },
+            table: {
+                contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
+            }
+        }).catch(error => { console.error(error); });
+    </script>
 </body>
 </html>
