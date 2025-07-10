@@ -212,7 +212,7 @@
                                                 <h5 class="card-title">${product.name}</h5>
                                                 <p class="card-text">${product.description}</p>
                                                 <p class="card-text fw-bold">${parseFloat(product.price).toFixed(2)}</p>
-                                                <a href="#" class="btn btn-primary"><i class="bi bi-info-circle"></i> 查看詳情</a>
+                                                <a href="product_detail.html?id=${product.id}" class="btn btn-primary view-detail-btn" data-id="${product.id}"><i class="bi bi-info-circle"></i> 查看詳情</a>
                                             </div>
                                         </div>
                                     </div>
@@ -268,6 +268,20 @@
 
             // 初始載入產品
             loadProducts(1);
+            
+            // 若有靜態產品卡片，為其加上跳轉功能（防止未 AJAX 載入時無法跳轉）
+            $('#product-list').on('click', 'a.btn.btn-primary', function(e) {
+                const $btn = $(this);
+                const href = $btn.attr('href');
+                // 若已經是正確的 product_detail.html?id=xxx 則直接跳轉
+                if (href && href.startsWith('product_detail.html')) {
+                    return;
+                }
+                // 否則阻止預設行為
+                e.preventDefault();
+                // 這裡可根據靜態卡片設計，給一個預設 id 或提示
+                alert('請從動態產品卡片進入詳情頁。');
+            });
         });
     </script>
 </body>

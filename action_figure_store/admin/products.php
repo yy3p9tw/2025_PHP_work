@@ -124,42 +124,7 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container-fluid">
         <div class="row">
             <!-- 側邊導航欄 -->
-            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                <div class="position-sticky pt-3">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="dashboard.php">
-                                儀表板
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="products.php">
-                                產品管理
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="carousel.php">
-                                輪播管理
-                            </a>
-                        </li>
-                        <?php if (isAdmin()): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="users.php">
-                                使用者管理
-                            </a>
-                        </li>
-                        <?php endif; ?>
-                    </ul>
-                    <hr>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="logout.php">
-                                登出
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+            <?php include __DIR__ . '/sidebar.php'; ?>
 
             <!-- 主要內容區域 -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -182,7 +147,7 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
                     <table class="table table-striped table-sm">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <!-- <th>ID</th> -->
                                 <th>圖片</th>
                                 <th>名稱</th>
                                 <th>描述</th>
@@ -194,7 +159,7 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
                             <?php if ($products): ?>
                                 <?php foreach ($products as $product): ?>
                                     <tr>
-                                        <td><?php echo htmlspecialchars($product['id']); ?></td>
+                                        <!-- <td><?php echo htmlspecialchars($product['id']); ?></td> -->
                                         <td>
                                             <?php if ($product['image_url']): ?>
                                                 <img src="../uploads/<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" style="width: 50px; height: 50px; object-fit: cover;">

@@ -32,42 +32,7 @@ $total_admins = $stmt_users->fetchColumn();
     <div class="container-fluid">
         <div class="row">
             <!-- 側邊導航欄 -->
-            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                <div class="position-sticky pt-3">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="dashboard.php">
-                                儀表板
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="products.php">
-                                產品管理
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="carousel.php">
-                                輪播管理
-                            </a>
-                        </li>
-                        <?php if (isAdmin()): ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="users.php">
-                                使用者管理
-                            </a>
-                        </li>
-                        <?php endif; ?>
-                    </ul>
-                    <hr>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="logout.php">
-                                登出
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+            <?php include __DIR__ . '/sidebar.php'; ?>
 
             <!-- 主要內容區域 -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -75,12 +40,7 @@ $total_admins = $stmt_users->fetchColumn();
                     <h1 class="h2"><i class="bi bi-speedometer2"></i> 儀表板</h1>
                 </div>
 
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="dashboard.php">首頁</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">儀表板</li>
-                    </ol>
-                </nav>
+                <!-- 麵包屑導覽已移除 -->
 
                 <div class="row">
                     <div class="col-md-4">
@@ -89,8 +49,8 @@ $total_admins = $stmt_users->fetchColumn();
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $total_products; ?></h5>
                                 <p class="card-text">目前網站上的公仔產品數量。</p>
-                                <div class="progress mt-3">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                                <div class="progress mt-3" style="background-color: #b03060;"> <!-- 更暗的粉紅底色 -->
+                                    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: #ff69b4;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
                                 </div>
                             </div>
                         </div>
