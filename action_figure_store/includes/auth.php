@@ -22,4 +22,17 @@ function requireAdmin() {
     }
 }
 
+// 新增 checkAdminAccess 函數，用於分類管理等進階功能
+function checkAdminAccess() {
+    if (!isLoggedIn()) {
+        header('Location: index.php');
+        exit();
+    }
+    
+    if (!isAdmin()) {
+        header('Location: dashboard.php');
+        exit();
+    }
+}
+
 ?>

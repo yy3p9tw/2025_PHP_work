@@ -1,0 +1,591 @@
+/* ==============================================
+   🎭 公仔天堂 - 現代美學色彩系統 2024
+   ============================================== */
+
+:root {
+  /* 🎯 主要品牌色彩 - 現代深藍系 */
+  --primary-color: #1e40af;        /* 深邃藍 */
+  --primary-dark: #1e3a8a;         /* 深海藍 */
+  --primary-light: #3b82f6;        /* 明亮藍 */
+  --primary-ultra-light: #dbeafe;   /* 淺藍背景 */
+  --primary-gradient: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #ec4899 100%);
+  --primary-gradient-subtle: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  
+  /* 🌈 次要色彩 - 活力漸變系 */
+  --secondary-color: #ec4899;      /* 活力粉 */
+  --secondary-dark: #db2777;       /* 深玫紅 */
+  --secondary-light: #f472b6;      /* 亮粉紅 */
+  --secondary-ultra-light: #fdf2f8; /* 淺粉背景 */
+  
+  /* ✨ 輔助色彩 - 紫羅蘭系 */
+  --accent-color: #7c3aed;         /* 神秘紫 */
+  --accent-dark: #6d28d9;          /* 深紫羅蘭 */
+  --accent-light: #8b5cf6;         /* 明紫色 */
+  --accent-ultra-light: #f3f4f6;   /* 淺紫背景 */
+  
+  /* 🎨 特殊效果色 - 科技感系 */
+  --tech-blue: #0ea5e9;           /* 科技藍 */
+  --tech-cyan: #06b6d4;           /* 青藍色 */
+  --tech-emerald: #10b981;        /* 翡翠綠 */
+  --tech-amber: #f59e0b;          /* 琥珀金 */
+  
+  /* 📊 狀態色彩 - 語義化色彩 */
+  --success-color: #059669;        /* 成功綠 */
+  --success-light: #d1fae5;        /* 淺成功綠 */
+  --warning-color: #d97706;        /* 警告橙 */
+  --warning-light: #fed7aa;        /* 淺警告橙 */
+  --error-color: #dc2626;          /* 錯誤紅 */
+  --error-light: #fee2e2;          /* 淺錯誤紅 */
+  --info-color: #0284c7;           /* 資訊藍 */
+  --info-light: #dbeafe;           /* 淺資訊藍 */
+  
+  /* 🎭 中性色彩 - 現代灰階系 */
+  --white: #ffffff;
+  --black: #000000;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --gray-950: #030712;
+  
+  /* 🏠 背景色彩系統 */
+  --bg-primary: var(--white);
+  --bg-secondary: var(--gray-50);
+  --bg-tertiary: var(--gray-100);
+  --bg-card: var(--white);
+  --bg-card-hover: var(--gray-50);
+  --bg-header: var(--primary-gradient);
+  --bg-navbar: rgba(255, 255, 255, 0.95);
+  --bg-sidebar: var(--gray-50);
+  --bg-footer: var(--gray-900);
+  --bg-modal: rgba(0, 0, 0, 0.5);
+  --bg-overlay: rgba(0, 0, 0, 0.3);
+  
+  /* 📝 文字色彩系統 */
+  --text-primary: var(--gray-900);
+  --text-secondary: var(--gray-700);
+  --text-tertiary: var(--gray-600);
+  --text-muted: var(--gray-500);
+  --text-light: var(--gray-400);
+  --text-white: var(--white);
+  --text-brand: var(--primary-color);
+  --text-accent: var(--accent-color);
+  
+  /* 🔳 邊框色彩系統 */
+  --border-color: var(--gray-200);
+  --border-light: var(--gray-100);
+  --border-medium: var(--gray-300);
+  --border-dark: var(--gray-400);
+  --border-primary: var(--primary-color);
+  --border-accent: var(--accent-color);
+  
+  /* 🌟 陰影系統 - 更豐富的層次 */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-colored: 0 10px 25px rgba(30, 64, 175, 0.2);
+  
+  /* 🔄 圓角系統 */
+  --radius-none: 0;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-full: 9999px;
+  
+  /* ⚡ 動畫過渡系統 */
+  --transition-none: none;
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.25s ease-out;
+  --transition-slow: 0.35s ease-out;
+  --transition-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* 📏 間距系統 */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2rem;      /* 32px */
+  --space-2xl: 3rem;     /* 48px */
+  --space-3xl: 4rem;     /* 64px */
+}
+
+/* 深色模式支援 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: var(--gray-900);
+    --bg-secondary: var(--gray-800);
+    --bg-card: var(--gray-800);
+    --bg-sidebar: var(--gray-900);
+    --text-primary: var(--gray-100);
+    --text-secondary: var(--gray-300);
+    --text-muted: var(--gray-400);
+    --border-color: var(--gray-700);
+    --border-light: var(--gray-800);
+    --border-dark: var(--gray-600);
+  }
+}
+
+/* 深色背景文字覆蓋 - 確保深色背景上使用白色/亮色文字 */
+.bg-dark,
+.bg-primary,
+.gradient-bg,
+.navbar-dark,
+.bg-secondary,
+[style*="background: linear-gradient"],
+[style*="background-color: #"],
+.card-header.bg-primary,
+.card-header.bg-success,
+.card-header.bg-info,
+.card-header.bg-warning,
+.card-header.bg-secondary,
+.btn-primary,
+.btn-secondary,
+.btn-success,
+.btn-info,
+.btn-warning,
+.btn-danger,
+.badge.bg-primary,
+.badge.bg-secondary,
+.badge.bg-success,
+.badge.bg-info,
+.badge.bg-warning,
+.badge.bg-danger {
+  color: var(--white) !important;
+}
+
+/* 確保深色背景元素內的文字為白色 */
+.bg-dark *,
+.bg-primary *,
+.gradient-bg *,
+.navbar-dark *,
+.bg-gray-900 *,
+.bg-gray-800 *,
+.bg-gray-700 * {
+  color: var(--white) !important;
+}
+
+/* 深色背景上的連結樣式 */
+.bg-dark a,
+.bg-primary a,
+.gradient-bg a,
+.navbar-dark a,
+.bg-gray-900 a,
+.bg-gray-800 a,
+.bg-gray-700 a {
+  color: var(--gray-200) !important;
+  text-decoration: none;
+}
+
+.bg-dark a:hover,
+.bg-primary a:hover,
+.gradient-bg a:hover,
+.navbar-dark a:hover,
+.bg-gray-900 a:hover,
+.bg-gray-800 a:hover,
+.bg-gray-700 a:hover {
+  color: var(--white) !important;
+  text-decoration: underline;
+}
+
+/* 深色背景上的按鈕樣式調整 */
+.bg-dark .btn-outline-light,
+.bg-primary .btn-outline-light,
+.gradient-bg .btn-outline-light {
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.bg-dark .btn-outline-light:hover,
+.bg-primary .btn-outline-light:hover,
+.gradient-bg .btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--white);
+  color: var(--white);
+}
+
+/* 深色背景上的表單元素 */
+.bg-dark input,
+.bg-dark select,
+.bg-dark textarea,
+.bg-primary input,
+.bg-primary select,
+.bg-primary textarea,
+.gradient-bg input,
+.gradient-bg select,
+.gradient-bg textarea {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--white);
+}
+
+.bg-dark input::placeholder,
+.bg-primary input::placeholder,
+.gradient-bg input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 導覽列特殊處理 */
+.navbar-dark .navbar-brand,
+.navbar-dark .navbar-nav .nav-link,
+.navbar-dark .navbar-toggler {
+  color: var(--white) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus {
+  color: var(--gray-200) !important;
+}
+
+/* 卡片標題在深色背景上的處理 */
+.card-header.bg-primary h1,
+.card-header.bg-primary h2,
+.card-header.bg-primary h3,
+.card-header.bg-primary h4,
+.card-header.bg-primary h5,
+.card-header.bg-primary h6,
+.card-header.bg-secondary h1,
+.card-header.bg-secondary h2,
+.card-header.bg-secondary h3,
+.card-header.bg-secondary h4,
+.card-header.bg-secondary h5,
+.card-header.bg-secondary h6,
+.card-header.bg-success h1,
+.card-header.bg-success h2,
+.card-header.bg-success h3,
+.card-header.bg-success h4,
+.card-header.bg-success h5,
+.card-header.bg-success h6,
+.card-header.bg-info h1,
+.card-header.bg-info h2,
+.card-header.bg-info h3,
+.card-header.bg-info h4,
+.card-header.bg-info h5,
+.card-header.bg-info h6,
+.card-header.bg-warning h1,
+.card-header.bg-warning h2,
+.card-header.bg-warning h3,
+.card-header.bg-warning h4,
+.card-header.bg-warning h5,
+.card-header.bg-warning h6,
+.card-header.bg-danger h1,
+.card-header.bg-danger h2,
+.card-header.bg-danger h3,
+.card-header.bg-danger h4,
+.card-header.bg-danger h5,
+.card-header.bg-danger h6 {
+  color: var(--white) !important;
+}
+
+/* 深色背景上的徽章和標籤 */
+.bg-dark .badge,
+.bg-primary .badge,
+.gradient-bg .badge {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: var(--white) !important;
+}
+
+/* 深色背景上的分隔線 */
+.bg-dark hr,
+.bg-primary hr,
+.gradient-bg hr {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 深色背景上的下拉選單 */
+.bg-dark .dropdown-menu,
+.bg-primary .dropdown-menu,
+.gradient-bg .dropdown-menu {
+  background-color: var(--gray-800);
+  border: 1px solid var(--gray-700);
+}
+
+.bg-dark .dropdown-item,
+.bg-primary .dropdown-item,
+.gradient-bg .dropdown-item {
+  color: var(--gray-200);
+}
+
+.bg-dark .dropdown-item:hover,
+.bg-primary .dropdown-item:hover,
+.gradient-bg .dropdown-item:hover {
+  background-color: var(--gray-700);
+  color: var(--white);
+}
+
+/* 特殊情況：確保重要文字在任何深色背景上都是白色 */
+.text-on-dark {
+  color: var(--white) !important;
+}
+
+.text-muted-on-dark {
+  color: var(--gray-300) !important;
+}
+
+.text-light-on-dark {
+  color: var(--gray-200) !important;
+}
+
+/* 最高優先級覆蓋 - 確保深色背景下的文字絕對是白色 */
+/* 這是最終的安全網，確保所有深色背景下的文字都是白色 */
+
+/* 針對任何可能被遺漏的深色背景情況 */
+*[style*="background: linear-gradient"],
+*[style*="background-color: #1"],
+*[style*="background-color: #2"],
+*[style*="background-color: #3"],
+*[style*="background-color: #4"],
+*[style*="background-color: #5"],
+*[style*="background-color: #6"],
+*[style*="background-color: #7"],
+*[style*="background-color: #8"],
+*[style*="background-color: #9"],
+*[style*="background-color: rgba(0"],
+*[style*="background-color: rgba(1"],
+*[style*="background-color: rgba(2"],
+*[style*="background-color: rgba(3"],
+*[style*="background-color: rgba(4"],
+*[style*="background-color: rgba(5"],
+*[style*="background-color: rgba(6"],
+*[style*="background-color: rgba(7"],
+*[style*="background-color: rgba(8"],
+*[style*="background-color: rgba(9"] {
+    color: white !important;
+}
+
+/* 深色背景內的所有文字元素強制白色 */
+*[style*="background: linear-gradient"] *,
+*[style*="background-color: #1"] *,
+*[style*="background-color: #2"] *,
+*[style*="background-color: #3"] *,
+*[style*="background-color: #4"] *,
+*[style*="background-color: #5"] *,
+*[style*="background-color: #6"] *,
+*[style*="background-color: #7"] *,
+*[style*="background-color: #8"] *,
+*[style*="background-color: #9"] *,
+*[style*="background-color: rgba(0"] *,
+*[style*="background-color: rgba(1"] *,
+*[style*="background-color: rgba(2"] *,
+*[style*="background-color: rgba(3"] *,
+*[style*="background-color: rgba(4"] *,
+*[style*="background-color: rgba(5"] *,
+*[style*="background-color: rgba(6"] *,
+*[style*="background-color: rgba(7"] *,
+*[style*="background-color: rgba(8"] *,
+*[style*="background-color: rgba(9"] * {
+    color: white !important;
+}
+
+/* 最終保障：如果有任何文字在深色背景上不可見，使用這個類別 */
+.force-white-text,
+.force-white-text * {
+    color: white !important;
+}
+
+.force-light-text,
+.force-light-text * {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.force-muted-light,
+.force-muted-light * {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Bootstrap 變數覆蓋 */
+.btn-primary {
+  background: var(--primary-gradient);
+  border-color: var(--primary-color);
+  transition: var(--transition-normal);
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: var(--white);
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-dark);
+  border-color: var(--secondary-dark);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.bg-primary {
+  background: var(--primary-gradient) !important;
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* 通用工具類別 */
+.gradient-text {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-bg {
+  background: var(--primary-gradient);
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hover-lift {
+  transition: var(--transition-normal);
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* 深色背景下的文字顏色強制覆蓋 - 更具體的選擇器 */
+.carousel-item .text-muted,
+.carousel-caption .text-muted,
+.bg-dark .text-muted,
+.bg-primary .text-muted,
+.gradient-bg .text-muted,
+section[style*="background"] .text-muted,
+div[style*="background"] .text-muted,
+.hero-section .text-muted,
+.carousel .text-muted {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 深色背景下的 lead 文字 */
+.carousel-item .lead,
+.carousel-caption .lead,
+.bg-dark .lead,
+.bg-primary .lead,
+.gradient-bg .lead,
+section[style*="background"] .lead,
+div[style*="background"] .lead,
+.hero-section .lead,
+.carousel .lead {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 深色背景下的段落文字 */
+.carousel-item p,
+.carousel-caption p,
+.bg-dark p,
+.bg-primary p,
+.gradient-bg p,
+section[style*="background"] p,
+div[style*="background"] p,
+.hero-section p,
+.carousel p {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 深色背景下的標題文字 */
+.carousel-item h1,
+.carousel-item h2,
+.carousel-item h3,
+.carousel-item h4,
+.carousel-item h5,
+.carousel-item h6,
+.carousel-caption h1,
+.carousel-caption h2,
+.carousel-caption h3,
+.carousel-caption h4,
+.carousel-caption h5,
+.carousel-caption h6,
+.bg-dark h1,
+.bg-dark h2,
+.bg-dark h3,
+.bg-dark h4,
+.bg-dark h5,
+.bg-dark h6,
+.bg-primary h1,
+.bg-primary h2,
+.bg-primary h3,
+.bg-primary h4,
+.bg-primary h5,
+.bg-primary h6,
+.gradient-bg h1,
+.gradient-bg h2,
+.gradient-bg h3,
+.gradient-bg h4,
+.gradient-bg h5,
+.gradient-bg h6 {
+  color: var(--white) !important;
+}
+
+/* 特別處理有內聯樣式背景的元素 */
+[style*="background-color: #"] *,
+[style*="background: linear-gradient"] *,
+[style*="background: radial-gradient"] *,
+[style*="background-image"] * {
+  color: var(--white) !important;
+}
+
+/* 覆蓋 Bootstrap 的 text-muted 在深色背景上 */
+.text-muted {
+  color: var(--gray-600) !important;
+}
+
+/* 但在深色背景容器內強制變為淺色 */
+.bg-dark .text-muted,
+.bg-primary .text-muted,
+.bg-secondary .text-muted,
+.bg-success .text-muted,
+.bg-info .text-muted,
+.bg-warning .text-muted,
+.bg-danger .text-muted,
+.navbar-dark .text-muted,
+.gradient-bg .text-muted,
+.carousel-item .text-muted,
+[class*="bg-gradient"] .text-muted {
+  color: rgba(255, 255, 255, 0.7) !important;
+}

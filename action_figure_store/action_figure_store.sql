@@ -47,6 +47,22 @@ INSERT INTO `carousel_slides` (`id`, `title`, `description`, `image_url`, `slide
 -- --------------------------------------------------------
 
 --
+-- 資料表結構 `cart_items`
+--
+
+CREATE TABLE `cart_items` (
+  `id` int(11) NOT NULL,
+  `session_id` varchar(255) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 1,
+  `price` decimal(10,2) NOT NULL,
+  `added_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- 資料表結構 `products`
 --
 
@@ -96,6 +112,14 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`, `created_at`) VALUES
 --
 
 --
+-- 資料表索引 `cart_items`
+--
+ALTER TABLE `cart_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `session_id` (`session_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
 -- 資料表索引 `carousel_slides`
 --
 ALTER TABLE `carousel_slides`
@@ -119,6 +143,12 @@ ALTER TABLE `users`
 --
 
 --
+-- 使用資料表自動遞增(AUTO_INCREMENT) `cart_items`
+--
+ALTER TABLE `cart_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- 使用資料表自動遞增(AUTO_INCREMENT) `carousel_slides`
 --
 ALTER TABLE `carousel_slides`
@@ -135,6 +165,17 @@ ALTER TABLE `products`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- 已傾印資料表的限制式
+--
+
+--
+-- 資料表的限制式 `cart_items`
+--
+ALTER TABLE `cart_items`
+  ADD CONSTRAINT `cart_items_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

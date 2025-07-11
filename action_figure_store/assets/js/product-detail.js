@@ -85,6 +85,21 @@ function renderProductDetail(product) {
     if (productDescription) {
         productDescription.textContent = product.description || '暫無商品描述';
     }
+
+    // 更新商品分類標籤
+    const productCategories = document.getElementById('product-categories');
+    if (productCategories && product.categories && product.categories.length > 0) {
+        const categoryTags = product.categories.map(cat => 
+            `<a href="categories.html?category_id=${cat.id}&name=${encodeURIComponent(cat.name)}" 
+               class="badge bg-primary text-decoration-none me-1 mb-1">${cat.name}</a>`
+        ).join('');
+        productCategories.innerHTML = `
+            <div class="mb-3">
+                <strong>商品分類：</strong><br>
+                ${categoryTags}
+            </div>
+        `;
+    }
     
     // 更新商品規格（如果有的話）
     const productSpecs = document.getElementById('product-specs');
@@ -178,29 +193,90 @@ function addToCart(productId) {
     const quantityInput = document.getElementById('quantity');
     const quantity = parseInt(quantityInput?.value) || 1;
     
-    // 暫時顯示提示訊息，後續實作購物車 API 時會改為實際功能
-    alert(`已加入 ${quantity} 個商品到購物車！\n（購物車功能將在第三階段實作）`);
+    // 呼叫購物車 API
+    fetch('api/cart_add.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: quantity
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showSuccessMessage(`${data.product_name || '商品'} 已加入購物車！`);
+            updateCartCount();
+        } else {
+            alert('加入購物車失敗：' + (data.error || '未知錯誤'));
+        }
+    })
+    .catch(error => {
+        console.error('加入購物車錯誤:', error);
+        alert('加入購物車失敗，請稍後再試');
+    });
+}
+
+/**
+ * 顯示成功訊息
+ */
+function showSuccessMessage(message) {
+    // 創建 Toast 訊息
+    const toastHtml = `
+        <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="bi bi-check-circle me-2"></i>${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    `;
     
-    // TODO: 實作購物車 API 呼叫
-    // fetch('api/cart_add.php', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //         product_id: productId,
-    //         quantity: quantity
-    //     })
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     if (data.success) {
-    //         showSuccessMessage('已加入購物車');
-    //         updateCartCount(data.cart_count);
-    //     } else {
-    //         showErrorMessage('加入購物車失敗');
-    //     }
-    // });
+    // 創建 Toast 容器（如果不存在）
+    let toastContainer = document.getElementById('toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toast-container';
+        toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+        toastContainer.style.zIndex = '9999';
+        document.body.appendChild(toastContainer);
+    }
+    
+    // 添加 Toast
+    const toastElement = document.createElement('div');
+    toastElement.innerHTML = toastHtml;
+    toastContainer.appendChild(toastElement.firstElementChild);
+    
+    // 顯示 Toast
+    const toast = new bootstrap.Toast(toastContainer.lastElementChild);
+    toast.show();
+    
+    // 移除已隱藏的 Toast
+    toastContainer.addEventListener('hidden.bs.toast', function(e) {
+        e.target.remove();
+    });
+}
+
+/**
+ * 更新購物車數量
+ */
+function updateCartCount() {
+    fetch('api/cart_get.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.summary) {
+                // 呼叫 category-navbar.js 的更新函數
+                if (typeof updateCartCount === 'function') {
+                    updateCartCount(data.summary.total_quantity);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('更新購物車數量失敗:', error);
+        });
 }
 
 /**

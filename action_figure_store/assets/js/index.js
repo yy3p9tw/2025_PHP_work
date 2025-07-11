@@ -86,10 +86,13 @@ function loadProducts(page = 1, limit = 9) {
     fetch(`api/products.php?page=${page}&limit=${limit}`)
         .then(response => response.json())
         .then(data => {
-            if (data.products && data.products.length > 0) {
+            console.log('首頁商品 API 回應:', data); // 偵錯用
+            
+            if (data.success && data.products && data.products.length > 0) {
                 renderProducts(data.products);
                 updatePagination(data.pagination);
             } else {
+                console.error('首頁商品 API 問題:', data);
                 showNoProducts();
             }
         })
@@ -114,15 +117,33 @@ function renderProducts(products) {
     let html = '<div class="row">';
     
     products.forEach(product => {
+        console.log('商品分類資訊:', product.name, product.categories); // 偵錯用
+        
+        // 渲染分類標籤
+        let categoryTags = '';
+        if (product.categories && product.categories.length > 0) {
+            categoryTags = `
+                <div class="category-tags mb-2">
+                    ${product.categories.map(cat => 
+                        `<a href="categories.html?category_id=${cat.id}&name=${encodeURIComponent(cat.name)}" 
+                           class="badge bg-light text-primary text-decoration-none me-1">${cat.name}</a>`
+                    ).join('')}
+                </div>
+            `;
+        } else {
+            console.log('商品無分類資訊:', product.name);
+        }
+        
         html += `
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100 product-card">
                     <img src="${product.image_url}" class="card-img-top" alt="${product.name}" 
                          style="height: 250px; object-fit: cover;"
-                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuWVhuWTgOWcluePnjwvdGV4dD48L3N2Zz4='">
+                         onerror="this.src='assets/images/placeholder_figure.jpg'">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">${product.name}</h5>
                         <p class="card-text text-muted">${product.description || '暫無描述'}</p>
+                        ${categoryTags}
                         <div class="mt-auto">
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="h5 mb-0 text-primary">$${parseFloat(product.price).toLocaleString()}</span>

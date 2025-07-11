@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重新導向 - 公仔天堂</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <script>
+        // 自動重新導向到新的分類頁面，保持URL參數
+        const urlParams = new URLSearchParams(window.location.search);
+        const newUrl = 'categories.html' + (urlParams.toString() ? '?' + urlParams.toString() : '');
+        window.location.replace(newUrl);
+    </script>
+</head>
+<body>
+    <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <h2>頁面已遷移</h2>
+        <p>正在重新導向到新的分類頁面...</p>
+        <p>如果沒有自動跳轉，請<a href="categories.html">點擊這裡</a></p>
+    </div>
+</body>
+</html>
+            margin-bottom: 2rem;
+        }
+        .price-range {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            padding: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 導覽列佔位符 -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- 主要內容 -->
+    <main class="container my-5">
+        
+        <!-- 分類篩選器 -->
+        <div class="category-filter py-3">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h4 class="mb-0" id="page-title">所有商品</h4>
+                    <small class="text-muted" id="result-count">載入中...</small>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <label for="sort-select" class="form-label mb-0 me-2">排序：</label>
+                    <select class="form-select form-select-sm" id="sort-select" style="width: auto;">
+                        <option value="newest">最新上架</option>
+                        <option value="oldest">最早上架</option>
+                        <option value="price-asc">價格低到高</option>
+                        <option value="price-desc">價格高到低</option>
+                        <option value="name-asc">名稱 A-Z</option>
+                        <option value="name-desc">名稱 Z-A</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            
+            <!-- 側邊篩選器 -->
+            <div class="col-lg-3 mb-4">
+                <div class="filter-section">
+                    <h5 class="mb-3">
+                        <i class="bi bi-funnel text-primary"></i> 篩選條件
+                    </h5>
+                    
+                    <!-- 分類篩選 -->
+                    <div class="mb-4">
+                        <h6>商品分類</h6>
+                        <div id="category-filters">
+                            <!-- 分類篩選選項將在這裡顯示 -->
+                            <div class="text-center py-3">
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">載入中...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 價格篩選 -->
+                    <div class="mb-4">
+                        <h6>價格範圍</h6>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <input type="number" class="form-control form-control-sm" id="price-min" placeholder="最低價格" min="0">
+                            </div>
+                            <div class="col-6">
+                                <input type="number" class="form-control form-control-sm" id="price-max" placeholder="最高價格" min="0">
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm mt-2 w-100" id="apply-price-filter">
+                            套用價格篩選
+                        </button>
+                    </div>
+                    
+                    <!-- 搜尋 -->
+                    <div class="mb-4">
+                        <h6>搜尋商品</h6>
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" id="search-input" placeholder="輸入商品名稱...">
+                            <button class="btn btn-outline-primary btn-sm" type="button" id="search-btn">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 清除篩選 -->
+                    <button class="btn btn-outline-secondary btn-sm w-100" id="clear-filters">
+                        <i class="bi bi-arrow-clockwise"></i> 清除所有篩選
+                    </button>
+                </div>
+            </div>
+
+            <!-- 產品列表 -->
+            <div class="col-lg-9">
+                
+                <!-- 載入中狀態 -->
+                <div id="loading-state" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">載入中...</span>
+                    </div>
+                    <p class="mt-3 text-muted">載入商品中...</p>
+                </div>
+
+                <!-- 產品網格 -->
+                <div id="products-grid" class="row" style="display: none;">
+                    <!-- 產品卡片將在這裡顯示 -->
+                </div>
+
+                <!-- 無結果狀態 -->
+                <div id="no-results" class="text-center py-5" style="display: none;">
+                    <i class="bi bi-search display-1 text-muted"></i>
+                    <h3 class="mt-3">找不到符合條件的商品</h3>
+                    <p class="text-muted">請嘗試調整篩選條件或關鍵字</p>
+                    <button class="btn btn-primary" id="reset-search">重新搜尋</button>
+                </div>
+
+                <!-- 分頁 -->
+                <nav aria-label="商品分頁" class="mt-4">
+                    <ul class="pagination justify-content-center" id="pagination">
+                        <!-- 分頁按鈕將在這裡顯示 -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/navbar.js"></script>
+    <script>
+        // 全域變數
+        let currentFilters = {
+            category_id: null,
+            price_min: null,
+            price_max: null,
+            search: null,
+            sort: 'newest',
+            page: 1
+        };
+
+        let allCategories = [];
+
+        // 初始化頁面
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFilters();
+            loadCategories();
+            setupEventListeners();
+            loadProducts();
+        });
+
+        // 從 URL 參數初始化篩選條件
+        function initializeFilters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            currentFilters.category_id = urlParams.get('category_id') || null;
+            currentFilters.price_min = urlParams.get('price_min') || null;
+            currentFilters.price_max = urlParams.get('price_max') || null;
+            currentFilters.search = urlParams.get('search') || null;
+            currentFilters.sort = urlParams.get('sort') || 'newest';
+            currentFilters.page = parseInt(urlParams.get('page')) || 1;
+
+            // 設定表單值
+            if (currentFilters.price_min) document.getElementById('price-min').value = currentFilters.price_min;
+            if (currentFilters.price_max) document.getElementById('price-max').value = currentFilters.price_max;
+            if (currentFilters.search) document.getElementById('search-input').value = currentFilters.search;
+            document.getElementById('sort-select').value = currentFilters.sort;
+        }
+
+        // 載入分類列表
+        async function loadCategories() {
+            try {
+                const response = await fetch('api/categories.php');
+                const data = await response.json();
+
+                if (data.success && data.categories) {
+                    allCategories = data.categories;
+                    displayCategoryFilters(data.categories);
+                }
+            } catch (error) {
+                console.error('載入分類失敗:', error);
+            }
+        }
+
+        // 顯示分類篩選器
+        function displayCategoryFilters(categories) {
+            const container = document.getElementById('category-filters');
+            
+            let html = `
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="category" value="" id="cat-all" ${!currentFilters.category_id ? 'checked' : ''}>
+                    <label class="form-check-label" for="cat-all">
+                        所有分類
+                    </label>
+                </div>
+            `;
+
+            // 顯示頂層分類
+            categories.forEach(category => {
+                const isChecked = currentFilters.category_id == category.id ? 'checked' : '';
+                html += `
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="category" value="${category.id}" id="cat-${category.id}" ${isChecked}>
+                        <label class="form-check-label" for="cat-${category.id}">
+                            ${category.name}
+                        </label>
+                    </div>
+                `;
+
+                // 顯示子分類
+                if (category.children && category.children.length > 0) {
+                    category.children.forEach(child => {
+                        const isChildChecked = currentFilters.category_id == child.id ? 'checked' : '';
+                        html += `
+                            <div class="form-check mb-2 ms-3">
+                                <input class="form-check-input" type="radio" name="category" value="${child.id}" id="cat-${child.id}" ${isChildChecked}>
+                                <label class="form-check-label" for="cat-${child.id}">
+                                    <small>${child.name}</small>
+                                </label>
+                            </div>
+                        `;
+                    });
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        // 設定事件監聽器
+        function setupEventListeners() {
+            // 分類篩選
+            document.addEventListener('change', function(e) {
+                if (e.target.name === 'category') {
+                    currentFilters.category_id = e.target.value || null;
+                    currentFilters.page = 1;
+                    loadProducts();
+                    updateUrl();
+                }
+            });
+
+            // 排序
+            document.getElementById('sort-select').addEventListener('change', function(e) {
+                currentFilters.sort = e.target.value;
+                currentFilters.page = 1;
+                loadProducts();
+                updateUrl();
+            });
+
+            // 價格篩選
+            document.getElementById('apply-price-filter').addEventListener('click', function() {
+                const minPrice = document.getElementById('price-min').value;
+                const maxPrice = document.getElementById('price-max').value;
+                
+                currentFilters.price_min = minPrice || null;
+                currentFilters.price_max = maxPrice || null;
+                currentFilters.page = 1;
+                loadProducts();
+                updateUrl();
+            });
+
+            // 搜尋
+            document.getElementById('search-btn').addEventListener('click', function() {
+                const searchTerm = document.getElementById('search-input').value.trim();
+                currentFilters.search = searchTerm || null;
+                currentFilters.page = 1;
+                loadProducts();
+                updateUrl();
+            });
+
+            // Enter 鍵搜尋
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('search-btn').click();
+                }
+            });
+
+            // 清除篩選
+            document.getElementById('clear-filters').addEventListener('click', function() {
+                // 重置篩選條件
+                currentFilters = {
+                    category_id: null,
+                    price_min: null,
+                    price_max: null,
+                    search: null,
+                    sort: 'newest',
+                    page: 1
+                };
+
+                // 重置表單
+                document.getElementById('price-min').value = '';
+                document.getElementById('price-max').value = '';
+                document.getElementById('search-input').value = '';
+                document.getElementById('sort-select').value = 'newest';
+                document.querySelector('input[name="category"][value=""]').checked = true;
+
+                loadProducts();
+                updateUrl();
+            });
+
+            // 重置搜尋
+            document.getElementById('reset-search').addEventListener('click', function() {
+                document.getElementById('clear-filters').click();
+            });
+        }
+
+        // 載入產品
+        async function loadProducts() {
+            showLoading();
+
+            try {
+                const params = new URLSearchParams();
+                
+                if (currentFilters.category_id) params.append('category_id', currentFilters.category_id);
+                if (currentFilters.price_min) params.append('price_min', currentFilters.price_min);
+                if (currentFilters.price_max) params.append('price_max', currentFilters.price_max);
+                if (currentFilters.search) params.append('search', currentFilters.search);
+                params.append('sort', currentFilters.sort);
+                params.append('page', currentFilters.page);
+                params.append('limit', 12);
+
+                const response = await fetch(`api/products.php?${params.toString()}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    displayProducts(data.products);
+                    displayPagination(data.pagination);
+                    updatePageTitle(data.category);
+                    updateResultCount(data.pagination.total_count);
+                } else {
+                    showNoResults();
+                }
+            } catch (error) {
+                console.error('載入產品失敗:', error);
+                showNoResults();
+            }
+        }
+
+        // 顯示載入中狀態
+        function showLoading() {
+            document.getElementById('loading-state').style.display = 'block';
+            document.getElementById('products-grid').style.display = 'none';
+            document.getElementById('no-results').style.display = 'none';
+        }
+
+        // 顯示產品
+        function displayProducts(products) {
+            const container = document.getElementById('products-grid');
+            
+            if (!products || products.length === 0) {
+                showNoResults();
+                return;
+            }
+
+            const html = products.map(product => `
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card product-card h-100 shadow-sm">
+                        <img src="${product.image_url}" class="card-img-top" alt="${product.name}" style="height: 250px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title">${product.name}</h6>
+                            <div class="mb-2">
+                                ${product.categories.map(cat => `<span class="badge bg-secondary me-1">${cat.name}</span>`).join('')}
+                            </div>
+                            <p class="card-text text-muted small flex-grow-1">${product.description ? product.description.substring(0, 80) + '...' : '暫無描述'}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="h5 text-primary mb-0">$${parseFloat(product.price).toLocaleString()}</span>
+                                <a href="product_detail.html?id=${product.id}" class="btn btn-outline-primary btn-sm">查看詳情</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('products-grid').style.display = 'flex';
+        }
+
+        // 顯示無結果狀態
+        function showNoResults() {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('products-grid').style.display = 'none';
+            document.getElementById('no-results').style.display = 'block';
+        }
+
+        // 顯示分頁
+        function displayPagination(pagination) {
+            const container = document.getElementById('pagination');
+            
+            if (pagination.total_pages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+
+            // 上一頁
+            if (pagination.has_prev) {
+                html += `<li class="page-item">
+                    <a class="page-link" href="#" data-page="${pagination.current_page - 1}">上一頁</a>
+                </li>`;
+            }
+
+            // 頁碼
+            const startPage = Math.max(1, pagination.current_page - 2);
+            const endPage = Math.min(pagination.total_pages, pagination.current_page + 2);
+
+            if (startPage > 1) {
+                html += `<li class="page-item"><a class="page-link" href="#" data-page="1">1</a></li>`;
+                if (startPage > 2) {
+                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const isActive = i === pagination.current_page ? 'active' : '';
+                html += `<li class="page-item ${isActive}">
+                    <a class="page-link" href="#" data-page="${i}">${i}</a>
+                </li>`;
+            }
+
+            if (endPage < pagination.total_pages) {
+                if (endPage < pagination.total_pages - 1) {
+                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+                html += `<li class="page-item"><a class="page-link" href="#" data-page="${pagination.total_pages}">${pagination.total_pages}</a></li>`;
+            }
+
+            // 下一頁
+            if (pagination.has_next) {
+                html += `<li class="page-item">
+                    <a class="page-link" href="#" data-page="${pagination.current_page + 1}">下一頁</a>
+                </li>`;
+            }
+
+            container.innerHTML = html;
+
+            // 分頁點擊事件
+            container.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (e.target.dataset.page) {
+                    currentFilters.page = parseInt(e.target.dataset.page);
+                    loadProducts();
+                    updateUrl();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        }
+
+        // 更新頁面標題
+        function updatePageTitle(category) {
+            const titleElement = document.getElementById('page-title');
+            if (category) {
+                titleElement.textContent = category.name;
+                document.title = `${category.name} - 公仔天堂`;
+            } else if (currentFilters.search) {
+                titleElement.textContent = `搜尋「${currentFilters.search}」`;
+                document.title = `搜尋「${currentFilters.search}」- 公仔天堂`;
+            } else {
+                titleElement.textContent = '所有商品';
+                document.title = '商品列表 - 公仔天堂';
+            }
+        }
+
+        // 更新結果計數
+        function updateResultCount(totalCount) {
+            const countElement = document.getElementById('result-count');
+            countElement.textContent = `共 ${totalCount} 項商品`;
+        }
+
+        // 更新 URL
+        function updateUrl() {
+            const params = new URLSearchParams();
+            
+            if (currentFilters.category_id) params.append('category_id', currentFilters.category_id);
+            if (currentFilters.price_min) params.append('price_min', currentFilters.price_min);
+            if (currentFilters.price_max) params.append('price_max', currentFilters.price_max);
+            if (currentFilters.search) params.append('search', currentFilters.search);
+            if (currentFilters.sort !== 'newest') params.append('sort', currentFilters.sort);
+            if (currentFilters.page > 1) params.append('page', currentFilters.page);
+
+            const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+            window.history.replaceState({}, '', newUrl);
+        }
+    </script>
+</body>
+</html>

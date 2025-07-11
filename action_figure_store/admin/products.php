@@ -20,22 +20,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $name = $_POST['name'] ?? '';
         $description = $_POST['description'] ?? '';
         $price = $_POST['price'] ?? 0;
+        $status = ($_POST['status'] ?? 'active') === 'active' ? 1 : 0;
+        $category_ids = $_POST['category_ids'] ?? [];
         $image_url = null;
 
         if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
             $image_url = uploadImage($_FILES['image']);
             if (!$image_url) {
+                $_SESSION['flash_message'] = '圖片上傳失敗！';
+                $_SESSION['flash_type'] = 'danger';
                 header('Location: products.php');
                 exit();
             }
         }
 
-        $stmt = $conn->prepare('INSERT INTO products (name, description, price, image_url) VALUES (:name, :description, :price, :image_url)');
+        $stmt = $conn->prepare('INSERT INTO products (name, description, price, image_url, status) VALUES (:name, :description, :price, :image_url, :status)');
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':price', $price);
         $stmt->bindParam(':image_url', $image_url);
+        $stmt->bindParam(':status', $status);
         $stmt->execute();
+
+        $product_id = $conn->lastInsertId();
+
+        // 新增產品分類關聯
+        if (!empty($category_ids)) {
+            $category_stmt = $conn->prepare('INSERT INTO product_category (product_id, category_id) VALUES (?, ?)');
+            foreach ($category_ids as $category_id) {
+                $category_stmt->execute([$product_id, (int)$category_id]);
+            }
+        }
 
         $_SESSION['flash_message'] = '產品已新增！';
         $_SESSION['flash_type'] = 'success';
@@ -48,6 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $name = $_POST['name'] ?? '';
         $description = $_POST['description'] ?? '';
         $price = $_POST['price'] ?? 0;
+        $status = ($_POST['status'] ?? 'active') === 'active' ? 1 : 0;
+        $category_ids = $_POST['category_ids'] ?? [];
         $current_image_url = $_POST['current_image_url'] ?? null;
         $image_url = $current_image_url;
 
@@ -60,18 +77,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 //     unlink(ROOT_PATH . '/uploads/' . $current_image_url);
                 // }
             } else {
+                $_SESSION['flash_message'] = '圖片上傳失敗！';
+                $_SESSION['flash_type'] = 'danger';
                 header('Location: products.php');
                 exit();
             }
         }
 
-        $stmt = $conn->prepare('UPDATE products SET name = :name, description = :description, price = :price, image_url = :image_url WHERE id = :id');
+        $stmt = $conn->prepare('UPDATE products SET name = :name, description = :description, price = :price, image_url = :image_url, status = :status WHERE id = :id');
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':price', $price);
         $stmt->bindParam(':image_url', $image_url);
+        $stmt->bindParam(':status', $status);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
+
+        // 刪除舊的分類關聯
+        $delete_stmt = $conn->prepare('DELETE FROM product_category WHERE product_id = ?');
+        $delete_stmt->execute([$id]);
+
+        // 新增新的分類關聯
+        if (!empty($category_ids)) {
+            $category_stmt = $conn->prepare('INSERT INTO product_category (product_id, category_id) VALUES (?, ?)');
+            foreach ($category_ids as $category_id) {
+                $category_stmt->execute([$id, (int)$category_id]);
+            }
+        }
 
         $_SESSION['flash_message'] = '產品已更新！';
         $_SESSION['flash_type'] = 'success';
@@ -88,6 +120,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt_img->execute();
         $product_image = $stmt_img->fetchColumn();
 
+        // 刪除產品分類關聯
+        $delete_category_stmt = $conn->prepare('DELETE FROM product_category WHERE product_id = ?');
+        $delete_category_stmt->execute([$id]);
+
+        // 刪除產品
         $stmt = $conn->prepare('DELETE FROM products WHERE id = :id');
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -104,9 +141,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// 獲取所有產品
-$products_stmt = $conn->query("SELECT * FROM products ORDER BY created_at DESC");
+// 獲取所有產品（包含分類資訊）
+$products_query = "
+    SELECT p.*, 
+           GROUP_CONCAT(c.name SEPARATOR ', ') as category_names,
+           GROUP_CONCAT(c.id SEPARATOR ',') as category_ids
+    FROM products p
+    LEFT JOIN product_category pc ON p.id = pc.product_id
+    LEFT JOIN categories c ON pc.category_id = c.id
+    GROUP BY p.id
+    ORDER BY p.created_at DESC
+";
+$products_stmt = $conn->query($products_query);
 $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// 獲取所有啟用的分類（用於下拉選單）
+$categories_stmt = $conn->query("SELECT id, name, parent_id FROM categories WHERE status = 1 ORDER BY parent_id, name");
+$categories = $categories_stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <!DOCTYPE html>
@@ -116,6 +167,7 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>產品管理 - 公仔銷售網站後台</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/colors.css">
     <link rel="stylesheet" href="assets/css/admin_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
@@ -151,7 +203,9 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <th>圖片</th>
                                 <th>名稱</th>
                                 <th>描述</th>
+                                <th>分類</th>
                                 <th>價格</th>
+                                <th>狀態</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
@@ -169,7 +223,21 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </td>
                                         <td><?php echo htmlspecialchars($product['name']); ?></td>
                                         <td><?php echo htmlspecialchars(mb_substr($product['description'], 0, 50, 'utf-8')) . (mb_strlen($product['description'], 'utf-8') > 50 ? '...' : ''); ?></td>
+                                        <td>
+                                            <?php if ($product['category_names']): ?>
+                                                <?php foreach (explode(', ', $product['category_names']) as $category): ?>
+                                                    <span class="badge bg-secondary me-1"><?php echo htmlspecialchars($category); ?></span>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <span class="text-muted">未分類</span>
+                                            <?php endif; ?>
+                                        </td>
                                         <td>$<?php echo htmlspecialchars(number_format($product['price'], 2)); ?></td>
+                                        <td>
+                                            <span class="badge bg-<?php echo $product['status'] ? 'success' : 'secondary'; ?>">
+                                                <?php echo $product['status'] ? '啟用' : '停用'; ?>
+                                            </span>
+                                        </td>
                                         <td>
                                             <button type="button" class="btn btn-info btn-sm edit-product-btn" 
                                                 data-bs-toggle="modal" data-bs-target="#editProductModal"
@@ -177,6 +245,8 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 data-name="<?php echo htmlspecialchars($product['name']); ?>"
                                                 data-description="<?php echo htmlspecialchars($product['description']); ?>"
                                                 data-price="<?php echo htmlspecialchars($product['price']); ?>"
+                                                data-status="<?php echo $product['status']; ?>"
+                                                data-category-ids="<?php echo htmlspecialchars($product['category_ids'] ?? ''); ?>"
                                                 data-image="<?php echo htmlspecialchars($product['image_url']); ?>">
                                                 編輯
                                             </button>
@@ -188,7 +258,7 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <tr><td colspan="6" class="text-center">目前沒有任何產品。</td></tr>
+                                <tr><td colspan="8" class="text-center">目前沒有任何產品。</td></tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
@@ -218,6 +288,28 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="mb-3">
                             <label for="productPrice" class="form-label">價格</label>
                             <input type="number" class="form-control" id="productPrice" name="price" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productCategories" class="form-label">分類</label>
+                            <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                                <?php foreach ($categories as $category): ?>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="category_ids[]" 
+                                               value="<?php echo $category['id']; ?>" id="cat_add_<?php echo $category['id']; ?>">
+                                        <label class="form-check-label" for="cat_add_<?php echo $category['id']; ?>">
+                                            <?php echo htmlspecialchars($category['name']); ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <small class="text-muted">可選擇多個分類</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productStatus" class="form-label">狀態</label>
+                            <select class="form-select" id="productStatus" name="status">
+                                <option value="active">啟用</option>
+                                <option value="inactive">停用</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="productImage" class="form-label">產品圖片</label>
@@ -258,6 +350,28 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
                             <input type="number" class="form-control" id="editProductPrice" name="price" step="0.01" required>
                         </div>
                         <div class="mb-3">
+                            <label for="editProductCategories" class="form-label">分類</label>
+                            <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                                <?php foreach ($categories as $category): ?>
+                                    <div class="form-check">
+                                        <input class="form-check-input edit-category-checkbox" type="checkbox" name="category_ids[]" 
+                                               value="<?php echo $category['id']; ?>" id="cat_edit_<?php echo $category['id']; ?>">
+                                        <label class="form-check-label" for="cat_edit_<?php echo $category['id']; ?>">
+                                            <?php echo htmlspecialchars($category['name']); ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <small class="text-muted">可選擇多個分類</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductStatus" class="form-label">狀態</label>
+                            <select class="form-select" id="editProductStatus" name="status">
+                                <option value="active">啟用</option>
+                                <option value="inactive">停用</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label for="editProductImage" class="form-label">產品圖片</label>
                             <input type="file" class="form-control" id="editProductImage" name="image" accept="image/*">
                             <small class="text-muted" id="currentProductImagePreview"></small>
@@ -283,6 +397,8 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
                 var name = button.getAttribute('data-name');
                 var description = button.getAttribute('data-description');
                 var price = button.getAttribute('data-price');
+                var status = button.getAttribute('data-status');
+                var categoryIds = button.getAttribute('data-category-ids');
                 var image = button.getAttribute('data-image');
 
                 var modalTitle = editProductModal.querySelector('.modal-title');
@@ -290,6 +406,7 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
                 var productNameInput = editProductModal.querySelector('#editProductName');
                 var productDescriptionInput = editProductModal.querySelector('#editProductDescription');
                 var productPriceInput = editProductModal.querySelector('#editProductPrice');
+                var productStatusSelect = editProductModal.querySelector('#editProductStatus');
                 var currentImageInput = editProductModal.querySelector('#editProductCurrentImage');
                 var currentImagePreview = editProductModal.querySelector('#currentProductImagePreview');
 
@@ -298,13 +415,47 @@ $products = $products_stmt->fetchAll(PDO::FETCH_ASSOC);
                 productNameInput.value = name;
                 productDescriptionInput.value = description;
                 productPriceInput.value = price;
+                productStatusSelect.value = status == '1' ? 'active' : 'inactive';
                 currentImageInput.value = image;
+
+                // 重置所有分類複選框
+                var categoryCheckboxes = editProductModal.querySelectorAll('.edit-category-checkbox');
+                categoryCheckboxes.forEach(function(checkbox) {
+                    checkbox.checked = false;
+                });
+
+                // 選中對應的分類
+                if (categoryIds) {
+                    var selectedCategoryIds = categoryIds.split(',');
+                    selectedCategoryIds.forEach(function(categoryId) {
+                        if (categoryId.trim()) {
+                            var checkbox = editProductModal.querySelector('#cat_edit_' + categoryId.trim());
+                            if (checkbox) {
+                                checkbox.checked = true;
+                            }
+                        }
+                    });
+                }
 
                 if (image) {
                     currentImagePreview.innerHTML = '當前圖片: <img src="../uploads/' + image + '" style="width: 50px; height: 50px; object-fit: cover;"> (' + image + ')';
                 } else {
                     currentImagePreview.innerHTML = '無圖片';
                 }
+            });
+
+            // 清空新增 Modal 的分類選擇
+            var addProductModal = document.getElementById('addProductModal');
+            addProductModal.addEventListener('show.bs.modal', function (event) {
+                // 重置表單
+                var form = addProductModal.querySelector('form');
+                form.reset();
+                
+                // 重置所有分類複選框
+                var categoryCheckboxes = addProductModal.querySelectorAll('input[type="checkbox"]');
+                categoryCheckboxes.forEach(function(checkbox) {
+                    checkbox.checked = false;
+                });
             });
         });
     </script>

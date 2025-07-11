@@ -35,6 +35,12 @@
                 <div class="col-md-6">
                     <h1 id="product-name" class="mb-3"></h1>
                     <p id="product-description" class="lead mb-4"></p>
+                    
+                    <!-- 商品分類 -->
+                    <div id="product-categories" class="mb-4">
+                        <!-- 分類標籤將由 JavaScript 載入 -->
+                    </div>
+                    
                     <h3 id="product-price" class="text-primary mb-4"></h3>
                     
                     <!-- 商品規格 -->
@@ -85,9 +91,9 @@
             .then(response => response.text())
             .then(html => {
                 document.getElementById('navbar-placeholder').innerHTML = html;
-                // navbar 載入完成後，載入分類功能
+                // navbar 載入完成後，載入navbar功能
                 const script = document.createElement('script');
-                script.src = 'assets/js/category-navbar.js';
+                script.src = 'assets/js/navbar.js';
                 document.body.appendChild(script);
             })
             .catch(error => {

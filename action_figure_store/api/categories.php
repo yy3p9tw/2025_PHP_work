@@ -1,51 +1,36 @@
 <?php
 header('Content-Type: application/json');
-require_once '../includes/db.php';
+require_once __DIR__ . '/../includes/db.php';
 
 try {
     $db = new Database();
     $conn = $db->getConnection();
 
-    // 暫時回傳固定的分類資料，後續可以從資料庫讀取
-    $categories = [
-        [
-            'id' => 1,
-            'name' => '動漫公仔',
-            'children' => [
-                ['id' => 11, 'name' => '火影忍者', 'children' => []],
-                ['id' => 12, 'name' => '鬼滅之刃', 'children' => []],
-                ['id' => 13, 'name' => '海賊王', 'children' => []],
-                ['id' => 14, 'name' => '進擊的巨人', 'children' => []]
-            ]
-        ],
-        [
-            'id' => 2,
-            'name' => '遊戲公仔',
-            'children' => [
-                ['id' => 21, 'name' => '英雄聯盟', 'children' => []],
-                ['id' => 22, 'name' => '原神', 'children' => []],
-                ['id' => 23, 'name' => '最終幻想', 'children' => []]
-            ]
-        ],
-        [
-            'id' => 3,
-            'name' => '電影公仔',
-            'children' => [
-                ['id' => 31, 'name' => '漫威系列', 'children' => []],
-                ['id' => 32, 'name' => 'DC 系列', 'children' => []],
-                ['id' => 33, 'name' => '星際大戰', 'children' => []]
-            ]
-        ],
-        [
-            'id' => 4,
-            'name' => '特殊系列',
-            'children' => [
-                ['id' => 41, 'name' => '限定版', 'children' => []],
-                ['id' => 42, 'name' => '預購商品', 'children' => []],
-                ['id' => 43, 'name' => '二手商品', 'children' => []]
-            ]
-        ]
-    ];
+    // 遞迴函數：建立分類樹狀結構
+    function buildCategoryTree($conn, $parent_id = null) {
+        $sql = "SELECT id, name, description, parent_id, sort_order, status 
+                FROM categories 
+                WHERE " . ($parent_id ? "parent_id = ?" : "parent_id IS NULL") . " 
+                AND status = 1
+                ORDER BY sort_order, name";
+        
+        $stmt = $conn->prepare($sql);
+        if ($parent_id) {
+            $stmt->execute([$parent_id]);
+        } else {
+            $stmt->execute();
+        }
+        
+        $categories = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $row['children'] = buildCategoryTree($conn, $row['id']);
+            $categories[] = $row;
+        }
+        
+        return $categories;
+    }
+
+    $categories = buildCategoryTree($conn);
 
     echo json_encode([
         'success' => true,
