@@ -208,7 +208,7 @@ function addToCart(productId) {
     .then(data => {
         if (data.success) {
             showSuccessMessage(`${data.product_name || '商品'} 已加入購物車！`);
-            updateCartCount();
+            updateCartCountAfterAdd();
         } else {
             alert('加入購物車失敗：' + (data.error || '未知錯誤'));
         }
@@ -263,14 +263,14 @@ function showSuccessMessage(message) {
 /**
  * 更新購物車數量
  */
-function updateCartCount() {
+function updateCartCountAfterAdd() {
     fetch('api/cart_get.php')
         .then(response => response.json())
         .then(data => {
             if (data.success && data.summary) {
-                // 呼叫 category-navbar.js 的更新函數
-                if (typeof updateCartCount === 'function') {
-                    updateCartCount(data.summary.total_quantity);
+                // 呼叫全域的 updateCartCount 函數
+                if (typeof window.updateCartCount === 'function') {
+                    window.updateCartCount(data.summary.total_quantity);
                 }
             }
         })

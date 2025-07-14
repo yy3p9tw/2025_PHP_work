@@ -447,9 +447,9 @@ function saveCartToLocalStorage() {
 function updateNavbarCartCount() {
     const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
     
-    // 呼叫 category-navbar.js 的更新函數
-    if (typeof updateCartCount === 'function') {
-        updateCartCount(totalQuantity);
+    // 呼叫全域的 updateCartCount 函數
+    if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount(totalQuantity);
     }
 }
 

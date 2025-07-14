@@ -267,10 +267,15 @@ function renderProducts(products) {
                     ${renderCategoryTags(product.categories)}
                     
                     <div class="mt-auto">
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="h5 mb-0 text-primary">$${parseFloat(product.price).toLocaleString()}</span>
-                            <button class="btn btn-outline-primary btn-sm" onclick="viewProduct(${product.id})">
-                                查看詳情
+                        </div>
+                        <div class="d-flex gap-1">
+                            <button class="btn btn-primary btn-sm flex-fill" onclick="addToCartQuick(${product.id})">
+                                <i class="bi bi-cart-plus"></i> 加入購物車
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="viewProduct(${product.id})" title="查看詳情">
+                                <i class="bi bi-eye"></i>
                             </button>
                         </div>
                     </div>
@@ -298,9 +303,14 @@ function renderProducts(products) {
                             ${renderCategoryTags(product.categories)}
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="h4 mb-0 text-primary">$${parseFloat(product.price).toLocaleString()}</span>
-                                <button class="btn btn-primary" onclick="viewProduct(${product.id})">
-                                    查看詳情
-                                </button>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary" onclick="addToCartQuick(${product.id})">
+                                        <i class="bi bi-cart-plus"></i> 加入購物車
+                                    </button>
+                                    <button class="btn btn-outline-primary" onclick="viewProduct(${product.id})">
+                                        查看詳情
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -588,6 +598,120 @@ function showNoProducts(message = '沒有找到符合條件的商品') {
             <button class="btn btn-primary" onclick="resetFilters()">重置篩選</button>
         </div>
     `;
+}
+
+/**
+ * 快速加入購物車（預設數量為1）
+ */
+function addToCartQuick(productId) {
+    fetch('api/cart_add.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: 1
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // 顯示成功訊息
+            showSuccessToast(`${data.product_name || '商品'} 已加入購物車！`);
+            
+            // 更新購物車數量
+            if (typeof window.updateCartCount === 'function') {
+                window.updateCartCount();
+            }
+        } else {
+            showErrorToast('加入購物車失敗：' + (data.error || '未知錯誤'));
+        }
+    })
+    .catch(error => {
+        console.error('加入購物車錯誤:', error);
+        showErrorToast('加入購物車失敗，請稍後再試');
+    });
+}
+
+/**
+ * 顯示成功提示
+ */
+function showSuccessToast(message) {
+    // 創建 toast 元素
+    const toastHtml = `
+        <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="bi bi-check-circle me-2"></i>${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    `;
+    
+    // 找到或創建 toast 容器
+    let toastContainer = document.getElementById('toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toast-container';
+        toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+        toastContainer.style.zIndex = '1080';
+        document.body.appendChild(toastContainer);
+    }
+    
+    // 添加 toast
+    toastContainer.innerHTML = toastHtml;
+    const toastElement = toastContainer.querySelector('.toast');
+    const toast = new bootstrap.Toast(toastElement);
+    toast.show();
+    
+    // 3秒後自動移除
+    setTimeout(() => {
+        if (toastElement && toastElement.parentNode) {
+            toastElement.remove();
+        }
+    }, 3000);
+}
+
+/**
+ * 顯示錯誤提示
+ */
+function showErrorToast(message) {
+    // 創建 toast 元素
+    const toastHtml = `
+        <div class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="bi bi-exclamation-triangle me-2"></i>${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    `;
+    
+    // 找到或創建 toast 容器
+    let toastContainer = document.getElementById('toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toast-container';
+        toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+        toastContainer.style.zIndex = '1080';
+        document.body.appendChild(toastContainer);
+    }
+    
+    // 添加 toast
+    toastContainer.innerHTML = toastHtml;
+    const toastElement = toastContainer.querySelector('.toast');
+    const toast = new bootstrap.Toast(toastElement);
+    toast.show();
+    
+    // 5秒後自動移除
+    setTimeout(() => {
+        if (toastElement && toastElement.parentNode) {
+            toastElement.remove();
+        }
+    }, 5000);
 }
 
 /**

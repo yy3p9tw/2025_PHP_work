@@ -67,14 +67,14 @@
                             <a href="index.html" class="btn btn-primary me-2">
                                 <i class="bi bi-house me-2"></i>回到首頁
                             </a>
-                            <a href="category.html" class="btn btn-outline-primary">
+                            <a href="categories.html" class="btn btn-outline-primary">
                                 <i class="bi bi-grid me-2"></i>瀏覽商品
                             </a>
                         </div>
 
                         <!-- 繼續購物 -->
                         <div id="continue-shopping" class="mt-4" style="display: none;">
-                            <a href="category.html" class="btn btn-outline-secondary">
+                            <a href="categories.html" class="btn btn-outline-secondary">
                                 <i class="bi bi-arrow-left me-2"></i>繼續購物
                             </a>
                         </div>
@@ -220,6 +220,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="assets/js/script.js"></script>
+    <script src="assets/js/navbar.js"></script>
     
     <script>
         // 載入共用 navbar
@@ -227,10 +228,6 @@
             .then(response => response.text())
             .then(html => {
                 document.getElementById('navbar-placeholder').innerHTML = html;
-                // navbar 載入完成後，載入分類功能
-                const script = document.createElement('script');
-                script.src = 'assets/js/navbar.js';
-                document.body.appendChild(script);
             })
             .catch(error => {
                 console.error('載入導航列失敗:', error);

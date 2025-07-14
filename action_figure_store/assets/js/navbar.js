@@ -159,6 +159,25 @@ function updateCartBadge(count = 0) {
     }
 }
 
+// 全域購物車計數更新函數
+window.updateCartCount = function(count) {
+    updateCartBadge(count);
+};
+
+// 載入購物車計數
+function loadCartCount() {
+    fetch('api/cart_get.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.summary) {
+                updateCartBadge(data.summary.total_quantity);
+            }
+        })
+        .catch(error => {
+            console.error('載入購物車計數失敗:', error);
+        });
+}
+
 // 高亮當前頁面導覽項目
 function highlightCurrentPage() {
     const currentPath = window.location.pathname;
@@ -174,8 +193,12 @@ function highlightCurrentPage() {
     });
 }
 
-// 處理下拉選單懸停效果（針對桌面版）
+// 初始化導覽列
 document.addEventListener('DOMContentLoaded', function() {
+    loadCategories();
+    highlightCurrentPage();
+    loadCartCount(); // 載入購物車計數
+    
     if (window.innerWidth > 991) {
         const dropdowns = document.querySelectorAll('.dropdown-submenu');
         
