@@ -1,84 +1,526 @@
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #fff0f5;
-    text-align: center;
+/**
+ * 現代化萬年曆樣式
+ */
+
+/* 全局樣式 */
+:root {
+    --primary-color: #4f46e5;
+    --secondary-color: #7c3aed;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --info-color: #06b6d4;
+    --light-bg: #f8fafc;
+    --dark-text: #1e293b;
+    --gray-text: #64748b;
+    --border-color: #e2e8f0;
+    --today-color: #fbbf24;
+    --holiday-color: #f87171;
+    --event-color: #34d399;
+    --selected-color: #a78bfa;
+    --weekend-color: #fca5a5;
+}
+
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: var(--dark-text);
+}
+
+/* 導航列樣式 */
+.navbar {
+    backdrop-filter: blur(10px);
+    background: rgba(79, 70, 229, 0.9) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: white !important;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+}
+
+/* 主要內容區域 */
+.main-content {
+    padding-top: 100px;
+    padding-bottom: 50px;
+    min-height: 100vh;
+}
+
+/* 工具列樣式 */
+.calendar-toolbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
     padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-h1 {
-    color: #d6336c;
+.calendar-navigation .btn {
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.nav {
-    display: flex;
-    width: 60%;
-    margin: 20px auto;
-    justify-content: space-between;
+.calendar-navigation .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.nav a {
-    text-decoration: none;
-    color: #d6336c;
-    font-weight: bold;
-    font-size: 1.1em;
+.calendar-controls .input-group {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-form {
-    margin: 20px 0;
+.calendar-controls .form-control {
+    border: none;
+    padding: 12px;
 }
 
-.box-container {
+.calendar-controls .btn {
+    border: none;
+    background: var(--primary-color);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.calendar-controls .btn:hover {
+    background: var(--secondary-color);
+}
+
+/* 標題樣式 */
+.calendar-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.month-year-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 10px;
+}
+
+/* 萬年曆主體 */
+.calendar-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+}
+
+.calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    width: 60%;
-    margin: 0 auto;
-    border: 1px solid #ffc0cb;
-    background-color: #ffe4ec;
-    box-shadow: 0 0 10px #f8bbd0;
+    gap: 2px;
+    background: var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.th-box, .box {
-    border: 1px solid #f8bbd0;
-    padding: 10px;
-    min-height: 80px;
+/* 星期標題 */
+.weekday-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 20px 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.th-box {
-    background-color: #ffc0cb;
-    font-weight: bold;
-    color: #6f1d1b;
+/* 日期格子 */
+.calendar-day {
+    background: white;
+    min-height: 120px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
-.box {
-    background-color: #fff0f5;
+.calendar-day:hover {
+    background: #f1f5f9;
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 }
 
-.day-num {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #6f1d1b;
+.calendar-day.empty-day {
+    background: #f8fafc;
+    cursor: default;
 }
 
-.day-week {
-    color: #999;
-    font-size: 0.8em;
+.calendar-day.empty-day:hover {
+    background: #f8fafc;
+    transform: none;
+    box-shadow: none;
 }
 
-.holiday-info {
-    color: #ff5e78;
-    font-size: 0.9em;
-    margin-top: 5px;
+/* 日期數字 */
+.day-number {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--dark-text);
+    margin-bottom: 8px;
 }
 
-.todo-info {
-    color: #70c578;
-    font-size: 0.9em;
-    margin-top: 5px;
+/* 日期內容 */
+.day-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-.highlight {
-    background-color: #ffeef2 !important;
-    border: 2px solid #f06292;
+/* 節日標籤 */
+.holiday-label {
+    background: var(--holiday-color);
+    color: white;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+/* 活動標籤 */
+.event-label {
+    background: var(--event-color);
+    color: white;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+/* 週數標籤 */
+.week-label {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--gray-text);
+    color: white;
+    font-size: 0.6rem;
+    padding: 1px 4px;
+    border-radius: 4px;
+    opacity: 0.7;
+}
+
+/* 特殊日期樣式 */
+.calendar-day.today {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-color: var(--today-color);
+}
+
+.calendar-day.today .day-number {
+    color: #92400e;
+    font-weight: 900;
+}
+
+.calendar-day.weekend {
+    background: #fef2f2;
+}
+
+.calendar-day.weekend .day-number {
+    color: var(--danger-color);
+}
+
+.calendar-day.holiday {
+    background: linear-gradient(135deg, #fef2f2, #fecaca);
+}
+
+.calendar-day.event {
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+}
+
+.calendar-day.selected {
+    background: linear-gradient(135deg, #ede9fe, #ddd6fe) !important;
+    border-color: var(--selected-color) !important;
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(167, 139, 250, 0.3);
+}
+
+.calendar-day.selected .day-number {
+    color: var(--secondary-color);
+    font-weight: 900;
+}
+
+/* 圖例說明 */
+.calendar-legend {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: var(--dark-text);
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.legend-color.today {
+    background: linear-gradient(135deg, #fde68a, #f59e0b);
+}
+
+.legend-color.holiday {
+    background: var(--holiday-color);
+}
+
+.legend-color.event {
+    background: var(--event-color);
+}
+
+.legend-color.selected {
+    background: var(--selected-color);
+}
+
+/* 模態框樣式 */
+.modal-content {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 20px 20px 0 0;
+    border-bottom: none;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+.btn-close {
+    filter: invert(1);
+}
+
+.day-detail h6 {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+}
+
+.day-detail .badge {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    margin-right: 8px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .main-content {
+        padding-top: 80px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .month-year-title {
+        font-size: 2rem;
+    }
+
+    .calendar-toolbar {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .calendar-toolbar .row > div {
+        margin-bottom: 15px;
+    }
+
+    .calendar-container {
+        padding: 15px;
+        border-radius: 16px;
+    }
+
+    .calendar-day {
+        min-height: 80px;
+        padding: 8px;
+    }
+
+    .day-number {
+        font-size: 1rem;
+    }
+
+    .holiday-label,
+    .event-label {
+        font-size: 0.7rem;
+        padding: 1px 4px;
+    }
+
+    .weekday-header {
+        padding: 15px 5px;
+        font-size: 0.9rem;
+    }
+
+    .calendar-navigation .btn {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .calendar-day {
+        min-height: 60px;
+        padding: 6px;
+    }
+
+    .day-number {
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+    }
+
+    .holiday-label,
+    .event-label {
+        font-size: 0.6rem;
+        padding: 1px 3px;
+    }
+
+    .week-label {
+        display: none;
+    }
+
+    .weekday-header {
+        padding: 10px 2px;
+        font-size: 0.8rem;
+    }
+}
+
+/* 動畫效果 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.calendar-day.today {
+    animation: pulse 2s infinite;
+}
+
+/* 載入動畫 */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.loading::after {
+    content: '';
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 滾動條美化 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* 焦點樣式 */
+.btn:focus,
+.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+}
+
+/* 工具提示樣式 */
+[title] {
+    position: relative;
+}
+
+/* 打印樣式 */
+@media print {
+    .navbar,
+    .calendar-toolbar,
+    .calendar-legend {
+        display: none;
+    }
+
+    .main-content {
+        padding-top: 0;
+    }
+
+    .calendar-container {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+
+    .calendar-day {
+        border: 1px solid #ddd;
+    }
 }
