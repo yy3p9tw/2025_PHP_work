@@ -50,6 +50,23 @@
         .pavilion-img {
             height: 250px;
             object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .pavilion-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* 圖片載入效果 */
+        .img-loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, transparent 37%, #f0f0f0 63%);
+            background-size: 400% 100%;
+            animation: shimmer 1.5s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 100% 50%; }
+            100% { background-position: -100% 50%; }
         }
 
         .tech-badge {
@@ -63,6 +80,35 @@
         .footer-expo {
             background: var(--expo-blue);
             color: white;
+        }
+
+        /* 回到頂部按鈕 */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--expo-red);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(100px);
+        }
+
+        .scroll-to-top.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-to-top:hover {
+            background: var(--expo-blue);
+            transform: translateY(-5px);
         }
     </style>
 </head>
@@ -98,6 +144,17 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#info">交通資訊</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-translate"></i> 語言
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item active" href="#"><i class="bi bi-check"></i> 繁體中文</a></li>
+                            <li><a class="dropdown-item" href="#">日本語</a></li>
+                            <li><a class="dropdown-item" href="#">English</a></li>
+                            <li><a class="dropdown-item" href="#">한국어</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -215,6 +272,39 @@
                             <p class="card-text">綠色科技與永續發展解決方案</p>
                             <span class="tech-badge">綠能</span>
                             <span class="tech-badge">循環經濟</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card expo-card h-100">
+                        <img src="https://picsum.photos/id/1014/400/250" class="card-img-top pavilion-img" alt="台灣館">
+                        <div class="card-body">
+                            <h5 class="card-title">台灣館</h5>
+                            <p class="card-text">展示台灣的科技創新與文化特色</p>
+                            <span class="tech-badge">半導體</span>
+                            <span class="tech-badge">智慧城市</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card expo-card h-100">
+                        <img src="https://picsum.photos/id/1015/400/250" class="card-img-top pavilion-img" alt="韓國館">
+                        <div class="card-body">
+                            <h5 class="card-title">韓國館</h5>
+                            <p class="card-text">K-文化與創新科技的完美結合</p>
+                            <span class="tech-badge">5G技術</span>
+                            <span class="tech-badge">K-Pop</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card expo-card h-100">
+                        <img src="https://picsum.photos/id/1016/400/250" class="card-img-top pavilion-img" alt="美國館">
+                        <div class="card-body">
+                            <h5 class="card-title">美國館</h5>
+                            <p class="card-text">展示美國的太空科技與創新精神</p>
+                            <span class="tech-badge">太空科技</span>
+                            <span class="tech-badge">創新</span>
                         </div>
                     </div>
                 </div>
@@ -399,6 +489,11 @@
         </div>
     </footer>
 
+    <!-- 回到頂部按鈕 -->
+    <button class="scroll-to-top" id="scrollToTop">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
     <!-- 載入bs5 js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/js/bootstrap.bundle.min.js"
         integrity="sha512-Tc0i+vRogmX4NN7tuLbQfBxa8JkfUSAxSFVzmU31nVdHyiHElPPy2cWfFacmCJKw0VqovrzKhdd2TSTMdAxp2g=="
@@ -477,11 +572,74 @@
                     e.preventDefault();
                     $(this).html('<i class="bi bi-check-circle"></i> 已加入購物車');
                     $(this).removeClass('btn-success btn-primary').addClass('btn-outline-success');
+                    
+                    // 顯示成功提示
+                    showNotification('已成功加入購物車！', 'success');
+                    
                     setTimeout(() => {
                         $(this).html('立即購買');
                         $(this).removeClass('btn-outline-success').addClass('btn-success');
                     }, 2000);
                 }
+            });
+
+            // 通知函數
+            function showNotification(message, type = 'info') {
+                const notification = $(`
+                    <div class="alert alert-${type} alert-dismissible fade show position-fixed" 
+                         style="top: 20px; right: 20px; z-index: 9999; min-width: 300px;">
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `);
+                $('body').append(notification);
+                
+                setTimeout(() => {
+                    notification.alert('close');
+                }, 3000);
+            }
+
+            // 圖片載入失敗處理
+            $('img').on('error', function() {
+                $(this).attr('src', 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuWclueJh+i8ieWFpeS4rTwvdGV4dD48L3N2Zz4=');
+            });
+
+            // 表單驗證功能
+            $('form').on('submit', function(e) {
+                let isValid = true;
+                $(this).find('input[required], select[required]').each(function() {
+                    if (!$(this).val()) {
+                        isValid = false;
+                        $(this).addClass('is-invalid');
+                    } else {
+                        $(this).removeClass('is-invalid');
+                    }
+                });
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    showNotification('請填寫所有必填欄位', 'warning');
+                }
+            });
+
+            // 回到頂部按鈕功能
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 300) {
+                    $('#scrollToTop').addClass('show');
+                } else {
+                    $('#scrollToTop').removeClass('show');
+                }
+            });
+
+            $('#scrollToTop').click(function() {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 800);
+            });
+
+            // 載入動畫
+            $('.expo-card').each(function(index) {
+                $(this).css('animation-delay', (index * 0.1) + 's');
             });
         });
     </script>

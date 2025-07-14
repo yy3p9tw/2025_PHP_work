@@ -306,6 +306,97 @@ carousel_slides (獨立輪播系統)
 - **reports.php**：報表統計頁面
 - **settings.php**：系統設定頁面
 
+- **dashboard.php**：儀表板首頁
+  - 功能：管理概覽
+  - 狀態：基礎完成
+
+- **sidebar.php**：側邊欄組件
+  - 功能：所有管理頁面共用導航
+  - 狀態：完成
+
+- **products.php**：商品管理頁面
+  - 功能：商品 CRUD、圖片管理
+  - 狀態：基礎完成
+
+- **users.php**：會員管理頁面
+  - 功能：使用者 CRUD、權限管理
+  - 狀態：基礎完成
+
+- **carousel.php**：輪播管理頁面
+  - 功能：輪播圖 CRUD
+  - 狀態：基礎完成
+
+- **categories.php**：✅ 分類管理頁面
+  - 狀態：✅ 完成 - 多層分類樹狀顯示、CRUD 操作、Modal 表單、拖曳排序、防循環引用檢查
+- **orders.php**：訂單管理頁面
+- **admin/api/** 目錄：後台 API 組
+- **報表統計頁面**：銷售分析、數據報表
+
+### 目前 JavaScript 架構
+
+#### 已實作 JS (`/assets/js/`)
+- **script.js**：基礎前台功能
+  - 功能：平滑滾動等基本互動
+  - 使用於：前台頁面
+
+- **index.js**：✅ 首頁動態功能
+  - 功能：輪播圖載入、商品列表載入、分頁處理
+  - 使用於：index.html
+
+- **category-navbar.js**：✅ 導航與分類功能
+  - 功能：動態載入分類選單、下拉選單互動、分類頁面連結
+  - 使用於：navbar.html
+
+- **product-detail.js**：✅ 商品詳情互動
+  - 功能：商品詳情載入、數量調整、加入購物車
+  - 使用於：product_detail.html
+
+- **category-page.js**：✅ 分類頁面功能
+  - 功能：商品篩選、排序、分頁、檢視模式切換
+  - 使用於：category.html
+
+- **cart.js**：✅ 購物車功能
+  - 功能：購物車管理、數量調整、商品移除、結帳UI、推薦商品
+  - 使用於：cart.html
+
+#### 後台 JS (`/admin/assets/js/`)
+- **admin_script.js**：後台管理功能
+  - 功能：後台通用 JavaScript
+  - 使用於：後台管理頁面
+
+#### 待開發 JavaScript
+- **admin-carousel.js**：後台輪播管理
+- **其他模組化 JS 檔案**
+
+### 目前資料流向
+
+```
+前台使用者 → 動態頁面 → 模組化 JavaScript → API → 資料庫
+管理員 → 後台登入 → 管理頁面 → 直接 PHP 操作 → 資料庫
+```
+
+### 目前路徑結構
+
+#### 前台路徑
+- `/index.html` → ✅ 首頁（動態化完成）
+- `/product_detail.html` → ✅ 商品詳情頁（動態化完成）
+- `/category.html` → ✅ 商品分類頁（篩選、排序、分頁功能完成）
+- `/cart.html` → ✅ 購物車頁面（購物車管理功能完成）
+
+#### 後台路徑
+- `/admin/index.php` → 管理員登入
+- `/admin/dashboard.php` → 儀表板
+- `/admin/products.php` → 商品管理
+- `/admin/users.php` → 會員管理
+- `/admin/carousel.php` → 輪播管理
+
+#### API 路徑
+- `/api/products.php` → 商品列表 API
+- `/api/product_detail.php` → 商品詳情 API
+- `/api/carousel.php` → 輪播 API
+- `/api/categories.php` → ✅ 分類 API
+- `/api/cart_*.php` → ✅ 購物車 API 組（get, add, update, remove, clear）
+
 ---
 
 ## 5. 專案檔案結構
@@ -317,12 +408,10 @@ action_figure_store/
 ├── 📄 categories.html                # ✅ 商品分類頁（完整功能）
 ├── 📄 product_detail.html            # ✅ 商品詳情頁（統一設計）
 ├── 📄 cart.html                      # ✅ 購物車頁（完整功能）
-├── 📄 products.html                  # ✅ 商品列表頁
 ├── 📄 navbar.html                    # ✅ 共用導航組件（修復完成）
 ├── 📄 favicon.svg                    # ✅ 網站圖示
 ├── 📄 spec.md                        # ✅ 專案規格書（最新版本）
 ├── 📄 action_figure_store.sql        # ✅ 資料庫結構檔案
-├── 📄 admin_setup.php                # ✅ 管理員設置腳本
 │
 ├── 📁 api/                           # 🚀 前台 API
 │   ├── 📄 products.php               # ✅ 商品列表 API（完整功能）

@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     /* 使用與前台一致的色彩系統 */
     --bs-primary: #1e40af; /* 主要品牌色 */
     --bs-primary-rgb: 30, 64, 175;
@@ -69,20 +69,20 @@ body {
     font-weight: 500;
     color: rgba(255, 255, 255, 0.9) !important; /* 確保淺色文字 */
     transition: all 0.3s ease;
-    padding: 12px 16px; /* 增加填充 */
-    border-radius: 8px; /* 增加圓角 */
+    padding: 12px 16px; /* 增加間距 */
+    border-radius: 8px; /* 圓角 */
     margin: 4px 0;
 }
 
 .sidebar .nav-link.active {
-    color: white !important; /* 強制白色文字 */
+    color: white !important; /* 活躍狀態 */
     font-weight: 700;
-    background-color: rgba(255, 255, 255, 0.2); /* 淺透明背景 */
+    background-color: rgba(255, 255, 255, 0.2); /* 淺背景 */
 }
 
 .sidebar .nav-link:hover {
-    color: white !important; /* 強制白色文字 */
-    background-color: rgba(255, 255, 255, 0.1); /* 淺透明背景 */
+    color: white !important; /* 活躍狀態 */
+    background-color: rgba(255, 255, 255, 0.1); /* 淺背景 */
     transform: translateX(5px);
 }
 
@@ -101,12 +101,12 @@ body {
 .navbar-brand {
     padding-top: .75rem;
     padding-bottom: .75rem;
-    font-size: 1.2rem; /* 稍微增大字體 */
+    font-size: 1.2rem; /* 稍微放大字體 */
     background: linear-gradient(90deg, var(--bs-primary), var(--bs-dark));
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
-    color: white !important; /* 強制白色文字 */
+    color: white !important; /* 活躍狀態 */
 }
 
 .navbar {
@@ -147,9 +147,9 @@ main {
 /* Main content titles */
 main h1.h2 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 2.2rem; /* 增大標題字體 */
+    font-size: 2.2rem; /* 放大標題字體 */
     font-weight: 700;
-    color: var(--bs-body-color); /* 使用新的文字顏色 */
+    color: var(--bs-body-color); /* 使用統一顏色變數 */
 }
 
 /* Buttons */
@@ -164,14 +164,14 @@ main h1.h2 {
 }
 
 .btn-primary:hover {
-    background-color: #5a35a0; /* 稍微深一點的顏色 */
+    background-color: #5a35a0; /* 稍微深一點的紫色變數 */
     border-color: #5a35a0;
 }
 
 .btn-info {
     background-color: #17a2b8; /* Bootstrap info color */
     border-color: #17a2b8;
-    color: #fff; /* 編輯按鈕文字顏色為白色 */
+    color: #fff; /* 確保文字可讀性，使用白色字體 */
 }
 
 .btn-info:hover {
@@ -192,7 +192,7 @@ main h1.h2 {
 .btn-success {
     background-color: #28a745; /* Bootstrap success color */
     border-color: #28a745;
-    color: #fff; /* 成功按鈕文字顏色為白色 */
+    color: #fff; /* 確保文字可讀性，使用白色字體 */
 }
 
 .btn-success:hover {
@@ -203,7 +203,7 @@ main h1.h2 {
 .btn-secondary {
     background-color: #6c757d; /* Bootstrap secondary color */
     border-color: #6c757d;
-    color: #fff; /* 次要按鈕文字顏色為白色 */
+    color: #fff; /* 次要按鈕使用白色字體 */
 }
 
 .btn-secondary:hover {
@@ -221,7 +221,7 @@ main h1.h2 {
 .card-body h5.card-title {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
-    font-size: 2.5rem; /* 增大統計數字字體 */
+    font-size: 2.5rem; /* 放大儀表板數據字體 */
 }
 
 /* 表格樣式 - 深色主題 */
@@ -307,7 +307,7 @@ main h1.h2 {
     font-weight: 500;
 }
 
-/* 模態框樣式 */
+/* 模態視窗樣式 */
 .modal-content {
     background-color: var(--bs-dark);
     color: var(--bs-body-color) !important;
@@ -333,7 +333,7 @@ main h1.h2 {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* 警告框樣式 */
+/* 警告視窗樣式 */
 .alert {
     border: none;
     border-radius: 8px;
@@ -365,7 +365,7 @@ main h1.h2 {
     height: 2rem;
 }
 
-/* 表單增強 */
+/* 表單模態 */
 .modal-content {
     background-color: var(--bs-dark);
     color: var(--bs-body-color);
@@ -402,7 +402,7 @@ main h1.h2 {
     font-size: 0.75em;
 }
 
-/* 按鈕增強 */
+/* 按鈕外框 */
 .btn-outline-primary:hover {
     background-color: var(--bs-primary);
     border-color: var(--bs-primary);
@@ -423,7 +423,7 @@ main h1.h2 {
     border-color: #6c757d;
 }
 
-/* 狀態徽章互動效果 */
+/* 狀態徽章動畫效果 */
 .status-badge {
     transition: all 0.2s ease;
     user-select: none;
@@ -443,7 +443,7 @@ main h1.h2 {
     background-color: #5c636a !important;
 }
 
-/* 分類管理 - 產品數量徽章樣式 */
+/* 產品數量 - 分類管理專用徽章樣式 */
 .product-count-badge {
     background: linear-gradient(135deg, #17a2b8, #20c997) !important;
     color: white !important;
@@ -464,7 +464,7 @@ main h1.h2 {
     margin-right: 0.25rem;
 }
 
-/* 分類項目增強樣式 */
+/* 分類管理樣式 */
 .category-item {
     transition: all 0.2s ease;
     padding: 0.75rem;
@@ -482,7 +482,7 @@ main h1.h2 {
     gap: 0.5rem;
 }
 
-/* 分類統計標籤樣式 */
+/* 分類統計樣式增強 */
 .category-stats {
     display: flex;
     gap: 0.25rem;
@@ -490,7 +490,7 @@ main h1.h2 {
     flex-wrap: wrap;
 }
 
-/* 產品管理樣式 */
+/* 產品分類樣式 */
 .product-categories {
     max-height: 150px;
     overflow-y: auto;
@@ -567,21 +567,4 @@ main h1.h2 {
 .btn-sm {
     padding: 0.25rem 0.5rem;
     font-size: 0.775rem;
-}
-
-/* 響應式設計 */
-@media (max-width: 768px) {
-    .category-actions {
-        opacity: 1; /* 在小螢幕上始終顯示 */
-    }
-    
-    .category-item .d-flex {
-        flex-direction: column;
-        align-items: flex-start !important;
-    }
-    
-    .category-actions {
-        margin-top: 0.5rem;
-        align-self: flex-end;
-    }
 }
