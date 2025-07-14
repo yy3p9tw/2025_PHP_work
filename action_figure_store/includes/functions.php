@@ -60,4 +60,53 @@ function uploadImage($file, $target_dir = ROOT_PATH . '/uploads/') {
     }
 }
 
+// 統一 API 回應格式
+function jsonResponse($success, $data = null, $error = null) {
+    header('Content-Type: application/json');
+    echo json_encode([
+        'success' => $success,
+        'data' => $data,
+        'error' => $error
+    ]);
+    exit;
+}
+
+// 格式化商品圖片URL
+function formatProductImage($image_url) {
+    if ($image_url) {
+        return 'uploads/' . $image_url;
+    } else {
+        return 'assets/images/no-image.png';
+    }
+}
+
+// 格式化單一商品資料
+function formatProductData($product) {
+    if (!$product) {
+        return null;
+    }
+
+    $product['id'] = (int)$product['id'];
+    $product['price'] = (float)$product['price'];
+    $product['image_url'] = formatProductImage($product['image_url']);
+    $product['created_at'] = date('Y-m-d H:i:s', strtotime($product['created_at']));
+
+    // 處理分類
+    $product['categories'] = [];
+    if (!empty($product['category_names'])) {
+        $names = explode(', ', $product['category_names']);
+        $ids = explode(',', $product['category_ids']);
+        for ($i = 0; $i < count($names); $i++) {
+            if (isset($ids[$i]) && $ids[$i]) {
+                $product['categories'][] = [
+                    'id' => (int)$ids[$i],
+                    'name' => trim($names[$i])
+                ];
+            }
+        }
+    }
+    unset($product['category_names'], $product['category_ids']);
+
+    return $product;
+}
 ?>

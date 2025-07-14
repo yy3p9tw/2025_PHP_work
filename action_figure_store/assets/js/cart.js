@@ -1,3 +1,5 @@
+import { apiRequest } from './api.js';
+
 // cart.js
 // 購物車功能管理
 
@@ -23,30 +25,29 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * 載入購物車商品
  */
-function loadCartItems() {
+async function loadCartItems() {
     showLoading();
     
-    fetch('api/cart_get.php')
-        .then(response => response.json())
-        .then(data => {
-            hideLoading();
-            
-            if (data.success && data.items && data.items.length > 0) {
-                cartItems = data.items;
-                renderCartItems();
-                updateCartSummary();
-                showCartContent();
-            } else {
-                showEmptyCart();
-            }
-        })
-        .catch(error => {
-            console.error('載入購物車失敗:', error);
-            hideLoading();
-            
-            // 如果 API 不存在，從 localStorage 載入
-            loadCartFromLocalStorage();
-        });
+    try {
+        const data = await apiRequest('/api/cart/get.php');
+        
+        hideLoading();
+        
+        if (data.success && data.items && data.items.length > 0) {
+            cartItems = data.items;
+            renderCartItems();
+            updateCartSummary();
+            showCartContent();
+        } else {
+            showEmptyCart();
+        }
+    } catch (error) {
+        console.error('載入購物車失敗:', error);
+        hideLoading();
+        
+        // 如果 API 不存在，從 localStorage 載入
+        loadCartFromLocalStorage();
+    }
 }
 
 /**

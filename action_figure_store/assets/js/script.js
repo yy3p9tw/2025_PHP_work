@@ -12,3 +12,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// 統一 API 請求 utility
+export async function apiRequest(url, options = {}) {
+    try {
+        const res = await fetch(url, options);
+        const result = await res.json();
+        if (!result.success) throw new Error(result.error || 'API 錯誤');
+        return result.data;
+    } catch (err) {
+        throw err;
+    }
+}

@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+import { apiRequest } from './api.js';
 /**
  * 從 URL 取得商品 ID
  */
@@ -33,25 +34,28 @@ function loadProductDetail(productId) {
     if (loadingElement) loadingElement.style.display = 'block';
     if (contentElement) contentElement.style.display = 'none';
     
-    fetch(`api/product_detail.php?id=${productId}`)
-        .then(response => response.json())
-        .then(product => {
-            if (product && product.id) {
-                renderProductDetail(product);
-                updatePageTitle(product.name);
+    async function loadProductDetail(productId) {
+        const loadingElement = document.getElementById('product-loading');
+        const contentElement = document.getElementById('product-content');
+        if (loadingElement) loadingElement.style.display = 'block';
+        if (contentElement) contentElement.style.display = 'none';
+        try {
+            const data = await apiRequest(`api/product_detail.php?id=${productId}`);
+            if (data && data.product) {
+                renderProductDetail(data.product);
+                updatePageTitle(data.product.name);
+                // 可在此處理 data.related_products，若有推薦區塊
             } else {
                 showError('找不到商品資料');
             }
-        })
-        .catch(error => {
+        } catch (error) {
             console.error('載入商品詳情失敗:', error);
-            showError('載入商品詳情失敗');
-        })
-        .finally(() => {
-            // 隱藏載入中
+            showError(error.message || '載入商品詳情失敗');
+        } finally {
             if (loadingElement) loadingElement.style.display = 'none';
             if (contentElement) contentElement.style.display = 'block';
-        });
+        }
+    }
 }
 
 /**

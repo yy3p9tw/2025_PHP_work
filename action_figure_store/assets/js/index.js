@@ -1,3 +1,5 @@
+import { apiRequest } from './api.js';
+
 // index.js
 // 首頁動態功能
 
@@ -75,7 +77,7 @@ function renderCarousel(slides) {
 /**
  * 載入商品列表
  */
-function loadProducts(page = 1, limit = 9) {
+async function loadProducts(page = 1, limit = 9) {
     const loadingElement = document.getElementById('products-loading');
     const productsContainer = document.getElementById('products-container');
     
@@ -83,28 +85,25 @@ function loadProducts(page = 1, limit = 9) {
     if (loadingElement) loadingElement.style.display = 'block';
     if (productsContainer) productsContainer.style.display = 'none';
     
-    fetch(`api/products.php?page=${page}&limit=${limit}`)
-        .then(response => response.json())
-        .then(data => {
-            console.log('首頁商品 API 回應:', data); // 偵錯用
-            
-            if (data.success && data.products && data.products.length > 0) {
-                renderProducts(data.products);
-                updatePagination(data.pagination);
-            } else {
-                console.error('首頁商品 API 問題:', data);
-                showNoProducts();
-            }
-        })
-        .catch(error => {
-            console.error('載入商品失敗:', error);
-            showProductsError();
-        })
-        .finally(() => {
-            // 隱藏載入中
-            if (loadingElement) loadingElement.style.display = 'none';
-            if (productsContainer) productsContainer.style.display = 'block';
-        });
+    try {
+        const data = await apiRequest(`/api/products.php?page=${page}&limit=${limit}`);
+        console.log('首頁商品 API 回應:', data); // 偵錯用
+        
+        if (data.success && data.products && data.products.length > 0) {
+            renderProducts(data.products);
+            updatePagination(data.pagination);
+        } else {
+            console.error('首頁商品 API 問題:', data);
+            showNoProducts();
+        }
+    } catch (error) {
+        console.error('載入商品失敗:', error);
+        showProductsError();
+    } finally {
+        // 隱藏載入中
+        if (loadingElement) loadingElement.style.display = 'none';
+        if (productsContainer) productsContainer.style.display = 'block';
+    }
 }
 
 /**
