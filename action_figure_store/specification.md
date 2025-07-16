@@ -276,4 +276,233 @@
     *   **方法**: `GET` (列表), `PUT` (更新狀態)
     *   **請求體/參數**: 根據操作類型而定。
 
+
+## 5. 進階補充規範
+
+### 5.1 API 回應格式與錯誤處理
+
+- 所有 API 回應皆應統一格式：
+  ```json
+  {
+    "success": true/false,
+    "data": { ... },
+    "error": "錯誤訊息（失敗時）"
+  }
+  ```
+- 錯誤時應有明確錯誤碼與訊息，便於前端顯示與除錯。
+- 建議列舉常見錯誤碼（如 401 未授權、403 禁止、404 找不到、422 驗證失敗、500 伺服器錯誤）。
+
+### 5.2 權限與安全性設計
+
+- API 權限驗證建議：
+  - 前台用戶：Session/Cookie 或 JWT Token
+  - 後台管理員：Session 驗證，建議加強 CSRF 防護
+- 密碼必須加密儲存（建議 bcrypt/password_hash）
+- 防範 SQL Injection（預處理）、XSS（輸出時過濾）、CSRF（Token 機制）
+- 管理員/一般用戶權限分級，API 路徑與資料存取需嚴格區分
+
+### 5.3 前端狀態管理與 UI/UX 細節
+
+- 全域狀態管理建議：
+  - 購物車徽章、登入狀態、訊息提示等應全站同步
+- 載入動畫、錯誤提示、空狀態設計需統一
+- 響應式設計斷點建議明確列出（如 Bootstrap 斷點）
+
+### 5.4 測試與部署
+
+- 建議規劃：
+  - 單元測試（PHPUnit）、API 測試（Postman/Swagger）、E2E 測試（Cypress）
+  - 部署流程：Staging/Production 分離，CI/CD 自動化（如 GitHub Actions）
+
+### 5.5 團隊協作與程式碼規範
+
+- Git 分支策略（如 main/dev/feature/bugfix）
+- PHP/JS/CSS 程式碼風格（PSR-12、ESLint、Stylelint）
+- 註解與文件撰寫規範，重要邏輯需有中英文註解
+
+### 5.6 進階功能與擴充規劃
+
+- 多語系（i18n）、多幣別支援
+- API Rate Limit、快取策略（如 Redis）
+- 第三方金流、物流 API 整合
+- 監控與日誌（如 Sentry、Log 管理）
+
+---
+### 步驟9：進階功能與擴充規劃
+
+1. **多語系（i18n）與多幣別支援**
+    - 前端與後端皆需設計可擴充的語系檔與幣別轉換邏輯。
+    - 商品、分類、介面文案等資料庫欄位建議預留多語欄位。
+
+2. **API Rate Limit 與快取策略**
+    - 為防止惡意攻擊與流量濫用，建議 API 層實作請求速率限制（如每分鐘 N 次）。
+    - 熱門查詢（如商品列表）可用 Redis/Memcached 快取，減輕資料庫壓力。
+
+3. **第三方金流、物流 API 整合**
+    - 支援多種金流（如信用卡、Line Pay、Apple Pay）與物流（超商、宅配）API。
+    - 設計抽象介面，方便日後擴充新金流/物流商。
+
+4. **監控與日誌管理**
+    - 導入 Sentry、ELK、Prometheus 等工具，監控錯誤、效能與流量。
+    - 重要操作（如訂單、金流）應有詳細 Log，便於追蹤與稽核。
+
+5. **未來擴充建議**
+    - 支援會員等級、優惠券、推薦獎勵、社群分享等行銷功能。
+    - 可考慮導入 AI 推薦、圖像辨識等新技術。
+
+---
+### 步驟8：團隊協作與程式碼規範
+
+1. **分支管理與協作流程**
+    - 採用 Git 版本控制，建議分 main（穩定）、dev（開發）、feature/xxx（新功能）、bugfix/xxx（修正）等分支。
+    - 重要功能以 Pull Request（PR）方式合併，需經審查（Code Review）後才能進入主分支。
+    - 建議每次提交（commit）訊息簡潔明確，描述本次變更內容。
+
+2. **程式碼風格與靜態檢查**
+    - PHP 遵循 PSR-12 標準，JS 採用 ESLint，CSS 採用 Stylelint。
+    - 導入自動化 Lint 工具，提交前自動檢查格式。
+
+3. **註解與文件撰寫**
+    - 重要邏輯、複雜流程需有中英文註解，方便團隊理解與維護。
+    - 撰寫 README、API 文件、安裝與部署說明，確保新成員能快速上手。
+
+4. **協作建議**
+    - 定期舉辦團隊會議，討論進度、技術難題與最佳實踐。
+    - 推薦使用 Issue Tracker（如 GitHub Issues）管理任務與 Bug。
+
+---
+### 步驟7：部署指引與維運
+
+1. **伺服器環境建議**
+    - 建議使用 Linux (Ubuntu/CentOS) + Apache + PHP + MySQL。
+    - 前端靜態檔案可用 CDN 加速，後端 API 伺服器與資料庫分離。
+
+2. **部署流程**
+    - 開發、測試、正式（Production）環境分離，避免測試資料污染正式資料。
+    - 使用 Git 版本控制，建議以 GitHub Actions、GitLab CI 等自動化部署。
+    - 部署時自動執行 composer/npm install、資料庫遷移、靜態資源壓縮。
+
+3. **自動化與持續整合（CI/CD）**
+    - 推薦導入 CI/CD 流程，自動執行測試、Lint、打包、部署。
+    - 失敗時自動通知團隊，確保品質。
+
+4. **備份與還原**
+    - 定期備份資料庫（mysqldump）、上傳檔案（如商品圖片）。
+    - 測試備份檔案可正確還原，避免資料遺失。
+
+5. **監控與維運**
+    - 伺服器監控（如 UptimeRobot、Prometheus）、Log 管理（如 ELK、Sentry）。
+    - 定期檢查安全性更新、弱點修補。
+
+---
+### 步驟6：測試案例與驗證
+
+1. **單元測試（Unit Test）**
+    - 後端 PHP 可用 PHPUnit 撰寫函式/類別單元測試。
+    - 建議覆蓋資料庫操作、驗證邏輯、API 回傳格式等。
+    - 前端可用 Jest、Mocha 等測試 JS 函式。
+
+2. **API 測試（API Test）**
+    - 使用 Postman、Swagger、curl 或自動化工具（如 PHPUnit + HTTP client）測試 API 各種情境（成功、失敗、權限不足、參數錯誤等）。
+    - 建議建立 API 測試腳本，方便重複驗證。
+
+3. **端對端測試（E2E Test）**
+    - 使用 Cypress、Selenium 等工具模擬用戶實際操作流程（如註冊、登入、購物、結帳）。
+    - 驗證前後端整合、UI 流程、資料正確性。
+
+4. **驗證流程建議**
+    - 每次功能開發/修正後，執行對應測試案例。
+    - 重要 API/流程應有自動化測試覆蓋。
+    - 測試報告建議納入 CI/CD 流程，確保品質。
+
+5. **常用測試工具**
+    - 後端：PHPUnit、Postman、Swagger、curl
+    - 前端：Jest、Mocha、Cypress、Selenium
+
+---
+### 步驟5：前後端互動細節與資料流
+
+1. **前端呼叫 API 流程**
+    - 前端（如 main.js, api.js）統一封裝 API 請求（建議使用 Fetch API 或 axios）。
+    - 每次呼叫 API 時，根據需求自動帶上 Token/Session（如 JWT 存於 localStorage/cookie，Session 由瀏覽器自動帶出）。
+    - 請求前可顯示 loading 動畫，請求後根據回應 success/error 統一處理。
+
+2. **資料流與狀態管理**
+    - 前端維護全域狀態（如購物車徽章、登入狀態、訊息提示），可用全域 JS 物件或前端框架（如 Vuex/Redux）。
+    - API 回應資料直接更新前端狀態，失敗時顯示錯誤訊息。
+    - 重要狀態（如登入、購物車）可同步至 localStorage/sessionStorage，實現頁面刷新不丟失。
+
+3. **錯誤處理與用戶提示**
+    - 統一攔截 API 回應的 error 欄位，根據錯誤碼顯示對應提示（如 401 跳轉登入、422 顯示表單錯誤、500 顯示系統錯誤）。
+    - 前端可設計全域訊息提示元件（如 toast/snackbar）。
+
+4. **資料同步與即時性**
+    - 購物車、訂單等資料操作後，應即時重新取得最新資料並更新畫面。
+    - 可考慮輪詢（polling）或 WebSocket 實現即時通知（如訂單狀態變更）。
+
+5. **安全性與最佳實踐**
+    - 前端避免將敏感資訊（如密碼、Token）暴露於網址或前端程式碼。
+    - 請求時加強 CSRF/XSS 防護，表單資料需過濾。
+
+---
+
+## 6. 一步一步製作說明
+
+### 步驟4：API 設計與路由規劃
+
+1. **規劃 API 路由結構**
+    - 依據前後台功能需求，設計 RESTful API 路徑，前台統一於 `/api/`，後台統一於 `/admin/api/`。
+    - 參考：
+        - 前台商品：`GET /api/products.php`、`GET /api/products.php?id=123`
+        - 前台購物車：`POST /api/cart.php`、`PUT /api/cart.php`、`DELETE /api/cart.php`
+        - 前台認證：`POST /api/auth.php`
+        - 後台商品管理：`POST /admin/api/products.php`、`PUT /admin/api/products.php`、`DELETE /admin/api/products.php`
+
+2. **定義 API 參數與回應格式**
+    - 所有 API 採用 JSON 作為請求與回應格式。
+    - 參數傳遞：
+        - `GET`：查詢字串（如 `?id=123`）
+        - `POST/PUT/DELETE`：請求體為 JSON
+    - 統一回應格式：
+      ```json
+      {
+        "success": true/false,
+        "data": { ... },
+        "error": "錯誤訊息（失敗時）"
+      }
+      ```
+
+3. **權限驗證與安全設計**
+    - 前台 API：需驗證用戶登入狀態（Session/Cookie 或 JWT Token）。
+    - 後台 API：僅限管理員，Session 驗證並加強 CSRF 防護。
+    - 密碼加密、SQL Injection/XSS/CSRF 防護措施落實於 API 層。
+
+4. **API 範例設計**
+    - 以「新增商品」為例：
+      - 路徑：`POST /admin/api/products.php`
+      - 請求體：
+        ```json
+        {
+          "name": "公仔名稱",
+          "brand": "品牌",
+          "series": "系列/IP",
+          "character": "角色名稱",
+          "price": 999,
+          "stock": 10,
+          ...
+        }
+        ```
+      - 回應：
+        ```json
+        {
+          "success": true,
+          "data": { "id": 101 },
+          "error": null
+        }
+        ```
+
+5. **API 文件與測試**
+    - 建議以 Markdown 或 Swagger/OpenAPI 撰寫 API 文件，明確列出每個路由、參數、回應範例與權限需求。
+    - 可用 Postman 進行 API 測試，確保每個端點行為正確。
+
 ---
