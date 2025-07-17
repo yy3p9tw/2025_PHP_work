@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 載入bs5 css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/css/bootstrap.min.css"
+        integrity="sha512-fw7f+TcMjTb7bpbLJZlP8g2Y4XcCyFZW8uy8HsRZsH/SwbMw0plKHFHr99DN3l04VsYNwvzicUX/6qurvIxbxw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- animate.css for 卡片動畫 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Noto+Sans+JP:wght@900&display=swap');
+        body {
+            min-height: 100vh;
+            background: repeating-linear-gradient(135deg, #6c3483 0 40px, #f7ca18 40px 80px);
+            background-size: 120px 120px;
+        }
+        .jojo-title {
+            font-family: 'Luckiest Guy', 'Noto Sans JP', Impact, 'Arial Black', sans-serif;
+            letter-spacing: 2px;
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 0 #6c3483cc, 4px 4px 0 #f7ca1888;
+            background: linear-gradient(90deg, #6c3483 60%, #f7ca18 100%);
+            border-radius: 1rem;
+            padding: 0.5rem 1.5rem;
+            border: 4px solid #f7ca18;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 16px rgba(108,52,131,0.10);
+        }
+        .jojo-title .jp {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 1.2rem;
+            color: #f7ca18;
+            margin-left: 1rem;
+            letter-spacing: 0.2em;
+        }
+        .card {
+            box-shadow: 0 4px 16px rgba(108,52,131,0.18), 0 0 0 4px #f7ca1844, 0 0 24px 0 #fff8;
+            transition: transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.25s, filter 0.25s;
+            border-radius: 1rem;
+            border: 4px solid #6c3483;
+            background: linear-gradient(120deg, #fff 80%, #f7ca18 100%);
+            position: relative;
+            overflow: visible;
+        }
+        .card:hover {
+            transform: translateY(-12px) scale(1.07) rotate(-2deg);
+            box-shadow: 0 16px 48px #6c3483cc, 0 0 0 8px #f7ca1888, 0 0 64px 8px #fff8;
+            border-color: #f7ca18;
+            filter: brightness(1.08) drop-shadow(0 0 12px #f7ca18cc);
+        }
+        @keyframes card-flicker {
+            0%,100% { filter: brightness(1.08) drop-shadow(0 0 12px #f7ca18cc); }
+            20% { filter: brightness(1.2) drop-shadow(0 0 24px #fff); }
+            40% { filter: brightness(0.9) drop-shadow(0 0 8px #6c3483); }
+            60% { filter: brightness(1.3) drop-shadow(0 0 32px #f7ca18); }
+            80% { filter: brightness(1.1) drop-shadow(0 0 16px #fff); }
+        }
+        /* 粒子閃光動畫 */
+        .card .jojo-particles {
+            pointer-events: none;
+            position: absolute;
+            left: 0; top: 0; width: 100%; height: 100%;
+            z-index: 10;
+        }
+        .jojo-particle {
+            position: absolute;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fff 60%, #f7ca18 100%);
+            opacity: 0.7;
+            animation: particle-sparkle 0.7s linear forwards;
+        }
+        @keyframes particle-sparkle {
+            0% { opacity: 0.7; transform: scale(0.5); }
+            80% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0; transform: scale(0.2) translateY(-30px); }
+        }
+        /* SVG 閃電特效 */
+        .jojo-flash {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 0.3em;
+            margin-right: 0.1em;
+            width: 1.2em;
+            height: 1.2em;
+        }
+        .jojo-title, .card-title {
+            letter-spacing: 2.5px;
+            text-shadow: 2px 2px 0 #6c3483cc, 0 0 8px #f7ca18cc, 0 0 2px #fff;
+        }
+        .jojo-title {
+            font-size: 2.7rem;
+            border-width: 5px;
+        }
+        .card-title {
+            font-size: 1.7rem;
+            text-shadow: 2px 2px 0 #f7ca18, 0 0 8px #6c3483cc, 0 0 2px #fff;
+        }
+        .card-img-top {
+            object-fit: cover;
+            height: 320px;
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+            border-bottom: 2px solid #6c3483;
+            background: #eee;
+        }
+        @media (max-width: 576px) {
+            .card-img-top { height: 180px; }
+            .card-title { font-size: 1.1rem; }
+            .jojo-title { font-size: 1.3rem; }
+        }
+        .jojo-btn {
+            margin-top: 0.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #f7ca18 60%, #6c3483 100%);
+            color: #fff;
+            border: 2px solid #6c3483;
+            box-shadow: 0 2px 8px #6c348344;
+            transition: background 0.2s, color 0.2s;
+        }
+        .jojo-btn:hover {
+            background: linear-gradient(90deg, #6c3483 60%, #f7ca18 100%);
+            color: #f7ca18;
+            border-color: #f7ca18;
+        }
+        .modal-header {
+            border-bottom: 4px solid #f7ca18;
+        }
+        .modal-content {
+            border: 4px solid #6c3483;
+            border-radius: 1.5rem;
+        }
+        .modal-title {
+            font-family: 'Luckiest Guy', Impact, 'Arial Black', sans-serif;
+            letter-spacing: 2px;
+        }
+        .modal-img {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 3px solid #f7ca18;
+            box-shadow: 0 4px 16px #6c3483aa;
+        }
+        .card-title {
+            font-family: 'Luckiest Guy', Impact, 'Arial Black', sans-serif;
+            color: #6c3483;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0 #f7ca18;
+        }
+        .card-text b {
+            color: #6c3483;
+        }
+        .text-primary, .card-text.text-primary {
+            color: #f7ca18 !important;
+            text-shadow: 1px 1px 0 #6c3483;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- 自動播放 JOJO BGM（YouTube）-->
+    <div style="position:fixed; left:-9999px; top:-9999px; width:1px; height:1px; overflow:hidden;">
+        <iframe id="jojo-bgm" width="1" height="1" src="https://www.youtube.com/embed/XtXzHK5YW6Q?autoplay=1&loop=1&playlist=XtXzHK5YW6Q" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <div class="container py-4">
+        <h1 class="jojo-title text-center">
+            JOJO'S BIZARRE ADVENTURE<br>
+            <span class="jp">ジョジョの奇妙な冒険 角色卡片集</span>
+        </h1>
+        <div class="row mb-3">
+            <div class="col-12 col-md-6 mb-2">
+                <input id="searchInput" type="text" class="form-control" placeholder="搜尋角色名稱/能力/替身...">
+            </div>
+            <div class="col-12 col-md-6 mb-2">
+                <select id="partSelect" class="form-select">
+                    <option value="">全部部別</option>
+                    <option value="1">第一部</option>
+                    <option value="2">第二部</option>
+                    <option value="3">第三部</option>
+                    <option value="4">第四部</option>
+                </select>
+            </div>
+        </div>
+        <div class="row my-row g-3">
+            <!-- 動態產生卡片 -->
+        </div>
+    </div>
+
+    <!-- Modal 彈窗 -->
+    <div class="modal fade" id="jojoModal" tabindex="-1" aria-labelledby="jojoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="jojoModalLabel">角色詳細資料</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-5">
+                <img id="modal-img" class="modal-img mb-3" src="" alt="">
+              </div>
+              <div class="col-md-7">
+                <h3 id="modal-name"></h3>
+                <p><b>替身：</b><span id="modal-stand"></span></p>
+                <p id="modal-desc"></p>
+                <p class="text-primary"><i id="modal-quote"></i></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 載入bs5 js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/js/bootstrap.bundle.min.js"
+        integrity="sha512-Tc0i+vRogmX4NN7tuLbQfBxa8JkfUSAxSFVzmU31nVdHyiHElPPy2cWfFacmCJKw0VqovrzKhdd2TSTMdAxp2g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- 載入jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="./data/jojo_data.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            // 1.bind
+            const myRow = $('.my-row');
+
+            // 2.action
+
+            console.log('data', data);
+
+
+            // 動態產生卡片，並加上動畫與按鈕
+
+            // 角色分類依部別
+            function getPartById(id) {
+                if (id <= 2) return '1';
+                if (id <= 6) return '2';
+                if (id <= 13) return '3';
+                if (id <= 18) return '4';
+                return '';
+            }
+
+            // 圖片預設圖
+            function getImgTag(url, name) {
+                return `<img src="${url}" class="card-img-top" alt="${name}" onerror="this.onerror=null;this.src='https://i.imgur.com/8QfQ2Qp.png';">`;
+            }
+
+            // 卡片動畫特效
+            function getCardAnim(idx) {
+                const anims = ['animate__fadeInUp','animate__pulse','animate__zoomIn','animate__fadeInLeft','animate__fadeInRight'];
+                return anims[idx%anims.length];
+            }
+
+            // 進階特效：隨機加上ゴゴゴゴ
+            function getGogogo() {
+                return Math.random()<0.25 ? `<div style='position:absolute;right:10px;top:10px;font-size:2rem;color:#6c3483;opacity:0.3;font-family:Impact;'>ゴゴゴゴ</div>` : '';
+            }
+
+            // 渲染卡片
+            function renderCards() {
+                myRow.empty();
+                let keyword = $('#searchInput').val().toLowerCase();
+                let part = $('#partSelect').val();
+                let filtered = data.filter(function(v){
+                    let match = v.name.toLowerCase().includes(keyword) || (v.stand && v.stand.toLowerCase().includes(keyword)) || (v.description && v.description.toLowerCase().includes(keyword));
+                    let matchPart = !part || getPartById(v.id) === part;
+                    return match && matchPart;
+                });
+            filtered.forEach(function (value, idx) {
+                let standLabel = '';
+                if (!value.stand || value.stand.trim() === '' || value.stand.trim() === '波紋') {
+                    standLabel = '<b>能力：</b>波紋';
+                } else if (value.stand.includes('波紋')) {
+                    standLabel = '<b>能力：</b>' + value.stand;
+                } else {
+                    standLabel = '<b>替身：</b>' + value.stand;
+                }
+                // SVG 閃電
+                const flashSVG = `<svg class="jojo-flash" viewBox="0 0 24 24"><polygon points="12,2 15,10 10,10 13,22 7,12 12,12" fill="#f7ca18" stroke="#6c3483" stroke-width="2"/></svg>`;
+                let tmpText = `
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="card h-100 shadow-sm animate__animated animate__fadeInUp" style="animation-delay:${idx*0.1}s">
+                        ${getImgTag(value.image_url, value.name)}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-center text-primary">${flashSVG}${value.name}${flashSVG}</h5>
+                            <p class="card-text">${standLabel}</p>
+                            <p class="card-text">${value.description}</p>
+                            <p class="card-text text-primary"><i>${value.famous_quote}</i></p>
+                            <button class="btn btn-outline-primary jojo-btn mt-auto" data-idx="${data.indexOf(value)}" data-bs-toggle="modal" data-bs-target="#jojoModal">${flashSVG}詳細</button>
+                        </div>
+                        <div class="jojo-particles"></div>
+                        ${getGogogo()}
+                    </div>
+                </div>
+                `;
+                myRow.append(tmpText);
+            });
+            }
+
+            // 初始渲染
+            renderCards();
+
+            // 搜尋/篩選事件
+            $('#searchInput, #partSelect').on('input change', function(){
+                renderCards();
+            });
+
+            // jQuery 事件委派：點擊詳細按鈕顯示 modal
+            myRow.on('click', '.jojo-btn', function(){
+                const idx = $(this).data('idx');
+                const jojo = data[idx];
+                $('#modal-img').attr('src', jojo.image_url).attr('alt', jojo.name).on('error',function(){this.src='https://i.imgur.com/8QfQ2Qp.png'});
+                $('#modal-name').text(jojo.name);
+                let standLabel = '';
+                if (!jojo.stand || jojo.stand.trim() === '' || jojo.stand.trim() === '波紋') {
+                    standLabel = '能力：波紋';
+                } else if (jojo.stand.includes('波紋')) {
+                    standLabel = '能力：' + jojo.stand;
+                } else {
+                    standLabel = '替身：' + jojo.stand;
+                }
+                $('#modal-stand').text(standLabel);
+                $('#modal-desc').html('<b>部別：</b>'+getPartById(jojo.id)+'<br>'+jojo.description);
+                $('#modal-quote').text(jojo.famous_quote);
+            });
+
+            // 暗色模式切換
+            if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+                document.body.style.background = 'repeating-linear-gradient(135deg, #222 0 40px, #6c3483 40px 80px)';
+                document.body.classList.add('text-light');
+            }
+
+            // 額外 jQuery 技術：滑鼠移入卡片時加亮、閃光、粒子動畫，移出時恢復
+            myRow.on('mouseenter', '.card', function(){
+                $(this).addClass('border-primary border-3');
+                // 只做粒子動畫，不再重複動畫 class
+                // 粒子動畫
+                const $particles = $(this).find('.jojo-particles');
+                $particles.empty();
+                for(let i=0;i<8;i++){
+                    const x = Math.random()*90+5;
+                    const y = Math.random()*60+10;
+                    const delay = Math.random()*0.2;
+                    $particles.append(`<div class="jojo-particle" style="left:${x}%;top:${y}%;animation-delay:${delay}s"></div>`);
+                }
+            });
+            myRow.on('mouseleave', '.card', function(){
+                $(this).removeClass('border-primary border-3');
+                $(this).find('.jojo-particles').empty();
+            });
+
+            // 額外動畫：頁面載入時卡片淡入（需引入 animate.css CDN）
+            // <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+        });
+    </script>
+</body>
+
+</html>
